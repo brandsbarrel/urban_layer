@@ -1,0 +1,5 @@
+.page {
+  padding-top: var(--spacing-unit-xl);
+  padding-bottom: var(--spacing-unit-xl);
+  overflow-x: hidden;
+}

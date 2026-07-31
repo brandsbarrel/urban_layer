@@ -1,0 +1,33 @@
+.section {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: var(--spacing-unit-xl) var(--spacing-margin-mobile);
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  display: grid;
+  gap: var(--spacing-unit-xl);
+}
+
+@media (min-width: 768px) {
+  .section {
+    grid-template-columns: repeat(2, 1fr);
+    padding: var(--spacing-unit-xl) var(--spacing-margin-desktop);
+  }
+}
+
+.block {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding-left: var(--spacing-unit-lg);
+}
+
+.heading {
+  composes: text-headline-sm from global;
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.text {
+  composes: text-body-lg from global;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}

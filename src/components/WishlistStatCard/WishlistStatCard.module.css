@@ -1,0 +1,26 @@
+.card {
+  background-color: var(--color-surface-container-lowest);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(207, 196, 197, 0.1);
+  padding: var(--spacing-unit-md);
+  border-radius: var(--radius-xl);
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.label {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.value {
+  composes: text-title-lg from global;
+  font-weight: 700;
+  color: var(--color-primary);
+}

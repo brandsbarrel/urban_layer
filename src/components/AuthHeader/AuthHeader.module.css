@@ -1,0 +1,104 @@
+/* Overlay variant — Login / Register */
+.headerOverlay {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 50;
+  height: 80px;
+  background-color: transparent;
+  pointer-events: none;
+}
+
+.navOverlay {
+  height: 100%;
+  padding: 0 var(--spacing-margin-mobile);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .navOverlay {
+    padding: 0 var(--spacing-margin-desktop);
+  }
+}
+
+.backLinkOverlay {
+  composes: text-label-md from global;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-sm);
+  color: var(--color-on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: opacity 0.2s ease;
+  pointer-events: auto;
+}
+
+.backLinkOverlay:hover {
+  opacity: 0.7;
+}
+
+.brandOverlay {
+  composes: text-headline-sm from global;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-primary);
+  pointer-events: auto;
+}
+
+.spacer {
+  width: 96px;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .spacer {
+    display: block;
+  }
+}
+
+/* Solid variant — Forgot Password */
+.headerSolid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: rgba(251, 249, 249, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(207, 196, 197, 0.3);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.navSolid {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: var(--spacing-unit-md) var(--spacing-margin-desktop);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.backLinkSolid {
+  composes: text-label-md from global;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-sm);
+  color: var(--color-primary);
+  transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.backLinkSolid:hover {
+  color: var(--color-secondary);
+}
+
+.backLinkSolid:active {
+  transform: scale(0.95);
+}
+
+.brandSolid {
+  composes: text-headline-md from global;
+  color: var(--color-primary);
+  letter-spacing: -0.02em;
+}

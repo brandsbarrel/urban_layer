@@ -1,0 +1,25 @@
+.section {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: 0 var(--spacing-margin-mobile);
+  margin-bottom: var(--spacing-unit-xl);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 0 var(--spacing-margin-desktop);
+  }
+}
+
+.heading {
+  composes: text-headline-sm from global;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.scrollRow {
+  display: flex;
+  gap: var(--spacing-gutter);
+  overflow-x: auto;
+  padding-bottom: 24px;
+}

@@ -1,0 +1,38 @@
+.sidebar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-lg);
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    width: 256px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 96px;
+    height: fit-content;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-unit-sm);
+  border-bottom: 1px solid rgba(207, 196, 197, 0.3);
+}
+
+.title {
+  composes: text-title-lg from global;
+  color: var(--color-primary);
+}
+
+.clearButton {
+  composes: text-label-sm from global;
+  color: var(--color-secondary);
+}
+
+.clearButton:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,80 @@
+.section {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: 0 var(--spacing-margin-mobile) var(--spacing-unit-md);
+  margin-bottom: var(--spacing-unit-md);
+  border-bottom: 1px solid rgba(207, 196, 197, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 768px) {
+  .section {
+    flex-direction: row;
+    padding: 0 var(--spacing-margin-desktop) var(--spacing-unit-md);
+  }
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+}
+
+.selectAllLabel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  composes: text-label-md from global;
+  color: var(--color-on-surface-variant);
+  font-weight: 500;
+}
+
+.selectAllLabel:hover {
+  color: var(--color-primary);
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.divider {
+  color: var(--color-outline-variant);
+}
+
+.textButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  composes: text-label-md from global;
+  color: var(--color-on-surface-variant);
+  transition: color 0.2s ease;
+}
+
+.textButton:hover {
+  color: var(--color-primary);
+}
+
+.primaryButton {
+  composes: text-label-md from global;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: 12px 32px;
+  border-radius: var(--radius-xl);
+  font-weight: 700;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  transition: opacity 0.2s ease;
+}
+
+.primaryButton:hover {
+  opacity: 0.9;
+}

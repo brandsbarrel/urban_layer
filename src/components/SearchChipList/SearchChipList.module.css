@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-unit-sm);
+  margin-top: var(--spacing-unit-md);
+}
+
+.label {
+  composes: text-label-sm from global;
+  color: var(--color-outline);
+  padding: 4px var(--spacing-unit-md);
+}
+
+.chip {
+  composes: text-label-sm from global;
+  background-color: var(--color-surface-container-high);
+  border-radius: var(--radius-full);
+  padding: 4px 16px;
+  transition: all 0.3s ease;
+}
+
+.chip:hover {
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}

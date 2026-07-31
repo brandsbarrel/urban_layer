@@ -1,0 +1,28 @@
+.bar {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  overflow: hidden;
+  height: var(--announcement-bar-height);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(207, 196, 197, 0.1);
+}
+
+.track {
+  white-space: nowrap;
+  animation: slide 15s linear infinite;
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  width: 100%;
+  text-align: center;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

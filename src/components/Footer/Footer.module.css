@@ -1,0 +1,117 @@
+.footer {
+  background-color: var(--color-tertiary);
+  color: var(--color-surface);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  margin-top: var(--spacing-unit-xl);
+}
+
+.grid {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: var(--spacing-unit-xl) var(--spacing-margin-mobile);
+  display: grid;
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+    padding: var(--spacing-unit-xl) var(--spacing-margin-desktop);
+  }
+}
+
+.brandColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-lg);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-sm);
+}
+
+.logoImage {
+  height: 32px;
+  width: auto;
+}
+
+.brandName {
+  composes: text-headline-sm from global;
+  color: var(--color-secondary);
+}
+
+.tagline {
+  composes: text-body-md from global;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.socials {
+  display: flex;
+  gap: var(--spacing-unit-md);
+}
+
+.socialIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-surface);
+  transition: all 0.2s ease;
+}
+
+.socialIcon:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+}
+
+.linkColumn,
+.newsletterColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+.columnTitle {
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-surface);
+}
+
+.linkColumn ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footerLink {
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: var(--color-secondary);
+}
+
+.newsletterText {
+  composes: text-label-sm from global;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.bottomBar {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: var(--spacing-unit-lg) var(--spacing-margin-mobile);
+  text-align: center;
+}
+
+.copyright {
+  composes: text-label-sm from global;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}

@@ -1,0 +1,81 @@
+.wrapper {
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-unit-md);
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+@media (min-width: 768px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.heading {
+  composes: text-headline-sm from global;
+  color: var(--color-primary);
+}
+
+.resultsText {
+  composes: text-body-md from global;
+  color: var(--color-outline);
+}
+
+.sortWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+}
+
+.sortLabel {
+  composes: text-label-sm from global;
+  color: var(--color-outline);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.sortSelect {
+  background: transparent;
+  border: none;
+  composes: text-label-md from global;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.emptyState {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+  text-align: center;
+  padding: var(--spacing-unit-xl) 0;
+}

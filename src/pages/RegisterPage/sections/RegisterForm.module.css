@@ -1,0 +1,165 @@
+.card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-unit-lg);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: var(--spacing-unit-xl) 48px;
+  }
+}
+
+.header {
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.heading {
+  composes: text-headline-md from global;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.subheading {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+.mobileRow {
+  display: flex;
+  gap: var(--spacing-unit-md);
+}
+
+.mobileInput {
+  flex: 1;
+}
+
+.consentRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-unit-sm);
+  padding-top: 8px;
+}
+
+.consentCheckbox {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  border-radius: 2px;
+  border: 1px solid var(--color-outline-variant);
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.consentLabel {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+  line-height: 1.4;
+}
+
+.consentLabel a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.errorText {
+  composes: text-label-sm from global;
+  color: var(--color-error);
+}
+
+.submitButton {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: var(--spacing-unit-md);
+  border-radius: var(--radius-xl);
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-top: 8px;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #27272a;
+}
+
+.submitButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.submitLabel,
+.submitIcon {
+  color: var(--color-secondary);
+}
+
+.divider {
+  position: relative;
+  padding: var(--spacing-unit-md) 0;
+  text-align: center;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--color-outline-variant);
+}
+
+.dividerText {
+  composes: text-label-sm from global;
+  position: relative;
+  background-color: var(--color-surface-container-lowest);
+  padding: 0 16px;
+  color: var(--color-on-surface-variant);
+}
+
+.footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-outline-variant);
+  text-align: center;
+}
+
+.footerText {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}
+
+.footerLink {
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-left: 4px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: var(--color-secondary);
+}

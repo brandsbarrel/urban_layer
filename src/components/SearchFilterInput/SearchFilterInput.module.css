@@ -1,0 +1,23 @@
+.iconLeft {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-on-surface-variant);
+  pointer-events: none;
+}
+
+.inputWithLeftIcon {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding: var(--spacing-unit-sm) 0 var(--spacing-unit-sm) 28px;
+  composes: text-body-md from global;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.inputWithLeftIcon:focus {
+  border-bottom-color: var(--color-primary);
+}

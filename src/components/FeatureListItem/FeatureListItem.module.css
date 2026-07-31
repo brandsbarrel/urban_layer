@@ -1,0 +1,23 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+}
+
+.iconCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-secondary);
+  flex-shrink: 0;
+}
+
+.label {
+  composes: text-label-md from global;
+  font-weight: 500;
+  color: var(--color-on-background);
+}

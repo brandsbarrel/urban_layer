@@ -1,0 +1,46 @@
+.banner {
+  position: relative;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: var(--color-surface);
+  padding: 0 var(--spacing-margin-mobile);
+}
+
+.heading {
+  composes: text-headline-md from global;
+  font-style: italic;
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.link {
+  display: inline-block;
+  border-bottom: 2px solid var(--color-surface);
+  padding-bottom: 4px;
+  composes: text-label-md from global;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-surface);
+  transition: all 0.2s ease;
+}
+
+.link:hover {
+  color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}

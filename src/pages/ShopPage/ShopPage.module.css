@@ -1,0 +1,18 @@
+.page {
+  overflow-x: hidden;
+}
+
+.contentGrid {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: 0 var(--spacing-margin-mobile) var(--spacing-unit-xl);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+  .contentGrid {
+    padding: 0 var(--spacing-margin-desktop) var(--spacing-unit-xl);
+  }
+}

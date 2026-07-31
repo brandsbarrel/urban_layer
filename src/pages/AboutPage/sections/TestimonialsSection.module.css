@@ -1,0 +1,36 @@
+.section {
+  padding: var(--spacing-unit-xl) 0;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.heading {
+  composes: text-headline-md from global;
+  text-align: center;
+  max-width: var(--spacing-container-max);
+  margin: 0 auto var(--spacing-unit-lg);
+  padding: 0 var(--spacing-margin-mobile);
+}
+
+@media (min-width: 768px) {
+  .heading {
+    padding: 0 var(--spacing-margin-desktop);
+  }
+}
+
+.scrollRow {
+  display: flex;
+  overflow-x: auto;
+  gap: var(--spacing-gutter);
+  padding: 0 var(--spacing-margin-mobile) var(--spacing-unit-lg);
+  scroll-snap-type: x proximity;
+  cursor: grab;
+}
+
+.scrollRow.dragging {
+  cursor: grabbing;
+}
+
+.scrollRow::-webkit-scrollbar {
+  display: none;
+}

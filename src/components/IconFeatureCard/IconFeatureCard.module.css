@@ -1,0 +1,75 @@
+.cardDark {
+  padding: var(--spacing-unit-lg);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+
+.cardDark:hover {
+  border-color: rgba(115, 92, 0, 0.5);
+}
+
+.iconDark {
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.titleDark {
+  composes: text-headline-sm from global;
+  color: var(--color-surface);
+  margin-bottom: var(--spacing-unit-sm);
+}
+
+.descriptionDark {
+  composes: text-body-md from global;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cardPlain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.iconPlain {
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.titlePlain {
+  composes: text-headline-sm from global;
+  color: var(--color-on-background);
+  margin-bottom: var(--spacing-unit-sm);
+}
+
+.descriptionPlain {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+  padding: 0 var(--spacing-unit-lg);
+}
+
+.cardBento {
+  background-color: var(--color-surface);
+  padding: var(--spacing-unit-lg);
+  border-radius: 24px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+.iconBento {
+  color: var(--color-secondary);
+}
+
+.titleBento {
+  composes: text-title-lg from global;
+  color: var(--color-on-background);
+}
+
+.descriptionBento {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}

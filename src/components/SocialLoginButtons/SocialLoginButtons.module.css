@@ -1,0 +1,28 @@
+.grid {
+  display: flex;
+  gap: var(--spacing-gutter);
+}
+
+.button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-unit-sm);
+  padding: var(--spacing-unit-sm) 0;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-on-surface-variant);
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-container);
+  color: var(--color-primary);
+}
+
+.label {
+  composes: text-label-md from global;
+  color: inherit;
+}

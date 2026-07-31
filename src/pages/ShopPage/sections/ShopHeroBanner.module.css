@@ -1,0 +1,63 @@
+.section {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto var(--spacing-unit-xl);
+  padding: 0 var(--spacing-margin-mobile);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 0 var(--spacing-margin-desktop);
+  }
+}
+
+.banner {
+  position: relative;
+  height: 480px;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2), transparent);
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  padding: 0 var(--spacing-unit-xl);
+  max-width: 32rem;
+}
+
+.heading {
+  composes: text-display-lg from global;
+  color: var(--color-on-primary);
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.subtitle {
+  composes: text-body-lg from global;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.ctaButton {
+  composes: text-label-md from global;
+  background-color: #ffffff;
+  color: var(--color-primary);
+  padding: 16px var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: background-color 0.5s ease;
+}
+
+.ctaButton:hover {
+  background-color: var(--color-secondary-fixed);
+}

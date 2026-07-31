@@ -1,0 +1,13 @@
+.stars {
+  display: flex;
+  gap: var(--spacing-unit-xs);
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.filled {
+  color: var(--color-secondary);
+}
+
+.empty {
+  color: var(--color-outline-variant);
+}

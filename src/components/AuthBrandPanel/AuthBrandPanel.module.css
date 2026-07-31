@@ -1,0 +1,192 @@
+.panel {
+  display: none;
+  position: relative;
+  width: 50%;
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--spacing-margin-desktop);
+}
+
+@media (min-width: 768px) {
+  .panel {
+    display: flex;
+  }
+}
+
+.imageWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2) 60%, transparent);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease-out;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  color: var(--color-on-primary);
+  max-width: 32rem;
+}
+
+.heading {
+  composes: text-display-lg from global;
+  margin-bottom: var(--spacing-unit-lg);
+  line-height: 1;
+}
+
+.subtitle {
+  composes: text-body-lg from global;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+}
+
+.featureIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(115, 92, 0, 0.4);
+  background-color: rgba(115, 92, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.featureItem:hover .featureIcon {
+  background-color: var(--color-secondary);
+  color: #000000;
+}
+
+.featureLabel {
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.featureLabelTitle {
+  composes: text-title-lg from global;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.footerBranding {
+  position: absolute;
+  bottom: var(--spacing-unit-xl);
+  left: var(--spacing-margin-desktop);
+  z-index: 2;
+}
+
+.footerText {
+  composes: text-label-sm from global;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* Mobile-visible variant — Forgot Password panel mobile pe bhi dikhta hai */
+.panelVisible {
+  display: flex;
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--spacing-margin-mobile);
+}
+
+@media (min-width: 768px) {
+  .panelVisible {
+    width: 50%;
+    height: 100vh;
+    padding: var(--spacing-margin-desktop);
+  }
+}
+
+.gradientTopBottom {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 50%, rgba(0, 0, 0, 0.2));
+}
+
+.imageHoverScale {
+  transition: transform 1s ease;
+}
+
+.imageHoverScale:hover {
+  transform: scale(1.05);
+}
+
+.headingHeadline {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+@media (min-width: 768px) {
+  .headingHeadline {
+    font-size: 64px;
+    line-height: 72px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+}
+
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-unit-sm);
+  padding-top: var(--spacing-unit-md);
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.badgeIcon {
+  color: var(--color-secondary-fixed);
+}
+
+.badgeLabel {
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-surface);
+}

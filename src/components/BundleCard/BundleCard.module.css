@@ -1,0 +1,250 @@
+.cardDark,
+.cardLight {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+
+    .cardDark,
+    .cardLight {
+        flex-direction: row;
+    }
+}
+
+.cardDark {
+    background-color: var(--color-primary-container);
+}
+
+.cardLight {
+    background-color: #ffffff;
+    border: 1px solid rgba(207, 196, 197, 0.2);
+}
+
+.imageWrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .imageWrapper {
+        width: 50%;
+        aspect-ratio: auto;
+    }
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+}
+
+.cardDark:hover .image,
+.cardLight:hover .image {
+    transform: scale(1.05);
+}
+
+.content {
+    width: 100%;
+    padding: var(--spacing-unit-lg) 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .content {
+        width: 50%;
+    }
+}
+
+.badgeDark {
+    composes: text-label-sm from global;
+    color: var(--color-secondary-fixed);
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+}
+
+.badgeLight {
+    composes: text-label-sm from global;
+    color: var(--color-secondary);
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+}
+
+.title {
+    composes: text-headline-sm from global;
+    color: var(--color-on-background);
+    margin-bottom: var(--spacing-unit-md);
+}
+
+.descriptionDark {
+    composes: text-body-md from global;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: var(--spacing-unit-lg);
+}
+
+.description {
+    composes: text-body-md from global;
+    color: var(--color-on-surface-variant);
+    margin-bottom: var(--spacing-unit-lg);
+}
+
+.footer {
+    margin-top: auto;
+}
+
+.priceRow {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: var(--spacing-unit-lg);
+}
+
+.priceDark {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.originalPriceDark {
+    composes: text-label-md from global;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: line-through;
+}
+
+.originalPrice {
+    composes: text-label-md from global;
+    color: var(--color-on-surface-variant);
+    text-decoration: line-through;
+}
+
+.ctaDark,
+.ctaLight {
+    display: block;
+    width: 100%;
+    text-align: center;
+    composes: text-label-md from global;
+    padding: var(--spacing-unit-md) 0;
+    border-radius: var(--radius-xl);
+    transition: all 0.2s ease;
+}
+
+.ctaDark {
+    background-color: var(--color-secondary-fixed);
+    color: var(--color-on-secondary-fixed);
+}
+
+.ctaDark:hover {
+    filter: brightness(1.1);
+}
+
+.ctaLight {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+
+.ctaLight:hover {
+    background-color: var(--color-secondary);
+}
+
+.cardCompact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-lg);
+  background-color: var(--color-surface-container-lowest);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-unit-lg);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(207, 196, 197, 0.1);
+}
+
+@media (min-width: 640px) {
+  .cardCompact {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.imageWrapperCompact {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .imageWrapperCompact {
+    width: 33%;
+  }
+}
+
+.contentCompact {
+  flex: 1;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .contentCompact {
+    text-align: left;
+  }
+}
+
+.titleCompact {
+  composes: text-title-lg from global;
+  color: var(--color-primary);
+  margin-top: 4px;
+}
+
+.footerCompact {
+  margin-top: var(--spacing-unit-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 640px) {
+  .footerCompact {
+    flex-direction: row;
+  }
+}
+
+.priceRowCompact {
+  composes: text-headline-sm from global;
+  color: var(--color-primary);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ctaCompact {
+  composes: text-label-md from global;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: 12px var(--spacing-unit-lg);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  transition: opacity 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .ctaCompact {
+    width: auto;
+  }
+}
+
+.ctaCompact:hover {
+  opacity: 0.9;
+}

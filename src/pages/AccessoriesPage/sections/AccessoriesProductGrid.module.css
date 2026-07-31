@@ -1,0 +1,66 @@
+.wrapper {
+  flex-grow: 1;
+  scroll-margin-top: 96px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.resultsText {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}
+
+.sortSelect {
+  background: transparent;
+  border: none;
+  composes: text-label-md from global;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.emptyState {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+  text-align: center;
+  padding: var(--spacing-unit-xl) 0;
+}
+
+.loadMoreWrapper {
+  margin-top: 48px;
+  text-align: center;
+}
+
+.loadMoreButton {
+  composes: text-label-md from global;
+  border: 2px solid var(--color-primary);
+  padding: var(--spacing-unit-md) 48px;
+  border-radius: var(--radius-xl);
+  transition: all 0.3s ease;
+}
+
+.loadMoreButton:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}

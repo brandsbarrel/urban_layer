@@ -1,0 +1,192 @@
+.navbar {
+  position: fixed;
+  top: var(--announcement-bar-height);
+  width: 100%;
+  z-index: 50;
+  background-color: rgba(251, 249, 249, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(207, 196, 197, 0.3);
+  transition: top 0.4s ease, box-shadow 0.4s ease;
+}
+
+.navbarScrolled {
+  top: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.inner {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: var(--spacing-unit-md) var(--spacing-margin-mobile);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    padding: var(--spacing-unit-md) var(--spacing-margin-desktop);
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+}
+
+.logoImage {
+  height: 40px;
+  width: auto;
+}
+
+.brandName {
+  display: none;
+  composes: text-headline-sm from global;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-tertiary);
+}
+
+@media (min-width: 768px) {
+  .brandName {
+    display: block;
+  }
+}
+
+.links {
+  display: none;
+  align-items: center;
+  gap: var(--spacing-unit-lg);
+}
+
+@media (min-width: 1024px) {
+  .links {
+    display: flex;
+  }
+}
+
+.link {
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-on-surface);
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--color-secondary);
+}
+
+.linkActive {
+  color: var(--color-secondary);
+  border-bottom: 2px solid var(--color-secondary);
+  padding-bottom: 4px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+  color: var(--color-primary);
+}
+
+.iconButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.iconButton:hover {
+  color: var(--color-secondary);
+}
+
+.countBadge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburgerButton {
+  display: flex;
+  align-items: center;
+  color: var(--color-primary);
+}
+
+@media (min-width: 1024px) {
+  .hamburgerButton {
+    display: none;
+  }
+}
+
+.mobileMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface-container-lowest);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+}
+
+.mobileMenuOpen {
+  max-height: 400px;
+  opacity: 1;
+}
+
+@media (min-width: 1024px) {
+  .mobileMenu {
+    display: none;
+  }
+}
+
+.mobileLink {
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-on-surface);
+  padding: var(--spacing-unit-md) var(--spacing-margin-mobile);
+  border-bottom: 1px solid var(--color-outline-variant);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.mobileLink:hover {
+  color: var(--color-secondary);
+  background-color: var(--color-surface-container-low);
+}
+
+.mobileLinkActive {
+  color: var(--color-secondary);
+  background-color: var(--color-surface-container-low);
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 1024px) {
+  .backdrop {
+    display: none;
+  }
+}

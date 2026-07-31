@@ -1,0 +1,40 @@
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+.title {
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-sm);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  composes: text-body-md from global;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.option:hover {
+  color: var(--color-secondary);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid var(--color-outline);
+  accent-color: var(--color-secondary);
+  cursor: pointer;
+}

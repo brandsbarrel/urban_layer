@@ -1,0 +1,32 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .page {
+    flex-direction: row;
+  }
+}
+
+.formSection {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-margin-mobile);
+  background-color: var(--color-surface-container-low);
+}
+
+@media (min-width: 768px) {
+  .formSection {
+    width: 50%;
+    padding: var(--spacing-margin-desktop);
+  }
+}
+
+.accent {
+  color: var(--color-secondary-fixed);
+}

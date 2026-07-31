@@ -1,0 +1,35 @@
+.group {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding: var(--spacing-unit-sm) 0;
+  composes: text-body-md from global;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-bottom-color: var(--color-primary);
+}
+
+.label {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  color: var(--color-outline);
+  composes: text-label-md from global;
+}
+
+.input:focus ~ .label,
+.input:not(:placeholder-shown) ~ .label {
+  top: -10px;
+  font-size: 11px;
+  color: var(--color-primary);
+}

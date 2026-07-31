@@ -1,0 +1,191 @@
+.cardReveal {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.3s ease;
+}
+
+.cardReveal:hover {
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.imageWrapperReveal {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background-color: var(--color-surface-container-low);
+  overflow: hidden;
+}
+
+.cardReveal:hover .image {
+  transform: scale(1.05);
+}
+
+.revealAddButton {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: var(--spacing-unit-md) 0;
+  composes: text-label-md from global;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.3s ease-out;
+}
+
+.cardReveal:hover .revealAddButton {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.revealAddButton:hover {
+  background-color: var(--color-secondary);
+}
+
+.nameReveal {
+  composes: text-title-lg from global;
+  color: var(--color-on-background);
+  transition: color 0.2s ease;
+}
+
+.cardReveal:hover .nameReveal {
+  color: var(--color-secondary);
+}
+
+.name,
+.nameReveal {
+  color: inherit;
+}
+
+.cardIconOverlay {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface-container-lowest);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-unit-sm);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.4s ease;
+}
+
+.cardIconOverlay:hover {
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.imageWrapperIconOverlay {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--color-surface-container-low);
+}
+
+.cardIconOverlay:hover .image {
+  transform: scale(1.05);
+}
+
+.badgeLeftPosition {
+  position: absolute;
+  top: var(--spacing-unit-sm);
+  left: var(--spacing-unit-sm);
+  z-index: 10;
+  composes: text-label-sm from global;
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.badgeRightPosition {
+  position: absolute;
+  top: var(--spacing-unit-sm);
+  right: var(--spacing-unit-sm);
+  z-index: 10;
+  composes: text-label-sm from global;
+  background-color: var(--color-secondary-fixed);
+  color: var(--color-on-secondary-fixed);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.iconOverlayActions {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--spacing-unit-sm);
+  padding: var(--spacing-unit-md);
+  transition: opacity 0.4s ease;
+}
+
+.cardIconOverlay:hover .iconOverlayActions {
+  opacity: 1;
+}
+
+.iconActionButton {
+  background-color: var(--color-surface-container-lowest);
+  color: var(--color-primary);
+  padding: 12px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.iconActionButton:hover {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.infoIconOverlay {
+  margin-top: var(--spacing-unit-md);
+  padding: 0 var(--spacing-unit-xs);
+}
+
+.titleRowIconOverlay {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.nameIconOverlay {
+  composes: text-title-lg from global;
+  color: var(--color-on-background);
+}
+
+.priceIconOverlay {
+  composes: text-title-lg from global;
+  color: var(--color-secondary);
+}
+
+.ratingRowIconOverlay {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.starFilled {
+  color: var(--color-secondary);
+}
+
+.starEmpty {
+  color: var(--color-outline-variant);
+}
+
+.reviewCount {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+  margin-left: 4px;
+}

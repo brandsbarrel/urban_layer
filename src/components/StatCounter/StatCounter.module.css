@@ -1,0 +1,16 @@
+.stat {
+  padding: var(--spacing-unit-md);
+  text-align: center;
+}
+
+.value {
+  composes: text-display-lg from global;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.label {
+  composes: text-label-md from global;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+}

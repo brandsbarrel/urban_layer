@@ -1,0 +1,37 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-sm);
+}
+
+.label {
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-on-surface-variant);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-unit-sm);
+}
+
+.option {
+  composes: text-label-md from global;
+  border: 2px solid var(--color-outline-variant);
+  padding: 12px 0;
+  border-radius: var(--radius-xl);
+  color: var(--color-on-surface-variant);
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+
+.option:hover {
+  border-color: var(--color-outline);
+}
+
+.optionActive {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}

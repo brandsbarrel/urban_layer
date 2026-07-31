@@ -1,0 +1,99 @@
+.card {
+  background-color: var(--color-surface-container-high);
+  padding: var(--spacing-unit-xl);
+  border-radius: 32px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-gutter);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .card {
+    grid-template-columns: 4fr 8fr;
+  }
+}
+
+.imageWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.image {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+.eyebrow {
+  composes: text-label-sm from global;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+.title {
+  composes: text-headline-md from global;
+}
+
+.description {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-lg);
+  padding: 8px 0;
+}
+
+.priceBlock {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.price {
+  composes: text-headline-sm from global;
+  color: var(--color-primary);
+}
+
+.originalPrice {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+  text-decoration: line-through;
+}
+
+.discountBadge {
+  composes: text-label-sm from global;
+  background-color: rgba(115, 92, 0, 0.1);
+  color: var(--color-secondary);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+}
+
+.ctaButton {
+  composes: text-label-md from global;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: 16px 40px;
+  border-radius: var(--radius-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  width: fit-content;
+  transition: opacity 0.2s ease;
+}
+
+.ctaButton:hover {
+  opacity: 0.9;
+}

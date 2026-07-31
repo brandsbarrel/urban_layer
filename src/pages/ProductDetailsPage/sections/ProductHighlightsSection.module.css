@@ -1,0 +1,16 @@
+.section {
+  margin-top: var(--spacing-unit-xl);
+  max-width: var(--spacing-container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--spacing-margin-mobile);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-xl);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 0 var(--spacing-margin-desktop);
+  }
+}

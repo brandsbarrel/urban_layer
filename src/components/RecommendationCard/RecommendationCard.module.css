@@ -1,0 +1,43 @@
+.card {
+  min-width: 280px;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-unit-md);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--color-surface-container);
+  text-align: left;
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0px 20px 40px rgba(115, 92, 0, 0.08);
+}
+
+.imageWrapper {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface-container-low);
+  overflow: hidden;
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.name {
+  composes: text-body-md from global;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--color-on-background);
+}
+
+.price {
+  composes: text-body-md from global;
+  color: var(--color-primary);
+  font-weight: 600;
+}

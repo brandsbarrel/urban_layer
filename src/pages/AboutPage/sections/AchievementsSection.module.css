@@ -1,0 +1,25 @@
+.section {
+  padding: var(--spacing-unit-lg) var(--spacing-margin-mobile);
+  background-color: var(--color-surface-container-highest);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--spacing-unit-lg) var(--spacing-margin-desktop);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-unit-lg);
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

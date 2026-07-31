@@ -1,0 +1,31 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-unit-md);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.iconCircle {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background-color: rgba(115, 92, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-unit-md);
+  color: var(--color-secondary);
+}
+
+.label {
+  composes: text-title-lg from global;
+  color: var(--color-on-background);
+}

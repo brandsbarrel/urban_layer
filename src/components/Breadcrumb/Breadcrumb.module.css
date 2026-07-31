@@ -1,0 +1,39 @@
+.breadcrumb {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: var(--spacing-unit-md) var(--spacing-margin-mobile);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  composes: text-label-sm from global;
+  color: rgba(76, 69, 70, 0.6);
+}
+
+@media (min-width: 768px) {
+  .breadcrumb {
+    padding: var(--spacing-unit-md) var(--spacing-margin-desktop);
+  }
+}
+
+.itemWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.link {
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--color-primary);
+}
+
+.current {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.separator {
+  color: rgba(76, 69, 70, 0.4);
+}

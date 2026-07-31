@@ -1,0 +1,14 @@
+.page {
+  overflow-x: hidden;
+}
+
+.gallerySection {
+  background-color: #ffffff;
+  padding-bottom: var(--spacing-unit-xl);
+}
+
+.newsletterSection {
+  padding: var(--spacing-unit-xl) 0;
+  background-color: var(--color-surface-container-low);
+  border-top: 1px solid rgba(207, 196, 197, 0.1);
+}

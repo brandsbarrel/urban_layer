@@ -1,0 +1,109 @@
+.hero {
+  position: relative;
+  height: 90vh;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-tertiary);
+  margin-top: calc(var(--announcement-bar-height) + 88px);
+}
+
+.bgLayer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.8;
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4) 50%, transparent);
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: 0 var(--spacing-margin-mobile);
+  width: 100%;
+  color: var(--color-surface);
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding: 0 var(--spacing-margin-desktop);
+  }
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.heading {
+  composes: text-display-lg from global;
+  line-height: 1.1;
+  margin-bottom: var(--spacing-unit-lg);
+  max-width: 640px;
+}
+
+.subtitle {
+  composes: text-body-lg from global;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 32rem;
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 640px) {
+  .actions {
+    flex-direction: row;
+  }
+}
+
+.primaryButton {
+  background-color: var(--color-surface);
+  color: var(--color-tertiary);
+  padding: var(--spacing-unit-md) var(--spacing-unit-xl);
+  border-radius: var(--radius-xl);
+  composes: text-title-lg from global;
+  text-align: center;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.primaryButton:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+}
+
+.secondaryButton {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  color: var(--color-surface);
+  padding: var(--spacing-unit-md) var(--spacing-unit-xl);
+  border-radius: var(--radius-xl);
+  composes: text-title-lg from global;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.secondaryButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

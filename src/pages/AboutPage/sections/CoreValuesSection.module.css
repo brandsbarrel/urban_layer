@@ -1,0 +1,23 @@
+.section {
+  padding: var(--spacing-unit-xl) var(--spacing-margin-mobile);
+  background-color: var(--color-surface-container-low);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--spacing-unit-xl) var(--spacing-margin-desktop);
+  }
+}
+
+.grid {
+  display: grid;
+  gap: var(--spacing-gutter);
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -1,0 +1,120 @@
+.card {
+  position: relative;
+  height: 400px;
+  border-radius: 2rem;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+@media (min-width: 768px) {
+  .card {
+    height: 600px;
+  }
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 60%);
+}
+
+.content {
+  position: absolute;
+  bottom: var(--spacing-unit-lg);
+  left: var(--spacing-unit-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+  color: var(--color-surface);
+  max-width: 320px;
+}
+
+.title {
+  composes: text-headline-md from global;
+}
+
+.description {
+  composes: text-body-md from global;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ctaGold,
+.ctaLight {
+  display: inline-block;
+  padding: var(--spacing-unit-sm) var(--spacing-unit-lg);
+  border-radius: var(--radius-lg);
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  width: fit-content;
+  transition: all 0.2s ease;
+}
+
+.ctaGold {
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+}
+
+.ctaGold:hover {
+  background-color: var(--color-on-secondary-container);
+}
+
+.ctaLight {
+  background-color: var(--color-surface);
+  color: var(--color-tertiary);
+}
+
+.ctaLight:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+}
+
+.cardCompact {
+  position: relative;
+  height: 384px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.overlayFlat {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s ease;
+}
+
+.cardCompact:hover .overlayFlat {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.eyebrow {
+  composes: text-label-sm from global;
+  color: var(--color-secondary-fixed-dim);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.ctaArrow {
+  composes: text-label-md from global;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  margin-top: var(--spacing-unit-sm);
+  width: fit-content;
+}
+
+.ctaArrowIcon {
+  transition: transform 0.2s ease;
+}
+
+.ctaArrow:hover .ctaArrowIcon {
+  transform: translateX(8px);
+}

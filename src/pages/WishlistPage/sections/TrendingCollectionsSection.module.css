@@ -1,0 +1,30 @@
+.section {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: 0 var(--spacing-margin-mobile) var(--spacing-unit-xl);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 0 var(--spacing-margin-desktop) var(--spacing-unit-xl);
+  }
+}
+
+.heading {
+  composes: text-headline-sm from global;
+  color: var(--color-primary);
+  text-align: center;
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
