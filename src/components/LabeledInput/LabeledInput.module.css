@@ -1,0 +1,27 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-outline);
+}
+
+.input {
+  background-color: var(--color-surface-container-low);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-unit-md);
+  composes: text-body-md from global;
+  color: var(--color-on-surface);
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.input:focus {
+  box-shadow: 0 0 0 2px var(--color-primary);
+}

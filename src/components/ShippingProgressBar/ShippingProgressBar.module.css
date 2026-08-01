@@ -1,0 +1,37 @@
+.wrapper {
+  background-color: var(--color-surface-container-low);
+  padding: var(--spacing-unit-md);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-sm);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  composes: text-label-md from global;
+}
+
+.percentage {
+  composes: text-label-sm from global;
+}
+
+.track {
+  width: 100%;
+  height: 6px;
+  background-color: rgba(207, 196, 197, 0.3);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}

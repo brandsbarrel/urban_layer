@@ -1,0 +1,32 @@
+.page {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  padding: var(--spacing-unit-xl) var(--spacing-margin-mobile);
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding: var(--spacing-unit-xl) var(--spacing-margin-desktop);
+  }
+}
+
+.header {
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.heading {
+  composes: text-headline-md from global;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--spacing-unit-xl);
+  align-items: start;
+}

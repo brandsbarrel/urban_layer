@@ -1,0 +1,29 @@
+.stepper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.button {
+    padding: 8px 12px;
+    color: var(--color-on-background);
+    transition: background-color 0.2s ease;
+}
+
+.button:hover:not(:disabled) {
+    background-color: var(--color-surface-container);
+}
+
+.button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.value {
+    composes: text-label-md from global;
+    padding: 0 var(--spacing-unit-md);
+    min-width: 32px;
+    text-align: center;
+}

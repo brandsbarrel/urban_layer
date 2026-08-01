@@ -1,0 +1,122 @@
+.sidebar {
+  grid-column: span 12 / span 12;
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    grid-column: span 4 / span 4;
+    position: sticky;
+    top: 112px;
+  }
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-unit-lg);
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(207, 196, 197, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-lg);
+}
+
+.heading {
+  composes: text-headline-sm from global;
+  color: var(--color-primary);
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+.divider {
+  height: 1px;
+  background-color: rgba(207, 196, 197, 0.2);
+}
+
+.breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-sm);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  composes: text-body-md from global;
+  color: var(--color-outline);
+}
+
+.freeLabel {
+  color: var(--color-secondary);
+  font-weight: 700;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  composes: text-title-lg from global;
+  color: var(--color-primary);
+  padding-top: 8px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(207, 196, 197, 0.1);
+}
+
+.placeOrderButton {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: var(--spacing-unit-md) 0;
+  border-radius: var(--radius-xl);
+  composes: text-label-md from global;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.placeOrderButton:hover {
+  box-shadow: 0 0 20px rgba(115, 92, 0, 0.4);
+}
+
+.placeOrderButton:active {
+  transform: scale(0.98);
+}
+
+.placeOrderIcon {
+  transition: transform 0.2s ease;
+}
+
+.placeOrderButton:hover .placeOrderIcon {
+  transform: translateX(4px);
+}
+
+.trustRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding-top: var(--spacing-unit-sm);
+}
+
+.trustItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  color: var(--color-outline);
+}
+
+.trustItem:not(:last-child) {
+  border-right: 1px solid rgba(207, 196, 197, 0.2);
+}
+
+.trustItem span {
+  font-size: 10px;
+  text-transform: uppercase;
+}

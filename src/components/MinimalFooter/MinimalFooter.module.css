@@ -49,3 +49,34 @@
   composes: text-label-sm from global;
   color: var(--color-on-surface-variant);
 }
+
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .brandBlock {
+    align-items: flex-start;
+  }
+}
+
+.copyrightInline {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+}
+
+.paymentIcons {
+  display: flex;
+  gap: var(--spacing-unit-md);
+  opacity: 0.4;
+  filter: grayscale(1);
+  transition: all 0.5s ease;
+}
+
+.paymentIcons:hover {
+  opacity: 1;
+  filter: grayscale(0);
+}

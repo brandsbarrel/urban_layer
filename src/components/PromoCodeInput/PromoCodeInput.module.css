@@ -1,0 +1,72 @@
+.wrapper {
+  background-color: var(--color-surface-container-low);
+  padding: var(--spacing-gutter);
+  border-radius: var(--radius-2xl);
+}
+
+.label {
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.inputRow {
+  display: flex;
+  gap: 8px;
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding: 0 0 4px;
+  composes: text-body-md from global;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-bottom-color: var(--color-primary);
+}
+
+.applyButton {
+  composes: text-label-md from global;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color 0.2s ease;
+}
+
+.applyButton:hover {
+  color: var(--color-secondary);
+}
+
+.error {
+  composes: text-label-sm from global;
+  color: var(--color-error);
+  margin-top: 8px;
+}
+
+.appliedRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.appliedCode {
+  composes: text-label-md from global;
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.clearButton {
+  composes: text-label-sm from global;
+  color: var(--color-error);
+}
+
+.clearButton:hover {
+  opacity: 0.8;
+}
