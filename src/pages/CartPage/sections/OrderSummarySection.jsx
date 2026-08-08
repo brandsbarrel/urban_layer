@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdVerifiedUser, MdLock, MdLocalShipping } from 'react-icons/md';
 import PromoCodeInput from '../../../components/PromoCodeInput/PromoCodeInput';
+import PriceBreakdownList from '../../../components/PriceBreakdownList/PriceBreakdownList';
 import {
     selectCartItems,
     selectPromoCode,
@@ -23,38 +24,31 @@ function OrderSummarySection() {
         promoCode
     );
 
+    const lines = [
+        { label: 'Subtotal', value: `₹${subtotal.toLocaleString('en-IN')}` },
+        ...(discount > 0
+            ? [
+                {
+                    label: `Discount (${promoCode})`,
+                    value: `-₹${discount.toLocaleString('en-IN')}`,
+                    highlight: true,
+                },
+            ]
+            : []),
+        {
+            label: 'Shipping',
+            value: isFreeShipping ? 'FREE' : `₹${shipping.toLocaleString('en-IN')}`,
+            highlight: isFreeShipping,
+        },
+        { label: 'Taxes', value: `₹${tax.toLocaleString('en-IN')}` },
+    ];
+
     return (
         <div className={styles.sidebar}>
             <div className={styles.summaryCard}>
                 <h2 className={styles.heading}>Order Summary</h2>
 
-                <div className={styles.lineItems}>
-                    <div className={styles.lineItem}>
-                        <span>Subtotal</span>
-                        <span>₹{subtotal.toLocaleString('en-IN')}</span>
-                    </div>
-                    {discount > 0 && (
-                        <div className={styles.lineItem}>
-                            <span>Discount ({promoCode})</span>
-                            <span className={styles.discountValue}>-₹{discount.toLocaleString('en-IN')}</span>
-                        </div>
-                    )}
-                    <div className={styles.lineItem}>
-                        <span>Shipping</span>
-                        <span className={isFreeShipping ? styles.freeValue : undefined}>
-                            {isFreeShipping ? 'FREE' : `₹${shipping.toLocaleString('en-IN')}`}
-                        </span>
-                    </div>
-                    <div className={styles.lineItem}>
-                        <span>Taxes</span>
-                        <span>₹{tax.toLocaleString('en-IN')}</span>
-                    </div>
-                </div>
-
-                <div className={styles.totalRow}>
-                    <span>Total</span>
-                    <span>₹{total.toLocaleString('en-IN')}</span>
-                </div>
+                <PriceBreakdownList lines={lines} total={`₹${total.toLocaleString('en-IN')}`} />
 
                 <div className={styles.actions}>
                     <Link to="/checkout" className={styles.checkoutButton}>

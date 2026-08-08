@@ -1,13 +1,17 @@
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MdLock, MdVerified, MdSupportAgent, MdArrowForward } from 'react-icons/md';
 import OrderSummaryLineItem from '../../../components/OrderSummaryLineItem/OrderSummaryLineItem';
-import { selectCartItems } from '../../../redux/slices/cartSlice';
+import PriceBreakdownList from '../../../components/PriceBreakdownList/PriceBreakdownList';
+import { selectCartItems, clearCart } from '../../../redux/slices/cartSlice';
+import { placeOrder } from '../../../redux/slices/ordersSlice';
 import { calculateCartTotals, EXPRESS_SHIPPING_FEE } from '../../../utils/pricing';
+import { generateOrderId, calculateEstimatedDelivery } from '../../../utils/orderHelpers';
 import styles from './CheckoutOrderSummary.module.css';
 
-function CheckoutOrderSummary({ selectedMethod }) {
+function CheckoutOrderSummary({ selectedMethod, contactInfo, address }) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const items = useSelector(selectCartItems);
 
     const shippingOverride = selectedMethod === 'express' ? EXPRESS_SHIPPING_FEE : 0;
@@ -18,8 +22,33 @@ function CheckoutOrderSummary({ selectedMethod }) {
     );
 
     const handlePlaceOrder = () => {
+        if (items.length === 0) return;
+        const placedAt = new Date().toISOString();
+        const order = {
+            id: generateOrderId(),
+            placedAt,
+            status: 'processing', // Confirmed step complete, Processing is now active
+            items,
+            contactInfo,
+            shippingAddress: address,
+            deliveryMethod: selectedMethod,
+            estimatedDelivery: calculateEstimatedDelivery(selectedMethod, new Date(placedAt)),
+            totals: { subtotal, shipping, tax, total },
+        };
+        dispatch(placeOrder(order));
+        dispatch(clearCart());
         navigate('/order-success');
     };
+
+    const lines = [
+        { label: 'Subtotal', value: `₹${subtotal.toLocaleString('en-IN')}` },
+        {
+            label: 'Shipping',
+            value: isFreeShipping ? 'Free' : `₹${shipping.toLocaleString('en-IN')}`,
+            highlight: isFreeShipping,
+        },
+        { label: 'Estimated Tax', value: `₹${tax.toLocaleString('en-IN')}` },
+    ];
 
     return (
         <aside className={styles.sidebar}>
@@ -40,28 +69,14 @@ function CheckoutOrderSummary({ selectedMethod }) {
 
                 <div className={styles.divider} />
 
-                <div className={styles.breakdown}>
-                    <div className={styles.row}>
-                        <span>Subtotal</span>
-                        <span>₹{subtotal.toLocaleString('en-IN')}</span>
-                    </div>
-                    <div className={styles.row}>
-                        <span>Shipping</span>
-                        <span className={isFreeShipping ? styles.freeLabel : undefined}>
-                            {isFreeShipping ? 'Free' : `₹${shipping.toLocaleString('en-IN')}`}
-                        </span>
-                    </div>
-                    <div className={styles.row}>
-                        <span>Estimated Tax</span>
-                        <span>₹{tax.toLocaleString('en-IN')}</span>
-                    </div>
-                    <div className={styles.totalRow}>
-                        <span>Total</span>
-                        <span>₹{total.toLocaleString('en-IN')}</span>
-                    </div>
-                </div>
+                <PriceBreakdownList lines={lines} total={`₹${total.toLocaleString('en-IN')}`} />
 
-                <button type="button" onClick={handlePlaceOrder} className={styles.placeOrderButton}>
+                <button
+                    type="button"
+                    onClick={handlePlaceOrder}
+                    className={styles.placeOrderButton}
+                    disabled={items.length === 0}
+                >
                     Place Order
                     <MdArrowForward size={18} className={styles.placeOrderIcon} />
                 </button>

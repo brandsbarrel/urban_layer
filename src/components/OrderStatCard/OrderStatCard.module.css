@@ -1,0 +1,50 @@
+.card {
+  background-color: var(--color-surface-container-lowest);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(207, 196, 197, 0.3);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-unit-sm);
+  flex: 1 1 90px;
+  min-width: 0; /* pehle 140px fixed tha — isi se page overflow ho raha tha mobile pe */
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .card {
+    flex: 1 1 140px;
+    padding: var(--spacing-unit-md);
+  }
+}
+
+.label {
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 4px;
+  font-size: 10px;
+}
+
+@media (min-width: 640px) {
+  .label {
+    font-size: 12px;
+  }
+}
+
+.value {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--color-on-background);
+}
+
+@media (min-width: 640px) {
+  .value {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}
+
+.valueSecondary {
+  color: var(--color-secondary);
+}

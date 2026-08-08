@@ -1,9 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// Demo user pre-populated (jaise cart/wishlist mein bhi demo data hai) —
+// taaki Account Dashboard bina real login ke bhi turant dekha ja sake.
 const initialState = {
-  user: null,
-  isAuthenticated: false,
-  status: 'idle', // idle | loading | succeeded | failed
+  user: {
+    id: 'usr_demo',
+    name: 'Aniket',
+    email: 'aniket@example.com',
+    tier: 'Gold',
+    nextTier: 'Platinum',
+    tierProgress: 75,
+    pointsToNextTier: 550,
+    rewardPoints: 2450,
+    activeCoupons: 3,
+    avatarInitial: 'A',
+  },
+  isAuthenticated: true,
+  status: 'idle',
   error: null,
 };
 
@@ -18,7 +31,7 @@ const authSlice = createSlice({
     loginSuccess(state, action) {
       state.status = 'succeeded';
       state.isAuthenticated = true;
-      state.user = action.payload;
+      state.user = { ...state.user, ...action.payload, isGuest: false };
     },
     loginFailure(state, action) {
       state.status = 'failed';
@@ -31,7 +44,7 @@ const authSlice = createSlice({
     registerSuccess(state, action) {
       state.status = 'succeeded';
       state.isAuthenticated = true;
-      state.user = action.payload;
+      state.user = { ...state.user, ...action.payload, isGuest: false };
     },
     registerFailure(state, action) {
       state.status = 'failed';

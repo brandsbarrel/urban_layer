@@ -1,0 +1,42 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+.arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.arrowButton {
+  padding: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-container-high);
+  color: var(--color-on-background);
+  transition: all 0.2s ease;
+}
+
+.arrowButton:hover {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.scrollRow {
+  display: flex;
+  gap: var(--spacing-gutter);
+  overflow-x: auto;
+  padding-bottom: 24px;
+}
+
+.scrollRow::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,315 @@
+.card {
+    background-color: #ffffff;
+    border-radius: var(--radius-2xl);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(207, 196, 197, 0.15);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.header {
+    padding: var(--spacing-unit-lg);
+    border-bottom: 1px solid rgba(207, 196, 197, 0.2);
+    background-color: rgba(245, 243, 243, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerGroup {
+    display: flex;
+    gap: var(--spacing-gutter);
+}
+
+.metaLabel {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--color-on-surface-variant);
+    letter-spacing: -0.02em;
+}
+
+.orderId {
+    composes: text-title-lg from global;
+}
+
+.metaValue {
+    composes: text-body-md from global;
+}
+
+.transitBadge {
+    background-color: var(--color-secondary-fixed);
+    color: var(--color-on-secondary-fixed-variant);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    composes: text-label-md from global;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pulseDot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-secondary);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+.deliveredBadge {
+    background-color: var(--color-surface-container-highest);
+    color: var(--color-on-background);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    composes: text-label-md from global;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.body {
+    padding: var(--spacing-unit-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+    .body {
+        flex-direction: row;
+    }
+}
+
+.imageWrapper {
+    width: 96px;
+    height: 96px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid rgba(207, 196, 197, 0.2);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.activeInfo,
+.infoRow {
+    flex: 1;
+}
+
+.infoRow {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 768px) {
+    .infoRow {
+        flex-direction: row;
+    }
+}
+
+.itemTitle {
+    composes: text-headline-sm from global;
+    margin-bottom: 4px;
+}
+
+.itemMeta {
+    composes: text-body-md from global;
+    color: var(--color-on-surface-variant);
+    margin-bottom: var(--spacing-unit-md);
+}
+
+.actionLinks {
+    display: flex;
+    gap: var(--spacing-unit-md);
+}
+
+.buyAgainLink {
+    composes: text-label-md from global;
+    color: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.buyAgainLink:hover {
+    text-decoration: underline;
+}
+
+.invoiceLink {
+    composes: text-label-md from global;
+    color: var(--color-on-surface-variant);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.invoiceLink:hover {
+    text-decoration: underline;
+}
+
+.stackedThumbs {
+    display: flex;
+    align-items: center;
+}
+
+.thumbAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    border: 2px solid #ffffff;
+    background-color: var(--color-surface);
+    overflow: hidden;
+}
+
+.thumbAvatar:not(:first-child) {
+    margin-left: -12px;
+}
+
+.thumbAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbAvatarMore {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    border: 2px solid #ffffff;
+    background-color: var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    margin-left: -12px;
+}
+
+.footer {
+    padding: var(--spacing-unit-md) var(--spacing-unit-lg) var(--spacing-unit-lg);
+    border-top: 1px solid rgba(207, 196, 197, 0.2);
+    display: flex;
+    gap: var(--spacing-unit-md);
+}
+
+.trackButton {
+    composes: text-label-md from global;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    padding: 12px var(--spacing-unit-lg);
+    border-radius: var(--radius-xl);
+    transition: background-color 0.2s ease;
+}
+
+.trackButton:hover {
+    background-color: var(--color-secondary);
+}
+
+.detailsButton {
+    composes: text-label-md from global;
+    background-color: #ffffff;
+    color: var(--color-on-background);
+    border: 1px solid var(--color-outline-variant);
+    padding: 12px var(--spacing-unit-lg);
+    border-radius: var(--radius-xl);
+    transition: border-color 0.2s ease;
+}
+
+.detailsButton:hover {
+    border-color: var(--color-primary);
+}
+
+/* Compact variant */
+.compactCard {
+    background-color: #ffffff;
+    border-radius: var(--radius-2xl);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(207, 196, 197, 0.1);
+    overflow: hidden;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.compactCard:hover {
+    opacity: 1;
+}
+
+.compactHeader {
+    padding: var(--spacing-unit-lg);
+    border-bottom: 1px solid rgba(207, 196, 197, 0.2);
+    background-color: rgba(245, 243, 243, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deliveredBadgeMuted {
+    composes: text-label-md from global;
+    font-size: 12px;
+    background-color: var(--color-surface-container-highest);
+    color: var(--color-on-background);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+}
+
+.compactBody {
+    padding: var(--spacing-unit-lg);
+    display: flex;
+    gap: var(--spacing-gutter);
+    align-items: center;
+}
+
+.imageWrapperCompact {
+    width: 80px;
+    height: 80px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.compactInfo {
+    flex: 1;
+}
+
+.chevronButton {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-outline-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-on-background);
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.chevronButton:hover {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}

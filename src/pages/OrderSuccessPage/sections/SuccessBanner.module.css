@@ -1,0 +1,40 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--spacing-unit-xl);
+}
+
+.heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin: var(--spacing-unit-lg) 0 var(--spacing-unit-sm);
+}
+
+@media (min-width: 768px) {
+  .heading {
+    font-size: 64px;
+    line-height: 72px;
+    letter-spacing: -0.02em;
+  }
+}
+
+.subtitle {
+  composes: text-body-lg from global;
+  color: var(--color-on-surface-variant);
+  max-width: 42rem;
+}
+
+.orderId {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.deliveryDate {
+  color: var(--color-primary);
+  font-weight: 500;
+}

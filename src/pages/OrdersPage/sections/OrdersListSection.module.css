@@ -1,0 +1,12 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-gutter);
+}
+
+.emptyState {
+    composes: text-body-md from global;
+    color: var(--color-on-surface-variant);
+    text-align: center;
+    padding: var(--spacing-unit-xl) 0;
+}

@@ -1,0 +1,28 @@
+.card {
+  background-color: var(--color-surface-container-lowest);
+  padding: var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-sm);
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.icon {
+  color: var(--color-secondary);
+}
+
+.title {
+  composes: text-title-lg from global;
+  color: var(--color-primary);
+}
+
+.content {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}

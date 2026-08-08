@@ -1,0 +1,14 @@
+.card {
+  background-color: var(--color-surface-container-lowest);
+  padding: var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.heading {
+  composes: text-label-md from global;
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-unit-lg);
+}

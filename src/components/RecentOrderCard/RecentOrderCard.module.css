@@ -1,0 +1,146 @@
+.card {
+  background-color: var(--color-surface-container-lowest);
+  padding: var(--spacing-unit-md);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(207, 196, 197, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .card {
+    flex-direction: row;
+    text-align: left;
+    padding: var(--spacing-unit-lg);
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--color-surface);
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .imageWrapper {
+    width: 160px;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+@media (min-width: 768px) {
+  .statusRow {
+    justify-content: flex-start;
+  }
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-secondary);
+}
+
+.statusLabel {
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-secondary);
+  font-weight: 700;
+}
+
+.title {
+  composes: text-title-lg from global;
+  margin-bottom: 4px;
+}
+
+.meta {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .actions {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 768px) {
+  .actions {
+    align-items: flex-start;
+  }
+}
+
+.trackButton {
+  composes: text-label-md from global;
+  width: 100%;
+  text-align: center;
+  padding: 12px var(--spacing-unit-lg);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: var(--radius-xl);
+  transition: opacity 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .trackButton {
+    width: auto;
+  }
+}
+
+.trackButton:hover {
+  opacity: 0.8;
+}
+
+.detailsButton {
+  composes: text-label-md from global;
+  width: 100%;
+  text-align: center;
+  padding: 12px var(--spacing-unit-lg);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: var(--radius-xl);
+  transition: background-color 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .detailsButton {
+    width: auto;
+  }
+}
+
+.detailsButton:hover {
+  background-color: var(--color-surface-container);
+}

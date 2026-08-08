@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
-import { MdShoppingBag, MdVisibility, MdShoppingCart } from 'react-icons/md';
+import { MdShoppingBag, MdVisibility, MdAddShoppingCart } from 'react-icons/md';
 import { addToCart } from '../../redux/slices/cartSlice';
 import styles from './ProductCard.module.css';
 
@@ -23,6 +23,30 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
       navigate(productPath);
     }
   };
+
+  if (variant === 'cornerAdd') {
+    return (
+      <div className={styles.cardCornerAdd}>
+        <div className={styles.imageWrapperCornerAdd}>
+          {product.badge && <span className={styles.badgeCornerAdd}>{product.badge}</span>}
+          <Link to={productPath}>
+            <img src={product.image} alt={product.name} className={styles.image} />
+          </Link>
+          <button
+            className={styles.cornerAddButton}
+            onClick={handleAddToCart}
+            aria-label="Add to cart"
+          >
+            <MdAddShoppingCart size={20} />
+          </button>
+        </div>
+        <Link to={productPath} className={styles.nameCornerAdd}>
+          {product.name}
+        </Link>
+        <p className={styles.priceCornerAdd}>₹{product.price.toLocaleString('en-IN')}</p>
+      </div>
+    );
+  }
 
   if (variant === 'iconOverlay') {
     return (
@@ -46,7 +70,7 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
               onClick={handleAddToCart}
               aria-label="Add to cart"
             >
-              <MdShoppingCart size={20} />
+              <MdShoppingBag size={20} />
             </button>
             <button
               className={styles.iconActionButton}

@@ -1,0 +1,24 @@
+.header {
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  .heading {
+    font-size: 64px;
+    line-height: 72px;
+    letter-spacing: -0.02em;
+  }
+}
+
+.subtitle {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}

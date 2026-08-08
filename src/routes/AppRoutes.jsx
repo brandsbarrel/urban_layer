@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout/MainLayout';
 import AuthLayout from '../layouts/AuthLayout/AuthLayout';
+import AccountLayout from '../layouts/AccountLayout/AccountLayout';
 import HomePage from '../pages/HomePage/HomePage';
 import AboutPage from '../pages/AboutPage/AboutPage';
 import ShopPage from '../pages/ShopPage/ShopPage';
@@ -10,10 +11,13 @@ import ProductDetailsPage from '../pages/ProductDetailsPage/ProductDetailsPage';
 import SearchResultsPage from '../pages/SearchResultsPage/SearchResultsPage';
 import WishlistPage from '../pages/WishlistPage/WishlistPage';
 import CartPage from '../pages/CartPage/CartPage';
-import CheckoutPage from '../pages/CheckoutPage/CheckoutPage';
+import OrderSuccessPage from '../pages/OrderSuccessPage/OrderSuccessPage';
+import AccountPage from '../pages/AccountPage/AccountPage';
+import OrdersPage from '../pages/OrdersPage/OrdersPage';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import RegisterPage from '../pages/RegisterPage/RegisterPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage/ForgotPasswordPage';
+import CheckoutPage from '../pages/CheckoutPage/CheckoutPage';
 
 function AppRoutes() {
   return (
@@ -28,6 +32,12 @@ function AppRoutes() {
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/order-success" element={<OrderSuccessPage />} />
+
+        <Route element={<AccountLayout />}>
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/account/orders" element={<OrdersPage />} />
+        </Route>
       </Route>
 
       <Route element={<AuthLayout />}>
@@ -36,7 +46,6 @@ function AppRoutes() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       </Route>
 
-      {/* Checkout apna khud ka minimal header/footer render karta hai — koi shell layout nahi */}
       <Route path="/checkout" element={<CheckoutPage />} />
     </Routes>
   );

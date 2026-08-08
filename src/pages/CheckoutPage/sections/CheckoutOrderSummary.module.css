@@ -37,34 +37,6 @@
   background-color: rgba(207, 196, 197, 0.2);
 }
 
-.breakdown {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-unit-sm);
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  composes: text-body-md from global;
-  color: var(--color-outline);
-}
-
-.freeLabel {
-  color: var(--color-secondary);
-  font-weight: 700;
-}
-
-.totalRow {
-  display: flex;
-  justify-content: space-between;
-  composes: text-title-lg from global;
-  color: var(--color-primary);
-  padding-top: 8px;
-  margin-top: 8px;
-  border-top: 1px solid rgba(207, 196, 197, 0.1);
-}
-
 .placeOrderButton {
   width: 100%;
   background-color: var(--color-primary);
@@ -80,12 +52,17 @@
   transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
-.placeOrderButton:hover {
+.placeOrderButton:hover:not(:disabled) {
   box-shadow: 0 0 20px rgba(115, 92, 0, 0.4);
 }
 
-.placeOrderButton:active {
+.placeOrderButton:active:not(:disabled) {
   transform: scale(0.98);
+}
+
+.placeOrderButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .placeOrderIcon {

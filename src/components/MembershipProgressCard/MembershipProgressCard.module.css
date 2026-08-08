@@ -1,0 +1,116 @@
+.card {
+  position: relative;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: var(--spacing-unit-xl);
+  }
+}
+
+.glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 256px;
+  height: 256px;
+  background-color: rgba(254, 214, 91, 0.1);
+  border-radius: var(--radius-full);
+  transform: translate(50%, -50%);
+  filter: blur(64px);
+  transition: transform 0.7s ease;
+}
+
+.card:hover .glow {
+  transform: translate(50%, -50%) scale(1.25);
+}
+
+.grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-unit-lg);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.badge {
+  display: inline-block;
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  composes: text-label-sm from global;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.heading {
+  composes: text-headline-md from global;
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.description {
+  composes: text-body-md from global;
+  opacity: 0.8;
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.track {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(227, 226, 226, 0.2);
+  border-radius: var(--radius-full);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background-color: var(--color-secondary-container);
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  composes: text-label-sm from global;
+  opacity: 0.6;
+}
+
+.perksGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-unit-md);
+}
+
+.perk {
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+}
+
+.perkIcon {
+  color: var(--color-secondary);
+  margin-bottom: 8px;
+}
+
+.perkLabel {
+  composes: text-label-md from global;
+}

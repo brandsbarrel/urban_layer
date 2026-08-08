@@ -1,0 +1,60 @@
+.page {
+  padding-top: var(--spacing-unit-xl);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.main {
+  flex: 1;
+  min-width: 0; /* CRITICAL: flex item ko sidebar ke bahar overflow karne se rokta hai */
+  padding: 0 var(--spacing-margin-mobile) var(--spacing-unit-xl);
+}
+
+@media (min-width: 1024px) {
+  .main {
+    padding: 0 var(--spacing-unit-xl) var(--spacing-unit-xl);
+  }
+}
+
+.guestPrompt {
+  max-width: 480px;
+  margin: 128px auto;
+  text-align: center;
+  padding: 0 var(--spacing-margin-mobile);
+}
+
+.guestHeading {
+  composes: text-headline-md from global;
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.guestText {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.guestLink {
+  display: inline-block;
+  composes: text-label-md from global;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: 12px 32px;
+  border-radius: var(--radius-xl);
+}

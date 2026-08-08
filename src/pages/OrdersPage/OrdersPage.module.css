@@ -1,0 +1,26 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-unit-xl);
+  align-items: start;
+  margin-top: var(--spacing-unit-lg);
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.listColumn {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}

@@ -1,0 +1,46 @@
+.button {
+  position: fixed;
+  bottom: var(--spacing-unit-lg);
+  right: var(--spacing-unit-lg);
+  z-index: 100;
+  width: 56px;
+  height: 56px;
+  background-color: #25d366;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.button:hover {
+  transform: scale(1.1);
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+
+.tooltip {
+  position: absolute;
+  right: 100%;
+  margin-right: var(--spacing-unit-md);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.button:hover .tooltip {
+  opacity: 1;
+}

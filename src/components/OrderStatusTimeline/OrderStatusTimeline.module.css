@@ -1,0 +1,78 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0;
+  }
+}
+
+.line {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .line {
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 7.5%;
+    right: 7.5%;
+    height: 2px;
+    background-color: var(--color-surface-container);
+    z-index: 0;
+  }
+}
+
+.step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: 8px;
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-container);
+  color: var(--color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circleCompleted {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.circleCurrent {
+  background-color: var(--color-surface-container);
+  border: 2px dashed var(--color-outline-variant);
+  color: var(--color-on-surface-variant);
+}
+
+.label {
+  composes: text-label-md from global;
+  color: var(--color-on-surface-variant);
+}
+
+.labelActive {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.date {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+}

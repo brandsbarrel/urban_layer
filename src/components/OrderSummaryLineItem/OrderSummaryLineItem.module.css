@@ -40,3 +40,70 @@
   color: var(--color-primary);
   white-space: nowrap;
 }
+
+.cardItem {
+  display: flex;
+  background-color: var(--color-surface-container-lowest);
+  padding: var(--spacing-unit-md);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.cardImageWrapper {
+  width: 96px;
+  height: 128px;
+  background-color: var(--color-surface-container-low);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.cardItem:hover .cardImage {
+  transform: scale(1.05);
+}
+
+.cardInfo {
+  margin-left: var(--spacing-unit-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.cardTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-unit-sm);
+}
+
+.cardName {
+  composes: text-title-lg from global;
+  color: var(--color-primary);
+}
+
+.cardSubtitle {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+}
+
+.cardPrice {
+  composes: text-title-lg from global;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.cardQty {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+  margin-top: var(--spacing-unit-sm);
+}

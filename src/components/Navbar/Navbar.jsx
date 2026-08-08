@@ -12,6 +12,7 @@ import {
 import { NAV_LINKS } from '../../utils/constants';
 import { selectCartCount } from '../../redux/slices/cartSlice';
 import { selectWishlistCount } from '../../redux/slices/wishlistSlice';
+import { selectAuth } from '../../redux/slices/authSlice';
 import styles from './Navbar.module.css';
 
 const LOGO_IMAGE =
@@ -21,6 +22,7 @@ function Navbar() {
   const location = useLocation();
   const cartCount = useSelector(selectCartCount);
   const wishlistCount = useSelector(selectWishlistCount);
+  const { isAuthenticated } = useSelector(selectAuth);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -68,7 +70,11 @@ function Navbar() {
             <MdShoppingBag size={22} />
             {cartCount > 0 && <span className={styles.countBadge}>{cartCount}</span>}
           </Link>
-          <Link to="/login" className={styles.iconButton} aria-label="Account">
+          <Link
+            to={isAuthenticated ? '/account' : '/login'}
+            className={styles.iconButton}
+            aria-label="Account"
+          >
             <MdPersonOutline size={22} />
           </Link>
           <button

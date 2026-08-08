@@ -1,0 +1,31 @@
+.section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-gutter);
+  margin-bottom: var(--spacing-unit-xl);
+}
+
+@media (min-width: 768px) {
+  .section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.accessoryCard {
+  background-color: var(--color-surface-container);
+  padding: var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.accessoryHeading {
+  composes: text-headline-sm from global;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.accessoryList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}

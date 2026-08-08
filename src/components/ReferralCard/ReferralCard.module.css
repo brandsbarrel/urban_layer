@@ -1,0 +1,63 @@
+.card {
+  position: relative;
+  min-height: 300px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--spacing-unit-lg);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+}
+
+.badge {
+  display: inline-block;
+  composes: text-label-sm from global;
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-unit-sm);
+}
+
+.heading {
+  composes: text-headline-sm from global;
+  margin-bottom: var(--spacing-unit-sm);
+}
+
+.description {
+  composes: text-body-md from global;
+  opacity: 0.8;
+  margin-bottom: var(--spacing-unit-lg);
+  max-width: 24rem;
+}
+
+.ctaButton {
+  composes: text-label-md from global;
+  background-color: #ffffff;
+  color: var(--color-primary);
+  padding: 12px var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s ease;
+}
+
+.ctaButton:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+}

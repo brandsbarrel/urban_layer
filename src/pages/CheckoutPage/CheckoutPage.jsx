@@ -21,7 +21,12 @@ function CheckoutPage() {
 
     return (
         <div className={styles.page}>
-            <AuthHeader variant="solid" backLabel="Back to Cart" backPath="/cart" brandText="Urban Layers Co." />
+            <AuthHeader
+                variant="solid"
+                backLabel="Back to Cart"
+                backPath="/cart"
+                brandText="Urban Layers Co."
+            />
 
             <div className={styles.headerSpacer} />
 
@@ -35,7 +40,11 @@ function CheckoutPage() {
                         <DeliveryMethodSection selectedMethod={deliveryMethod} onSelect={setDeliveryMethod} />
                     </div>
 
-                    <CheckoutOrderSummary selectedMethod={deliveryMethod} />
+                    <CheckoutOrderSummary
+                        selectedMethod={deliveryMethod}
+                        contactInfo={contactInfo}
+                        address={address}
+                    />
                 </div>
             </main>
 

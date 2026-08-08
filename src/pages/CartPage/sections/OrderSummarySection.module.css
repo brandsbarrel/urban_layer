@@ -27,38 +27,11 @@
   margin-bottom: var(--spacing-unit-lg);
 }
 
-.lineItems {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-unit-md);
-  padding-bottom: var(--spacing-unit-md);
-  margin-bottom: var(--spacing-unit-md);
-  border-bottom: 1px solid rgba(207, 196, 197, 0.3);
-}
-
-.lineItem {
-  display: flex;
-  justify-content: space-between;
-  composes: text-body-md from global;
-  color: var(--color-on-surface-variant);
-}
-
-.discountValue,
-.freeValue {
-  color: var(--color-secondary);
-}
-
-.totalRow {
-  display: flex;
-  justify-content: space-between;
-  composes: text-headline-sm from global;
-  margin-bottom: var(--spacing-unit-lg);
-}
-
 .actions {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-unit-md);
+  margin-top: var(--spacing-unit-lg);
 }
 
 .checkoutButton {

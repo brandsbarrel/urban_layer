@@ -1,0 +1,21 @@
+.section {
+  margin-bottom: var(--spacing-unit-xl);
+}
+
+.heading {
+  composes: text-headline-md from global;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
