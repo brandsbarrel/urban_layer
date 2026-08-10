@@ -1,0 +1,57 @@
+.panel {
+  margin-bottom: 8px;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 8px;
+}
+
+.primaryButton {
+  flex: 1;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.primaryButton:hover {
+  filter: brightness(0.97);
+}
+
+.cancelButton {
+  background: none;
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
+  border-radius: 0.5rem;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.cancelButton:hover {
+  background: rgba(186, 26, 26, 0.05);
+}
+
+.terminalNote {
+  padding: 12px;
+  background: var(--color-surface-container-low);
+  border-radius: 0.5rem;
+  font-size: 13px;
+  color: var(--color-on-surface-variant);
+  margin: 0;
+}

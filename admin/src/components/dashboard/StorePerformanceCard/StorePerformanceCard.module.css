@@ -1,0 +1,62 @@
+.card {
+  background: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  padding: 24px;
+  box-shadow: var(--shadow-custom);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--color-secondary);
+  margin: 0 0 4px;
+}
+
+.value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  margin: 0;
+}
+
+.metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.metricLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: var(--color-secondary);
+}
+
+.metricValue {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-on-surface);
+}
+
+.track {
+  width: 100%;
+  background: var(--color-surface-container);
+  height: 4px;
+  margin-top: 8px;
+}
+
+.fill {
+  background: var(--color-primary-container);
+  height: 100%;
+}

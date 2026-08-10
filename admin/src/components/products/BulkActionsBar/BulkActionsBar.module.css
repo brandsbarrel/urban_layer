@@ -1,0 +1,70 @@
+.bar {
+  background: var(--color-inverse-surface);
+  color: #ffffff;
+  padding: 16px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.count {
+  font-weight: 600;
+  padding: 4px 8px;
+  background: color-mix(in srgb, var(--color-primary-container) 20%, transparent);
+  border-radius: 0.25rem;
+  margin-right: 16px;
+}
+
+.divider {
+  height: 24px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 8px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-left: 16px;
+}
+
+.actionButton {
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  transition: background-color 0.15s ease;
+}
+
+.actionButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.deleteButton {
+  padding: 6px 12px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: none;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  transition: background-color 0.15s ease;
+}
+
+.deleteButton:hover {
+  background: rgba(239, 68, 68, 0.3);
+}

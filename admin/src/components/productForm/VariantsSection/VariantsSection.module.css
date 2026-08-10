@@ -1,0 +1,113 @@
+.card {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  box-shadow: var(--shadow-custom);
+  padding: 32px;
+  border-radius: 0.5rem;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.generateButton {
+  background: var(--color-surface-container-high);
+  border: none;
+  padding: 6px 16px;
+  border-radius: 0.25rem;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.headRow {
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.headCell {
+  padding: 16px 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.row {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-outline-variant) 30%, transparent);
+}
+
+.cell {
+  padding: 16px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.materialBadge {
+  padding: 2px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  border-radius: 0.25rem;
+}
+
+.materialDefault {
+  background: var(--color-inverse-surface);
+  color: #ffffff;
+}
+
+.materialHighlight {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  font-weight: 700;
+}
+
+.miniInput {
+  width: 96px;
+  border: none;
+  background: var(--color-surface-container-low);
+  padding: 4px;
+  text-align: center;
+  border-radius: 0.25rem;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: var(--color-on-surface-variant);
+  font-size: 18px;
+  display: inline-flex;
+}
+
+.deleteButton:hover {
+  color: var(--color-error);
+}
+
+.emptyCell {
+  padding: 24px 0;
+  text-align: center;
+  color: var(--color-secondary);
+}

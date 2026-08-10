@@ -1,0 +1,79 @@
+.page {
+  padding: var(--spacing-margin-desktop);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.pageHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.title {
+  font-size: 36px;
+  line-height: 44px;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--color-secondary);
+  margin: 4px 0 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.secondaryButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-outline-variant);
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.secondaryButton:hover {
+  background: var(--color-surface-container-high);
+}
+
+.primaryButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 24px;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  border: none;
+  font-weight: 600;
+  box-shadow: 0px 8px 20px rgba(212, 175, 55, 0.2);
+}
+
+.primaryButton:active {
+  transform: scale(0.95);
+}
+
+.workspace {
+  display: flex;
+  gap: var(--spacing-gutter);
+  align-items: flex-start;
+}
+
+.tableCard {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  box-shadow: var(--shadow-custom);
+  overflow: hidden;
+  min-width: 0;
+}

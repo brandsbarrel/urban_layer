@@ -1,0 +1,96 @@
+.card {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  box-shadow: var(--shadow-custom);
+  padding: 32px;
+  border-radius: 0.5rem;
+}
+
+.title {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  margin: 0 0 24px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.fieldGroup:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.25rem;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary-container);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.textarea {
+  width: 100%;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.25rem;
+  padding: 12px;
+  font-size: 14px;
+  resize: vertical;
+  font-family: var(--font-family-base);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-container);
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tag {
+  padding: 4px 8px;
+  background: var(--color-surface-container);
+  border-radius: 0.25rem;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tag button {
+  background: none;
+  border: none;
+  display: flex;
+  font-size: 12px;
+}
+
+.tag button:hover {
+  color: var(--color-error);
+}

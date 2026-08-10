@@ -1,0 +1,86 @@
+.bar {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--color-outline-variant);
+  padding: 16px var(--spacing-gutter);
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (min-width: 1024px) {
+  .bar {
+    left: var(--spacing-sidebar-width);
+  }
+}
+
+.statusText {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-on-surface-variant);
+  font-size: 14px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.dotUnsaved {
+  background: #f59e0b;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.discardButton {
+  background: none;
+  border: none;
+  color: var(--color-error);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.discardButton:hover {
+  text-decoration: underline;
+}
+
+.draftButton {
+  padding: 8px 32px;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  background: none;
+  border-radius: 0.25rem;
+  font-weight: 700;
+}
+
+.draftButton:hover {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.publishButton {
+  padding: 8px 40px;
+  background: var(--color-inverse-surface);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.publishButton:hover {
+  background: #000000;
+}

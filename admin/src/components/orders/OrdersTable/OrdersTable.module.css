@@ -1,0 +1,215 @@
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.headRow {
+  background: var(--color-surface-container-lowest);
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.headCell {
+  padding: 16px 24px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.row {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-outline-variant) 30%, transparent);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.row:hover {
+  background: rgba(212, 175, 55, 0.03);
+}
+
+.row:hover .rowActions {
+  opacity: 1;
+}
+
+.cell {
+  padding: 16px 24px;
+}
+
+.orderId {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.orderDate {
+  font-size: 10px;
+  color: var(--color-outline);
+  margin: 2px 0 0;
+}
+
+.customerCol {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--color-surface-variant);
+}
+
+.customerName {
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
+}
+
+.customerEmail {
+  font-size: 10px;
+  color: var(--color-outline);
+  margin: 0;
+}
+
+.productStack {
+  display: flex;
+  align-items: center;
+}
+
+.productThumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.25rem;
+  border: 1px solid var(--color-outline-variant);
+  background: #ffffff;
+  overflow: hidden;
+  margin-left: -12px;
+}
+
+.productThumb:first-child {
+  margin-left: 0;
+}
+
+.productThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.productOverflow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-container);
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.amount {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0;
+}
+
+.paymentBadge,
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 0.125rem;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid transparent;
+}
+
+.paymentPaid {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.paymentPending {
+  background: #fef3c7;
+  color: #a16207;
+  border-color: #fde68a;
+}
+
+.paymentFailed {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.statusAmber {
+  background: #fef3c7;
+  color: #a16207;
+  border-color: #fde68a;
+}
+
+.statusBlue {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.statusGreen {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.statusRed {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.rowActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.iconButton {
+  padding: 6px;
+  background: none;
+  border: none;
+  border-radius: 0.25rem;
+  color: var(--color-secondary);
+  font-size: 18px;
+  display: flex;
+}
+
+.iconButton:hover {
+  background: var(--color-surface-variant);
+  color: var(--color-primary);
+}
+
+.emptyCell {
+  padding: 32px;
+  text-align: center;
+  color: var(--color-secondary);
+}
