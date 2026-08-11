@@ -1,0 +1,21 @@
+.appShell {
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.mainColumn {
+  margin-left: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .mainColumn {
+    margin-left: var(--spacing-sidebar-width);
+  }
+}
+
+.pageContent {
+  flex: 1;
+}

@@ -1,0 +1,76 @@
+.bar {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--color-outline-variant);
+  padding: 16px var(--spacing-gutter);
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (min-width: 1024px) {
+  .bar {
+    left: var(--spacing-sidebar-width);
+  }
+}
+
+.statusText {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--color-on-surface-variant);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.dotUnsaved {
+  background: #f59e0b;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.deleteButton {
+  padding: 8px 20px;
+  background: none;
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
+  border-radius: 0.25rem;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.archiveButton {
+  padding: 8px 20px;
+  background: none;
+  border: 1px solid var(--color-outline);
+  color: var(--color-on-surface-variant);
+  border-radius: 0.25rem;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.scheduleButton {
+  padding: 8px 24px;
+  background: var(--color-inverse-surface);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  font-size: 12px;
+}

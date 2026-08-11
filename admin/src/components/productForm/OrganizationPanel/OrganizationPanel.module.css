@@ -1,0 +1,108 @@
+.card {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  box-shadow: var(--shadow-custom);
+  padding: 24px;
+  border-radius: 0.5rem;
+}
+
+.title {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding-bottom: 8px;
+  margin: 0 0 20px;
+}
+
+.fieldGroup {
+  margin-bottom: 24px;
+}
+
+.fieldGroup:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 8px;
+}
+
+.checkboxList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 128px;
+  overflow-y: auto;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.addLink {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.select {
+  width: 100%;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.25rem;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tag {
+  background: var(--color-surface-container);
+  padding: 4px 8px;
+  border-radius: 0.25rem;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tag button {
+  background: none;
+  border: none;
+  display: flex;
+  font-size: 12px;
+}
+
+.tag button:hover {
+  color: var(--color-error);
+}
+
+.tagInput {
+  width: 100%;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.25rem;
+  padding: 8px;
+  font-size: 14px;
+}

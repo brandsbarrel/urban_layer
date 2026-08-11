@@ -1,0 +1,250 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.overlayOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.2);
+  z-index: 70;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.content {
+  padding: 32px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-primary-container);
+  background: var(--color-inverse-surface);
+  padding: 4px 8px;
+  border-radius: 0.25rem;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--color-on-surface-variant);
+  margin: 4px 0 0;
+}
+
+.closeButton {
+  padding: 8px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+}
+
+.closeButton:hover {
+  background: var(--color-surface-container-low);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.sectionLabel {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding-bottom: 8px;
+  margin: 0 0 16px;
+}
+
+.configGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 16px;
+}
+
+.fieldLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+  margin: 0;
+}
+
+.fieldValue {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 2px 0 0;
+}
+
+.fieldValuePrimary {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 2px 0 0;
+}
+
+.dateBox {
+  background: var(--color-surface-container-low);
+  padding: 16px;
+  border-radius: 0.25rem;
+  border: 1px solid var(--color-outline-variant);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dateRight {
+  text-align: right;
+  flex-grow: 1;
+}
+
+.arrowIcon {
+  color: var(--color-outline-variant);
+}
+
+.perfBlock {
+  margin-bottom: 24px;
+}
+
+.perfHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
+.perfLabel {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.revenueValue {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.usageChart {
+  height: 96px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.usageBar {
+  flex-grow: 1;
+  background: rgba(212, 175, 55, 0.2);
+  transition: background-color 0.15s ease;
+}
+
+.usageBar:hover {
+  background: var(--color-primary-container);
+}
+
+.statusRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.currentStatus {
+  font-weight: 700;
+}
+
+.statusButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.statusButtons button {
+  padding: 6px 12px;
+  border: 1px solid var(--color-outline-variant);
+  background: none;
+  border-radius: 0.25rem;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statusButtons button:hover {
+  background: var(--color-surface-container-low);
+}
+
+.archiveButton {
+  color: var(--color-error);
+  border-color: var(--color-error) !important;
+}
+
+.footer {
+  margin-top: 48px;
+  display: flex;
+  gap: 16px;
+}
+
+.reportButton {
+  flex-grow: 1;
+  padding: 12px;
+  border: 1px solid var(--color-outline);
+  color: var(--color-on-surface-variant);
+  background: none;
+  font-weight: 700;
+  border-radius: 0.25rem;
+}
+
+.reportButton:hover {
+  background: var(--color-surface-container-low);
+}
+
+.editButton {
+  flex-grow: 1;
+  padding: 12px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  font-weight: 700;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.editButton:hover {
+  opacity: 0.9;
+}

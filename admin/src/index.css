@@ -1,0 +1,149 @@
+/* Global CSS — reset, CSS variables (from the original Tailwind theme config), typography */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  /* Colors (translated 1:1 from the source Tailwind theme) */
+  --color-on-surface-variant: #4d4635;
+  --color-primary-container: #d4af37;
+  --color-on-tertiary-fixed: #00174b;
+  --color-on-primary: #ffffff;
+  --color-on-secondary-fixed-variant: #474747;
+  --color-tertiary-container: #97b0ff;
+  --color-surface-container-highest: #eae1d4;
+  --color-surface-container: #f5eddf;
+  --color-error-container: #ffdad6;
+  --color-primary-fixed: #ffe088;
+  --color-on-primary-container: #554300;
+  --color-secondary: #5f5e5e;
+  --color-on-primary-fixed: #241a00;
+  --color-inverse-on-surface: #f8f0e2;
+  --color-surface-container-low: #fbf3e5;
+  --color-on-tertiary-fixed-variant: #27438a;
+  --color-inverse-primary: #e9c349;
+  --color-tertiary-fixed: #dbe1ff;
+  --color-secondary-fixed-dim: #c8c6c6;
+  --color-on-primary-fixed-variant: #574500;
+  --color-inverse-surface: #343027;
+  --color-surface-tint: #735c00;
+  --color-on-tertiary-container: #254188;
+  --color-on-surface: #1f1b13;
+  --color-on-error-container: #93000a;
+  --color-on-background: #1f1b13;
+  --color-surface-variant: #eae1d4;
+  --color-surface-dim: #e1d9cc;
+  --color-tertiary-fixed-dim: #b4c5ff;
+  --color-surface-container-high: #efe7da;
+  --color-surface: #fff8f0;
+  --color-background: #fff8f0;
+  --color-tertiary: #415ba4;
+  --color-outline-variant: #d0c5af;
+  --color-outline: #7f7663;
+  --color-secondary-container: #e4e2e1;
+  --color-surface-bright: #fff8f0;
+  --color-error: #ba1a1a;
+  --color-on-secondary: #ffffff;
+  --color-on-error: #ffffff;
+  --color-primary: #735c00;
+  --color-on-secondary-fixed: #1b1c1c;
+  --color-on-tertiary: #ffffff;
+  --color-surface-container-lowest: #ffffff;
+  --color-primary-fixed-dim: #e9c349;
+  --color-secondary-fixed: #e4e2e1;
+
+  /* Status accent colors used across dashboard widgets */
+  --color-status-warning: #facc15;
+  --color-status-info: #60a5fa;
+  --color-status-success: #22c55e;
+  --color-tone-success-bg: #dcfce7;
+  --color-tone-success-fg: #16a34a;
+  --color-tone-warning-bg: #fef9c3;
+  --color-tone-warning-fg: #ca8a04;
+  --color-tone-error-bg: #fee2e2;
+  --color-tone-error-fg: #dc2626;
+
+  /* Spacing */
+  --spacing-gutter: 24px;
+  --spacing-container-max: 1440px;
+  --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 40px;
+  --spacing-sidebar-width: 260px;
+
+  /* Border radius */
+  --radius-default: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
+
+  /* Shadows */
+  --shadow-custom: 0px 4px 20px rgba(0, 0, 0, 0.03);
+
+  /* Typography */
+  --font-family-base: "Inter", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-on-background);
+  background-color: var(--color-background);
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Shared typography utility classes used by multiple components */
+.headline-xl {
+  font-size: 36px;
+  line-height: 44px;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.headline-lg {
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.label-sm-caps {
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.data-mono {
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}

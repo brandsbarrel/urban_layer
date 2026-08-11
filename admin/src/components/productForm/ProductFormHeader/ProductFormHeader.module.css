@@ -1,0 +1,75 @@
+.wrapper {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto 40px;
+}
+
+.headerRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.breadcrumb {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 8px;
+}
+
+.breadcrumb a:hover {
+  color: var(--color-primary);
+}
+
+.current {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.title {
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
+  color: var(--color-on-surface);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.outlineButton {
+  padding: 8px 24px;
+  border: 1px solid var(--color-outline);
+  background: none;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.outlineButton:hover {
+  background: var(--color-surface-container);
+}
+
+.publishButton {
+  padding: 8px 32px;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.publishButton:hover {
+  opacity: 0.9;
+}

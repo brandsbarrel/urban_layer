@@ -1,0 +1,92 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  padding: 20px;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-custom);
+  transition: box-shadow 0.15s ease;
+}
+
+.card:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.accent-amber {
+  border-left: 4px solid #fbbf24;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.iconWrapper {
+  padding: 8px;
+  border-radius: 0.5rem;
+  display: flex;
+  font-size: 20px;
+}
+
+.icon-primary {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--color-primary);
+}
+
+.icon-amber {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.icon-blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.icon-green {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.changeBadge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #16a34a;
+  background: #f0fdf4;
+  padding: 4px 8px;
+  border-radius: 0.25rem;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.value {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 4px 0 0;
+}
+
+.note {
+  font-size: 10px;
+  color: var(--color-outline);
+  margin: 8px 0 0;
+}

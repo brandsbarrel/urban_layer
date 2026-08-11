@@ -1,0 +1,132 @@
+.card {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  box-shadow: var(--shadow-custom);
+  padding: 32px;
+  border-radius: 0.5rem;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.hint {
+  color: var(--color-on-surface-variant);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.uploadButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0.25rem;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: 11px 16px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.uploadButton input {
+  display: none;
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.previewCard {
+  position: relative;
+  min-height: 170px;
+  overflow: hidden;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.4rem;
+  background: var(--color-surface-container-low);
+}
+
+.previewCard img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.removeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--color-on-surface);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.featuredBadge,
+.orderBadge {
+  position: absolute;
+  left: 8px;
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.featuredBadge {
+  top: 8px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.orderBadge {
+  bottom: 8px;
+  background: #ffffff;
+  color: var(--color-on-surface);
+}
+
+.emptySlot {
+  min-height: 220px;
+  border: 1px dashed var(--color-outline-variant);
+  border-radius: 0.35rem;
+  background: var(--color-surface-container-low);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-on-surface-variant);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .previewGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,32 @@
+.page {
+  padding: var(--spacing-gutter);
+  padding-bottom: 100px;
+}
+
+.loading {
+  padding: var(--spacing-gutter);
+  color: var(--color-on-surface-variant);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.grid {
+  max-width: var(--spacing-container-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}

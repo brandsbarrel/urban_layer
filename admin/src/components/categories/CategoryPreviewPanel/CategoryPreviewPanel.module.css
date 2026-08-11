@@ -1,0 +1,119 @@
+.panel {
+  width: 320px;
+  background: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  box-shadow: var(--shadow-custom);
+  position: sticky;
+  top: 96px;
+  display: none;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .panel {
+    display: block;
+  }
+}
+
+.hero {
+  height: 128px;
+  position: relative;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+}
+
+.heroOverlay h3 {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0;
+}
+
+.body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionLabel {
+  color: var(--color-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.statRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-surface-variant) 30%, transparent);
+  font-size: 14px;
+}
+
+.statRowLast {
+  border-bottom: none;
+}
+
+.statValue {
+  font-weight: 700;
+}
+
+.growthChart {
+  height: 96px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.growthBar {
+  width: 100%;
+  background: rgba(115, 92, 0, 0.2);
+  transition: background-color 0.15s ease;
+}
+
+.growthBar:hover {
+  background: var(--color-primary);
+}
+
+.growthBarActive {
+  width: 100%;
+  background: var(--color-primary);
+}
+
+.growthCaption {
+  font-size: 10px;
+  text-align: center;
+  color: var(--color-secondary);
+  margin: 8px 0 0;
+}
+
+.catalogButton {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  background: none;
+  font-weight: 600;
+}
+
+.catalogButton:hover {
+  background: rgba(115, 92, 0, 0.05);
+}

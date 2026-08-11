@@ -1,0 +1,96 @@
+.bar {
+  background: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  padding: 16px;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-custom);
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.filterLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 16px;
+  border-right: 1px solid var(--color-outline-variant);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-outline);
+}
+
+.select {
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  font-size: 14px;
+  background: var(--color-surface-container-lowest);
+  padding: 8px 16px;
+  min-width: 140px;
+}
+
+.dateWrapper {
+  position: relative;
+  min-width: 180px;
+}
+
+.dateIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-outline);
+  font-size: 18px;
+}
+
+.dateInput {
+  padding: 8px 16px 8px 40px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  font-size: 14px;
+  width: 100%;
+  background: var(--color-surface-container-lowest);
+}
+
+.rightActions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.exportButton {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-outline);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exportButton:hover {
+  color: var(--color-on-surface);
+}
+
+.createButton {
+  padding: 8px 20px;
+  background: var(--color-inverse-surface);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.createButton:active {
+  transform: scale(0.95);
+}

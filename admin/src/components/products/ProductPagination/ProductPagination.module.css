@@ -1,0 +1,90 @@
+.footer {
+  padding: 16px;
+  background: var(--color-surface-container-low);
+  border-top: 1px solid var(--color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.summary {
+  font-size: 14px;
+  color: var(--color-secondary);
+  margin: 0;
+}
+
+.bold {
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.perPageSelect {
+  background: transparent;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.125rem;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.pages {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.navButton {
+  padding: 4px 12px;
+  border-radius: 0.125rem;
+  background: none;
+  border: none;
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+.navButton:hover:not(:disabled) {
+  background: var(--color-surface-container-high);
+}
+
+.navButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pageButton,
+.pageActive {
+  width: 32px;
+  height: 32px;
+  border-radius: 0.125rem;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.pageButton {
+  background: none;
+  color: var(--color-secondary);
+}
+
+.pageButton:hover {
+  background: var(--color-surface-container-high);
+}
+
+.pageActive {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.ellipsis {
+  padding: 0 8px;
+  color: var(--color-secondary);
+}

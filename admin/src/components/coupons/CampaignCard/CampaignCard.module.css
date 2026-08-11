@@ -1,0 +1,355 @@
+.heroCard,
+.standardCard,
+.scheduledCard {
+  background: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.25rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-custom);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.heroCard:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.standardCard:hover,
+.scheduledCard:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.scheduledCard {
+  border-style: dashed;
+  border-width: 2px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.heroImageWrapper {
+  position: relative;
+  height: 160px;
+  background: var(--color-inverse-surface);
+  overflow: hidden;
+}
+
+.heroImageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--color-inverse-surface), transparent 60%);
+}
+
+.heroBottomLeft {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+}
+
+.heroTitle {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1;
+}
+
+.heroDiscountBadge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 0.25rem;
+  font-size: 14px;
+}
+
+.heroBody {
+  padding: 24px;
+}
+
+.heroBodyTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.typeLabel {
+  font-size: 11px;
+  color: var(--color-on-surface-variant);
+}
+
+.revenueText {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.progressPercent {
+  font-weight: 700;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 4px;
+  background: var(--color-surface-container-high);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-primary-container);
+}
+
+.heroFooter {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-outline-variant);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.endsIn {
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+}
+
+.viewLink {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.statusPill {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 0.125rem;
+  margin-bottom: 8px;
+}
+
+.statusActive {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.statusScheduled {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.statusExpired {
+  background: var(--color-surface-container-highest);
+  color: var(--color-on-surface-variant);
+}
+
+.statusOngoing {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.standardCard {
+  padding: 24px;
+}
+
+.standardTop,
+.scheduledTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: var(--color-on-surface-variant);
+}
+
+.valueBadge {
+  background: var(--color-surface-container-high);
+  border: 1px solid var(--color-outline-variant);
+  padding: 8px 12px;
+  border-radius: 0.25rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.valueBadge span {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.statBox {
+  padding: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.25rem;
+}
+
+.statLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-on-surface-variant);
+  margin: 0;
+}
+
+.statValue {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.standardFooter {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-outline-variant);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.avatarStack {
+  display: flex;
+}
+
+.avatarDot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background: #cbd5e1;
+  margin-left: -8px;
+}
+
+.avatarDot:first-child {
+  margin-left: 0;
+}
+
+.manageLink {
+  background: none;
+  border: none;
+  color: var(--color-on-surface-variant);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.manageLink:hover {
+  color: var(--color-primary);
+}
+
+.iconCircle {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background: var(--color-surface-container-high);
+  border: 1px solid var(--color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+}
+
+.countdownArea {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.countdownLabel {
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+  margin: 0;
+}
+
+.countdownValue {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 8px 0 0;
+}
+
+.scheduledFooter {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-outline-variant);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.offerTag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.iconActions {
+  display: flex;
+  gap: 8px;
+}
+
+.iconActions button {
+  background: none;
+  border: none;
+  padding: 4px;
+  color: var(--color-on-surface-variant);
+  display: flex;
+}
+
+.iconActions button:hover {
+  color: var(--color-primary);
+}
+
+.deleteIcon:hover {
+  color: var(--color-error) !important;
+}

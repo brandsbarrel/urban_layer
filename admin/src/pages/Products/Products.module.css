@@ -1,0 +1,81 @@
+.page {
+  padding: var(--spacing-margin-desktop);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-gutter);
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.title {
+  font-size: 36px;
+  line-height: 44px;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--color-secondary);
+  margin: 4px 0 0;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.secondaryButton {
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-secondary);
+  padding: 8px 16px;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: background-color 0.15s ease;
+}
+
+.secondaryButton:hover {
+  background: var(--color-surface);
+}
+
+.primaryButton {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  padding: 8px 20px;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0px 8px 20px color-mix(in srgb, var(--color-primary-container) 20%, transparent);
+  transition: transform 0.15s ease;
+}
+
+.primaryButton:hover {
+  transform: scale(1.02);
+}
+
+.toolbarSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tableCard {
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-custom);
+}
