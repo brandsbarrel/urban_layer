@@ -29,6 +29,10 @@ const categorySchema = new mongoose.Schema(
       trim: true,
       default: ""
     },
+    phoneModels: {
+      type: [String],
+      default: []
+    },
     seoTitle: {
       type: String,
       trim: true,

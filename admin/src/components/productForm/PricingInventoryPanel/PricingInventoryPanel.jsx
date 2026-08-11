@@ -43,10 +43,44 @@ const PricingInventoryPanel = () => {
         </div>
       </div>
 
+      <div className={styles.twoCol}>
+        <div className={styles.fieldGroup}>
+          <label className={styles.label}>Cost Price</label>
+          <div className={styles.priceWrapper}>
+            <span className={styles.currencySign}>$</span>
+            <input
+              className={styles.priceInputRegular}
+              type="text"
+              placeholder="Optional"
+              value={form.costPrice}
+              onChange={set("costPrice")}
+            />
+          </div>
+        </div>
+        <div className={styles.fieldGroup}>
+          <label className={styles.label}>Tax Rate (%)</label>
+          <input
+            className={styles.input}
+            type="number"
+            min="0"
+            max="100"
+            placeholder="0"
+            value={form.taxRate}
+            onChange={set("taxRate")}
+          />
+        </div>
+      </div>
+
       <div className={styles.stockBox}>
         <div>
           <p className={styles.stockLabel}>Total Available</p>
-          <p className={styles.stockValue}>{form.totalStock}</p>
+          <input
+            className={styles.input}
+            type="number"
+            min="0"
+            value={form.totalStock}
+            onChange={set("totalStock")}
+          />
         </div>
         <MdInventory className={styles.stockIcon} />
       </div>

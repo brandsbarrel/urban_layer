@@ -86,6 +86,11 @@ const productSchema = new mongoose.Schema(
       unique: true,
       trim: true
     },
+    phoneModel: {
+      type: String,
+      required: true,
+      trim: true
+    },
     shortDescription: {
       type: String,
       trim: true,
@@ -192,6 +197,20 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: null
     },
+    packageType: {
+      type: String,
+      trim: true,
+      default: "Box"
+    },
+    shippingClass: {
+      type: String,
+      trim: true,
+      default: "Standard"
+    },
+    fragile: {
+      type: Boolean,
+      default: false
+    },
     variants: {
       type: [variantSchema],
       default: []
@@ -216,7 +235,7 @@ const productSchema = new mongoose.Schema(
 
 productSchema.index({ slug: 1 }, { unique: true });
 productSchema.index({ sku: 1 }, { unique: true });
-productSchema.index({ name: "text", sku: "text", tags: "text" });
+productSchema.index({ name: "text", sku: "text", phoneModel: "text", tags: "text" });
 
 const ProductModel = mongoose.model("Product", productSchema);
 

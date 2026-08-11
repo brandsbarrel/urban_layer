@@ -1,9 +1,7 @@
-import { AuthenticationError } from "../shared/app-error.js";
 import { sendSuccess } from "../shared/api-response.js";
 import {
   loginCustomer,
   logoutCustomer,
-  refreshCustomerSession,
   registerCustomer
 } from "../services/customer-auth.service.js";
 
@@ -30,8 +28,7 @@ const customerRegister = async (req, res, next) => {
 const customerLogin = async (req, res, next) => {
   try {
     const data = await loginCustomer({
-      ...req.body,
-      res
+      ...req.body
     });
 
     return sendSuccess({
@@ -44,29 +41,9 @@ const customerLogin = async (req, res, next) => {
   }
 };
 
-const customerRefresh = async (req, res, next) => {
-  try {
-    const refreshToken = req.cookies?.customer_refresh_token;
-
-    if (!refreshToken) {
-      throw new AuthenticationError("Refresh token is required.");
-    }
-
-    const data = await refreshCustomerSession({ refreshToken, res });
-
-    return sendSuccess({
-      res,
-      message: "Customer session refreshed.",
-      data
-    });
-  } catch (error) {
-    return next(error);
-  }
-};
-
 const customerLogout = async (req, res, next) => {
   try {
-    logoutCustomer(res);
+    logoutCustomer();
 
     return sendSuccess({
       res,
@@ -77,4 +54,4 @@ const customerLogout = async (req, res, next) => {
   }
 };
 
-export { customerRegister, customerLogin, customerRefresh, customerLogout };
+export { customerRegister, customerLogin, customerLogout };

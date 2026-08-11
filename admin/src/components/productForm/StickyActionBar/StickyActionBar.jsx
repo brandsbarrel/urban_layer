@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styles from "./StickyActionBar.module.css";
 
-const StickyActionBar = ({ onDiscard, onSaveDraft, onPublish }) => {
+const StickyActionBar = ({ onDiscard, onSaveDraft, onPublish, saving = false }) => {
   const isDirty = useSelector((state) => state.productForm.isDirty);
 
   return (
@@ -19,11 +19,11 @@ const StickyActionBar = ({ onDiscard, onSaveDraft, onPublish }) => {
         <button className={styles.discardButton} onClick={onDiscard}>
           Discard Changes
         </button>
-        <button className={styles.draftButton} onClick={onSaveDraft}>
-          Save Draft
+        <button className={styles.draftButton} onClick={onSaveDraft} disabled={saving}>
+          {saving ? "Saving..." : "Save Draft"}
         </button>
-        <button className={styles.publishButton} onClick={onPublish}>
-          Publish &amp; Go Live
+        <button className={styles.publishButton} onClick={onPublish} disabled={saving}>
+          {saving ? "Saving..." : "Publish & Go Live"}
         </button>
       </div>
     </div>

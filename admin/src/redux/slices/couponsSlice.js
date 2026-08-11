@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { apiRequest } from "../../lib/api";
 
 const emptyForm = {
   id: null,
@@ -11,85 +12,87 @@ const emptyForm = {
   maxRedemption: "",
   startDate: "",
   endDate: "",
-  status: "Scheduled",
+  status: "Scheduled"
 };
 
+const buildStats = (items) => {
+  const active = items.filter((item) => item.status === "Active").length;
+  const totalRevenue = items.reduce((sum, item) => sum + (item.revenue || 0), 0);
+  const avgDiscount = items.length
+    ? Math.round(items.reduce((sum, item) => sum + Number(item.discountValue || 0), 0) / items.length)
+    : 0;
+
+  return [
+    { id: "campaigns", label: "Total Campaigns", value: String(items.length), note: "Live backend data", tone: "up", icon: "campaign" },
+    { id: "active", label: "Active Coupons", value: String(active), note: "Maintaining target reach", tone: "neutral", icon: "confirmation_number" },
+    { id: "revenue", label: "Revenue Generated", value: `$${Math.round(totalRevenue).toLocaleString()}`, note: "Backend total", tone: "up", icon: "payments" },
+    { id: "discount", label: "Average Discount", value: `${avgDiscount}%`, note: "Live average", tone: "neutral", icon: "percent" }
+  ];
+};
+
+const fetchCoupons = createAsyncThunk("coupons/fetchCoupons", async () => {
+  const response = await apiRequest("/admin/coupons");
+  return response.data.items;
+});
+
+const saveCoupon = createAsyncThunk("coupons/saveCoupon", async (data) => {
+  const payload = {
+    code: data.code,
+    title: data.title || data.code,
+    subtitle: data.subtitle || "",
+    discountType: data.discountType,
+    discountValue: data.discountValue,
+    minOrderValue: data.minOrderValue || "0.00",
+    maxRedemption: data.maxRedemption || "Unlimited",
+    startDate: data.startDate,
+    endDate: data.endDate,
+    status: data.status || "Scheduled"
+  };
+
+  if (data.id) {
+    const response = await apiRequest(`/admin/coupons/${data.id}`, {
+      method: "PATCH",
+      body: JSON.stringify(payload)
+    });
+    return response.data;
+  }
+
+  const response = await apiRequest("/admin/coupons", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+  return response.data;
+});
+
+const setStatus = createAsyncThunk("coupons/setStatus", async ({ id, status }) => {
+  let action = "pause";
+  if (status === "Active") action = "activate";
+  if (status === "Expired") action = "archive";
+
+  const response = await apiRequest(`/admin/coupons/${id}/${action}`, {
+    method: "POST"
+  });
+  return response.data;
+});
+
+const confirmDelete = createAsyncThunk("coupons/confirmDelete", async (_, { getState }) => {
+  const id = getState().coupons.deleteTargetId;
+  await apiRequest(`/admin/coupons/${id}`, {
+    method: "DELETE"
+  });
+  return id;
+});
+
 const initialState = {
-  stats: [
-    { id: "campaigns", label: "Total Campaigns", value: "24", note: "+12% from last month", tone: "up", icon: "campaign" },
-    { id: "active", label: "Active Coupons", value: "12", note: "Maintaining target reach", tone: "neutral", icon: "confirmation_number" },
-    { id: "revenue", label: "Revenue Generated", value: "$428k", note: "+8.4% vs prev period", tone: "up", icon: "payments" },
-    { id: "discount", label: "Average Discount", value: "15%", note: "Within margin safety zone", tone: "neutral", icon: "percent" },
-  ],
-  items: [
-    {
-      id: "SUMMER24",
-      code: "SUMMER24",
-      title: "SUMMER24",
-      subtitle: "High-Season Fashion Promotion",
-      type: "Flash Sale",
-      discountType: "Percentage",
-      discountValue: "25",
-      minOrderValue: "150.00",
-      maxRedemption: "Unlimited",
-      status: "Active",
-      revenue: 124000,
-      redemptions: 1240,
-      avgBasket: 210,
-      startDate: "2024-06-01",
-      endDate: "2024-08-31",
-      progressPercent: 65,
-      heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuAON2ATuSf_FQu6Ho-AGtxP2o4A_hMxvDz456Pi-dCh5DnZu5mBc0DgDxTLf9VUssMay1cmxrAGHbKUpIf03ajF5MUNZNGTnvuSBDMMX3rKVVBfYhaS06jbPVJ9eaKD-K6KUSLwjFC7H48bvoczOPvj5rx1o-resAQJtsrWeZ_4a0ujSHTCmVY8ONEqFJdyXi2xrp0rTsQFu6aMTR8QONDVboA1IFmW990FKN7AI2j-7batzZLQN7ClA5EZ72jub3Z4c_IEbVvpy5Q",
-      usageTrend: [40, 55, 45, 80, 70, 95, 85],
-    },
-    {
-      id: "WELCOME10",
-      code: "WELCOME10",
-      title: "WELCOME10",
-      subtitle: "First Order Promotion",
-      type: "Direct Discount",
-      discountType: "Percentage",
-      discountValue: "10",
-      minOrderValue: "0.00",
-      maxRedemption: "Unlimited",
-      status: "Active",
-      revenue: 260400,
-      redemptions: 1240,
-      avgBasket: 210,
-      startDate: "2024-01-01",
-      endDate: "2025-01-01",
-      progressPercent: 40,
-      heroImage: null,
-      usageTrend: [30, 40, 35, 50, 45, 60, 55],
-    },
-    {
-      id: "BLACKGOLD",
-      code: "BLACKGOLD",
-      title: "BLACKGOLD",
-      subtitle: "VIP Exclusive Offer",
-      type: "Buy X Get Y",
-      discountType: "BOGO",
-      discountValue: "1",
-      minOrderValue: "300.00",
-      maxRedemption: "500",
-      status: "Scheduled",
-      revenue: 0,
-      redemptions: 0,
-      avgBasket: 0,
-      startDate: "2024-12-01",
-      endDate: "2024-12-08",
-      progressPercent: 0,
-      heroImage: null,
-      usageTrend: [0, 0, 0, 0, 0, 0, 0],
-    },
-  ],
+  stats: buildStats([]),
+  items: [],
   searchQuery: "",
   statusFilter: "All",
   typeFilter: "All",
   detailsDrawerId: null,
   formDrawerOpen: false,
   editingId: null,
-  deleteTargetId: null,
+  deleteTargetId: null
 };
 
 const couponsSlice = createSlice({
@@ -124,42 +127,44 @@ const couponsSlice = createSlice({
       state.formDrawerOpen = false;
       state.editingId = null;
     },
-    saveCoupon(state, action) {
-      const data = action.payload;
-      if (data.id) {
-        const existing = state.items.find((c) => c.id === data.id);
-        if (existing) Object.assign(existing, data);
-      } else {
-        state.items.unshift({
-          ...data,
-          id: data.code,
-          revenue: 0,
-          redemptions: 0,
-          avgBasket: 0,
-          progressPercent: 0,
-          heroImage: null,
-          usageTrend: [0, 0, 0, 0, 0, 0, 0],
-        });
-      }
-      state.formDrawerOpen = false;
-      state.editingId = null;
-    },
-    setStatus(state, action) {
-      const { id, status } = action.payload;
-      const coupon = state.items.find((c) => c.id === id);
-      if (coupon) coupon.status = status;
-    },
     setDeleteTarget(state, action) {
       state.deleteTargetId = action.payload;
-    },
-    confirmDelete(state) {
-      state.items = state.items.filter((c) => c.id !== state.deleteTargetId);
-      state.deleteTargetId = null;
-      state.detailsDrawerId = null;
-    },
+    }
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCoupons.fulfilled, (state, action) => {
+        state.items = action.payload;
+        state.stats = buildStats(action.payload);
+      })
+      .addCase(saveCoupon.fulfilled, (state, action) => {
+        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        if (index >= 0) {
+          state.items[index] = action.payload;
+        } else {
+          state.items.unshift(action.payload);
+        }
+        state.formDrawerOpen = false;
+        state.editingId = null;
+        state.stats = buildStats(state.items);
+      })
+      .addCase(setStatus.fulfilled, (state, action) => {
+        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        if (index >= 0) {
+          state.items[index] = action.payload;
+        }
+        state.stats = buildStats(state.items);
+      })
+      .addCase(confirmDelete.fulfilled, (state, action) => {
+        state.items = state.items.filter((item) => item.id !== action.payload);
+        state.deleteTargetId = null;
+        state.detailsDrawerId = null;
+        state.stats = buildStats(state.items);
+      });
+  }
 });
 
+export { emptyForm, fetchCoupons, saveCoupon, setStatus, confirmDelete };
 export const {
   setSearchQuery,
   setStatusFilter,
@@ -169,10 +174,6 @@ export const {
   openCreateDrawer,
   openEditDrawer,
   closeFormDrawer,
-  saveCoupon,
-  setStatus,
-  setDeleteTarget,
-  confirmDelete,
+  setDeleteTarget
 } = couponsSlice.actions;
-export { emptyForm };
 export default couponsSlice.reducer;

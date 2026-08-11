@@ -1,7 +1,7 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MdAutoAwesome, MdBolt, MdAdd } from "react-icons/md";
-import { openCreateDrawer } from "../../redux/slices/couponsSlice";
+import { fetchCoupons, openCreateDrawer } from "../../redux/slices/couponsSlice";
 import CouponStatsRow from "../../components/coupons/CouponStatsRow/CouponStatsRow";
 import CouponToolbar from "../../components/coupons/CouponToolbar/CouponToolbar";
 import CampaignGrid from "../../components/coupons/CampaignGrid/CampaignGrid";
@@ -11,6 +11,13 @@ import styles from "./Coupons.module.css";
 
 const Coupons = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchCoupons());
+    }
+  }, [dispatch, isAuthenticated]);
 
   return (
     <div className={styles.page}>

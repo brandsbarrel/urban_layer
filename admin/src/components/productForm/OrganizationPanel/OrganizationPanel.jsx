@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { MdAdd, MdClose } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import {
   toggleCategory,
   addTag,
@@ -9,15 +9,10 @@ import {
 } from "../../../redux/slices/productFormSlice";
 import styles from "./OrganizationPanel.module.css";
 
-const AVAILABLE_CATEGORIES = [
-  "Phone Cases",
-  "Carbon Series",
-  "Lifestyle Accessories",
-];
-
 const OrganizationPanel = () => {
   const dispatch = useDispatch();
   const form = useSelector((state) => state.productForm.form);
+  const categories = useSelector((state) => state.categories.items);
   const [tagInput, setTagInput] = useState("");
 
   const handleTagKeyDown = (e) => {
@@ -30,25 +25,25 @@ const OrganizationPanel = () => {
 
   return (
     <section className={styles.card}>
-      <h4 className={styles.title}>Organization</h4>
+      <h4 className={styles.title}>Case Details</h4>
 
       <div className={styles.fieldGroup}>
-        <label className={styles.label}>Product Categories</label>
+        <label className={styles.label}>Case Style</label>
         <div className={styles.checkboxList}>
-          {AVAILABLE_CATEGORIES.map((category) => (
-            <label key={category} className={styles.checkboxRow}>
+          {categories.map((category) => (
+            <label key={category.id} className={styles.checkboxRow}>
               <input
                 type="checkbox"
-                checked={form.categories.includes(category)}
-                onChange={() => dispatch(toggleCategory(category))}
+                checked={form.categories.includes(category.id)}
+                onChange={() => dispatch(toggleCategory(category.id))}
               />
-              <span>{category}</span>
+              <span>{category.name}</span>
             </label>
           ))}
+          {categories.length === 0 && (
+            <span className={styles.label}>Add case styles from Categories first.</span>
+          )}
         </div>
-        <button className={styles.addLink} title="Integration Required">
-          <MdAdd /> Add New Category
-        </button>
       </div>
 
       <div className={styles.fieldGroup}>
@@ -63,8 +58,9 @@ const OrganizationPanel = () => {
           }
         >
           <option value="">Select a collection...</option>
-          <option value="Heritage 2024">Heritage 2024</option>
-          <option value="Essential Classics">Essential Classics</option>
+          <option value="Urban Basics">Urban Basics</option>
+          <option value="Premium Protection">Premium Protection</option>
+          <option value="Limited Drop">Limited Drop</option>
         </select>
       </div>
 

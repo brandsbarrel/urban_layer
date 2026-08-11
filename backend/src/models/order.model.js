@@ -145,6 +145,52 @@ const orderSchema = new mongoose.Schema(
       trim: true,
       default: null
     },
+    paymentGatewayOrderId: {
+      type: String,
+      trim: true,
+      default: null
+    },
+    paymentGatewayPaymentId: {
+      type: String,
+      trim: true,
+      default: null
+    },
+    paymentGatewaySignature: {
+      type: String,
+      trim: true,
+      default: null
+    },
+    deliveredAt: {
+      type: Date,
+      default: null
+    },
+    cancellationReason: {
+      type: String,
+      trim: true,
+      default: null
+    },
+    shipping: {
+      recipient: {
+        type: String,
+        trim: true,
+        default: ""
+      },
+      address: {
+        type: String,
+        trim: true,
+        default: ""
+      },
+      carrier: {
+        type: String,
+        trim: true,
+        default: "Not yet assigned"
+      },
+      trackingNumber: {
+        type: String,
+        trim: true,
+        default: null
+      }
+    },
     notes: {
       type: String,
       trim: true,

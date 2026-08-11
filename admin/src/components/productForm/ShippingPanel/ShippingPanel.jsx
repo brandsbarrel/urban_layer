@@ -12,7 +12,7 @@ const ShippingPanel = () => {
 
   return (
     <section className={styles.card}>
-      <h4 className={styles.title}>Shipping Details</h4>
+      <h4 className={styles.title}>Shipping &amp; Delivery</h4>
 
       <div className={styles.fieldGroup}>
         <label className={styles.label}>Weight (kg)</label>
@@ -24,9 +24,36 @@ const ShippingPanel = () => {
         />
       </div>
 
+      <div className={styles.twoCol}>
+        <div className={styles.fieldGroup}>
+          <label className={styles.label}>Package Type</label>
+          <select
+            className={styles.input}
+            value={form.packageType}
+            onChange={set("packageType")}
+          >
+            <option value="Box">Box</option>
+            <option value="Padded Envelope">Padded Envelope</option>
+            <option value="Mailer">Mailer</option>
+          </select>
+        </div>
+        <div className={styles.fieldGroup}>
+          <label className={styles.label}>Shipping Class</label>
+          <select
+            className={styles.input}
+            value={form.shippingClass}
+            onChange={set("shippingClass")}
+          >
+            <option value="Standard">Standard</option>
+            <option value="Express">Express</option>
+            <option value="Fragile">Fragile</option>
+          </select>
+        </div>
+      </div>
+
       <div className={styles.threeCol}>
         <div className={styles.fieldGroup}>
-          <label className={styles.label}>Length</label>
+          <label className={styles.label}>Length (cm)</label>
           <input
             className={styles.input}
             type="text"
@@ -35,7 +62,7 @@ const ShippingPanel = () => {
           />
         </div>
         <div className={styles.fieldGroup}>
-          <label className={styles.label}>Width</label>
+          <label className={styles.label}>Width (cm)</label>
           <input
             className={styles.input}
             type="text"
@@ -44,7 +71,7 @@ const ShippingPanel = () => {
           />
         </div>
         <div className={styles.fieldGroup}>
-          <label className={styles.label}>Height</label>
+          <label className={styles.label}>Height (cm)</label>
           <input
             className={styles.input}
             type="text"
@@ -53,6 +80,17 @@ const ShippingPanel = () => {
           />
         </div>
       </div>
+
+      <label className={styles.checkboxRow}>
+        <input
+          type="checkbox"
+          checked={form.fragile}
+          onChange={(event) =>
+            dispatch(updateField({ field: "fragile", value: event.target.checked }))
+          }
+        />
+        <span>Mark as fragile while packing</span>
+      </label>
     </section>
   );
 };

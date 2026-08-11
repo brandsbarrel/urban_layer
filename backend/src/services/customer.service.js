@@ -110,7 +110,12 @@ const mapCustomerToAdminListItem = (customer) => {
     rewardPoints: customer.rewardPoints,
     status: customer.status,
     lastLogin: formatRelativeLogin(customer.lastLoginAt),
-    region: buildRegion(customer)
+    region: buildRegion(customer),
+    customerSince: formatCustomerSince(customer.createdAt),
+    avgOrderValue: formatCurrency(customer.avgOrderValue || 0),
+    returnRate: `${customer.returnRate}%`,
+    tier: customer.tier || "",
+    activity: mapActivity(customer)
   };
 };
 

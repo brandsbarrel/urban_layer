@@ -1,0 +1,136 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-inverse-surface);
+  padding: 24px;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 40px;
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.brandTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-primary-container);
+  margin: 0;
+}
+
+.brandSubtitle {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  margin: 4px 0 0;
+}
+
+.heading {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 24px;
+  color: var(--color-on-surface);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 12px;
+  color: var(--color-on-surface-variant);
+  font-size: 18px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 40px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.25rem;
+  font-size: 14px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary-container);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.toggleVisibility {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--color-on-surface-variant);
+  font-size: 18px;
+  display: flex;
+}
+
+.errorText {
+  color: var(--color-error);
+  font-size: 13px;
+  margin: -8px 0 0;
+}
+
+.submitButton {
+  padding: 12px;
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.submitButton:not(:disabled):hover {
+  filter: brightness(1.05);
+}
+
+.forgotButton {
+  background: none;
+  border: none;
+  color: var(--color-secondary);
+  font-size: 13px;
+  text-align: center;
+  text-decoration: underline;
+}

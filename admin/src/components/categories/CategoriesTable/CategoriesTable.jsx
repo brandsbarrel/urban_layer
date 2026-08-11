@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { MdDragIndicator, MdMoreVert, MdVisibilityOff, MdVisibility, MdEdit, MdDelete, MdArrowUpward, MdArrowDownward } from "react-icons/md";
 import {
@@ -9,13 +8,13 @@ import {
   hideCategory,
   deleteCategory,
   moveCategory,
+  openDrawer,
 } from "../../../redux/slices/categoriesSlice";
 import ConfirmModal from "../../common/ConfirmModal/ConfirmModal";
 import styles from "./CategoriesTable.module.css";
 
 const CategoriesTable = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { items, selectedIds, searchQuery, statusFilter, activeMenuId } =
     useSelector((state) => state.categories);
   const [deleteTarget, setDeleteTarget] = React.useState(null);
@@ -49,6 +48,7 @@ const CategoriesTable = () => {
             </th>
             <th className={styles.headCell}>Category</th>
             <th className={styles.headCell}>Slug</th>
+            <th className={styles.headCell}>Phones</th>
             <th className={styles.headCell}>Products</th>
             <th className={styles.headCell}>SEO Score</th>
             <th className={styles.headCell}>Status</th>
@@ -96,6 +96,10 @@ const CategoriesTable = () => {
               <td className={styles.cell}>
                 <span className={styles.slug}>{category.slug}</span>
               </td>
+              <td className={styles.cell}>
+                {(category.phoneModels || []).slice(0, 2).join(", ") || "-"}
+                {(category.phoneModels || []).length > 2 ? " +" + ((category.phoneModels || []).length - 2) : ""}
+              </td>
               <td className={`${styles.cell} ${styles.bold}`}>
                 {category.productsAssigned}
               </td>
@@ -136,11 +140,7 @@ const CategoriesTable = () => {
                   </button>
                   {activeMenuId === category.id && (
                     <div className={styles.menu}>
-                      <button
-                        onClick={() =>
-                          navigate(`/categories/edit/${category.id}`)
-                        }
-                      >
+                      <button onClick={() => dispatch(openDrawer(category.id))}>
                         <MdEdit /> Edit
                       </button>
                       <button onClick={() => dispatch(hideCategory(category.id))}>
@@ -189,7 +189,7 @@ const CategoriesTable = () => {
           ))}
           {filtered.length === 0 && (
             <tr>
-              <td colSpan={7} className={styles.emptyCell}>
+              <td colSpan={8} className={styles.emptyCell}>
                 No categories match your filters.
               </td>
             </tr>

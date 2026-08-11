@@ -53,7 +53,7 @@ const ProductsTable = () => {
             </th>
             <th className={styles.headCell}>PREVIEW</th>
             <th className={styles.headCell}>PRODUCT NAME &amp; SKU</th>
-            <th className={styles.headCell}>CATEGORY</th>
+            <th className={styles.headCell}>CASE STYLE</th>
             <th className={`${styles.headCell} ${styles.alignRight}`}>
               PRICE
             </th>

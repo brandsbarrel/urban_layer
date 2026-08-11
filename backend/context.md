@@ -5,9 +5,14 @@
 
 ## Implementation Progress
 
-**Last updated:** August 10, 2026
+**Last updated:** August 11, 2026
 
 ### Completed
+- Product admin form now supports phone-case ecommerce data end-to-end: required phone model, case-style categories, bulk image URL entry, featured image URL, gallery image URLs, cost price, tax rate, package type, shipping class, fragile flag, weight, and package dimensions. Product edit mode fetches the full backend product detail so saved media and delivery fields reload correctly.
+- Product images are URL-only for now; no multipart file upload endpoint is active.
+- Categories now support `phoneModels`, letting each case style store phone names such as iPhone 16 Pro or Samsung S25 Ultra.
+- Product backend model, validation, and admin form response mapping now include media/gallery, pricing/tax, and shipping/delivery fields needed by the admin frontend.
+- Simplified auth after implementation feedback: admin/customer login now returns a single access token, frontend stores the admin token in `localStorage`, and API requests send `Authorization: Bearer <token>`. Refresh-token cookies, refresh routes, and Redis-backed refresh sessions are no longer part of the active implementation.
 - Phase 1 foundation scaffold has been created in `backend/src`.
 - Added `package.json` with the initial runtime dependencies required for the backend foundation.
 - Added Zod-based environment validation in `src/config/env.schema.js`.
@@ -54,6 +59,17 @@
 - Customer cart service/controller/routes under `/api/customer/cart/*`.
 - Checkout flow now re-validates live stock, snapshots line items, computes subtotal/tax/shipping totals, creates a pending order, reserves stock, increments product unfulfilled counts, and clears the customer cart.
 - Customer detail responses now read order history from the real order repository rather than a placeholder stub.
+- Added admin orders and minimal payment foundations:
+- Admin order repository, validators, service, controller, and routes under `/api/admin/orders/*`.
+- Order list/detail mapping aligned to the current admin Orders table and drawer structure.
+- Strict next-step admin order transitions for confirm, pack, ship, out-for-delivery, deliver, and pending-only cancel flows.
+- Minimal payment service/controller/routes under `/api/storefront/payments/*` for payment-order creation and signature verification.
+- Order model now stores payment gateway references, shipping summary fields, delivery timestamp, and cancellation reason.
+- Added coupons and storefront coupon validation foundations:
+- Coupon constants, model, repository, validator, service, controller, and routes.
+- Admin coupon APIs under `/api/admin/coupons/*` for list/create/update/activate/pause/archive/delete/analytics.
+- Storefront coupon validation endpoint under `/api/storefront/coupons/validate`.
+- Coupon response mapping aligned to the current admin coupon cards, details drawer, and form field names.
 
 ### Verified
 - Syntax-checked `src/app.js`, `src/server.js`, `src/config/env.schema.js`, and `src/shared/app-error.js` with `node --check`.
@@ -61,6 +77,8 @@
 - Syntax-checked selected Phase 3 files: `src/services/category.service.js`, `src/services/product.service.js`, `src/validators/catalog.validator.js`, `src/routes/product.routes.js`, `src/controllers/category.controller.js`, `src/controllers/product.controller.js`, and `src/routes/category.routes.js`.
 - Syntax-checked selected customer-phase files: `src/services/customer.service.js`, `src/controllers/customer.controller.js`, `src/routes/admin-customer.routes.js`, and `src/validators/customer.validator.js`.
 - Syntax-checked cart/checkout files: `src/services/cart.service.js`, `src/models/order.model.js`, `src/routes/cart.routes.js`, and `src/validators/checkout.validator.js`.
+- Syntax-checked orders/payment files: `src/services/order.service.js`, `src/services/payment.service.js`, `src/routes/order.routes.js`, and `src/controllers/order.controller.js`.
+- Syntax-checked coupon files: `src/services/coupon.service.js`, `src\validators\coupon.validator.js`, `src\routes\coupon.routes.js`, and `src\controllers\coupon.controller.js`.
 
 ### Not Yet Started
 - Dependency installation
@@ -76,11 +94,15 @@
 - Cart persistence and merge logic
 - Checkout flow and order creation
 - Guest cart in Redis and guest-to-user cart merge
-- Razorpay checkout order creation and payment verification
-- Full admin Orders module and order state-machine transitions
+- Shiprocket integration and shipping sync/webhooks
+- Dashboard aggregates, notifications, activity log persistence, and search
+- Full Razorpay API integration and webhook processing (current payment layer covers internal order creation and signature verification flow only)
+- Auto-expiry coupon job and per-customer usage tracking
+- Blogs CMS APIs
+- Dashboard summary/chart/best-sellers/recent-activity APIs
 
 ### Next Recommended Phase
-- Implement payment integration and the admin Orders module next, because checkout can now create real pending orders and the next missing layer is payment confirmation plus admin order operations.
+- Implement blogs next, then dashboard/notifications/search, because the admin commerce core is now present and the remaining read-heavy modules can build on the existing entities.
 
 **Audience:** A backend coding agent implementing this from scratch, with no access to prior conversation history.
 

@@ -6,16 +6,10 @@ import {
 } from "../repositories/admin.repository.js";
 import { AuthenticationError, AuthorizationError } from "../shared/app-error.js";
 import { comparePassword } from "../utils/password.js";
-import {
-  clearRefreshCookie,
-  issueAuthTokens,
-  rotateRefreshToken,
-  setRefreshCookie
-} from "./auth-token.service.js";
+import { issueAuthTokens } from "./auth-token.service.js";
 
-const buildAdminAuthPayload = async (admin, res) => {
+const buildAdminAuthPayload = async (admin) => {
   const tokens = await issueAuthTokens({ user: admin, realm: "admin" });
-  setRefreshCookie(res, "admin", tokens.refreshToken);
 
   return {
     accessToken: tokens.accessToken,
@@ -29,7 +23,7 @@ const buildAdminAuthPayload = async (admin, res) => {
   };
 };
 
-const loginAdmin = async ({ email, password, ip, userAgent, res }) => {
+const loginAdmin = async ({ email, password, ip, userAgent }) => {
   const admin = await findAdminByEmailWithPassword(email);
 
   if (!admin) {
@@ -54,22 +48,11 @@ const loginAdmin = async ({ email, password, ip, userAgent, res }) => {
 
   await admin.save();
 
-  return buildAdminAuthPayload(admin, res);
+  return buildAdminAuthPayload(admin);
 };
 
-const refreshAdminSession = async ({ refreshToken, res }) => {
-  const payload = await rotateRefreshToken({ refreshToken, realm: "admin" });
-  const admin = await findAdminById(payload.sub);
-
-  if (!admin || !admin.isActive || admin.tokenVersion !== payload.tokenVersion) {
-    throw new AuthenticationError("Invalid refresh token.");
-  }
-
-  return buildAdminAuthPayload(admin, res);
-};
-
-const logoutAdmin = (res) => {
-  clearRefreshCookie(res, "admin");
+const logoutAdmin = () => {
+  return true;
 };
 
 const registerAdmin = async ({ name, email, passwordHash, role }) => {
@@ -83,7 +66,6 @@ const registerAdmin = async ({ name, email, passwordHash, role }) => {
 
 export {
   loginAdmin,
-  refreshAdminSession,
   logoutAdmin,
   registerAdmin
 };

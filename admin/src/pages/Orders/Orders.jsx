@@ -1,6 +1,6 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { setSearchQuery } from "../../redux/slices/ordersSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchOrders, setSearchQuery } from "../../redux/slices/ordersSlice";
 import OrderStatsRow from "../../components/orders/OrderStatsRow/OrderStatsRow";
 import OrderControlBar from "../../components/orders/OrderControlBar/OrderControlBar";
 import OrdersTable from "../../components/orders/OrdersTable/OrdersTable";
@@ -9,6 +9,13 @@ import styles from "./Orders.module.css";
 
 const Orders = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchOrders());
+    }
+  }, [dispatch, isAuthenticated]);
 
   return (
     <div className={styles.page}>

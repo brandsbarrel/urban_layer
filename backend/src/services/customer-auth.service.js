@@ -5,16 +5,10 @@ import {
 } from "../repositories/customer.repository.js";
 import { AuthenticationError, AuthorizationError, ConflictError } from "../shared/app-error.js";
 import { comparePassword, hashPassword } from "../utils/password.js";
-import {
-  clearRefreshCookie,
-  issueAuthTokens,
-  rotateRefreshToken,
-  setRefreshCookie
-} from "./auth-token.service.js";
+import { issueAuthTokens } from "./auth-token.service.js";
 
-const buildCustomerAuthPayload = async (customer, res) => {
+const buildCustomerAuthPayload = async (customer) => {
   const tokens = await issueAuthTokens({ user: customer, realm: "customer" });
-  setRefreshCookie(res, "customer", tokens.refreshToken);
 
   return {
     accessToken: tokens.accessToken,
@@ -46,7 +40,7 @@ const registerCustomer = async ({ name, email, password }) => {
   });
 };
 
-const loginCustomer = async ({ email, password, res }) => {
+const loginCustomer = async ({ email, password }) => {
   const customer = await findCustomerByEmailWithPassword(email);
 
   if (!customer) {
@@ -66,27 +60,15 @@ const loginCustomer = async ({ email, password, res }) => {
   customer.lastLoginAt = new Date();
   await customer.save();
 
-  return buildCustomerAuthPayload(customer, res);
+  return buildCustomerAuthPayload(customer);
 };
 
-const refreshCustomerSession = async ({ refreshToken, res }) => {
-  const payload = await rotateRefreshToken({ refreshToken, realm: "customer" });
-  const customer = await findCustomerById(payload.sub);
-
-  if (!customer || customer.status === "Deactivated" || customer.tokenVersion !== payload.tokenVersion) {
-    throw new AuthenticationError("Invalid refresh token.");
-  }
-
-  return buildCustomerAuthPayload(customer, res);
-};
-
-const logoutCustomer = (res) => {
-  clearRefreshCookie(res, "customer");
+const logoutCustomer = () => {
+  return true;
 };
 
 export {
   registerCustomer,
   loginCustomer,
-  refreshCustomerSession,
   logoutCustomer
 };

@@ -24,7 +24,7 @@ const MarkShippedModal = ({ orderId }) => {
       setError("Courier Partner and Tracking Number are required.");
       return;
     }
-    dispatch(setShippingInfo({ orderId, carrier: `${courier} (${method})`, trackingNumber: tracking }));
+    dispatch(setShippingInfo({ orderId, carrier: courier, trackingNumber: tracking, shippingMethod: method }));
     dispatch(advanceStatus({ orderId, timelineNote: `Carrier: ${courier} (Tracking: ${tracking})` }));
     dispatch(closeShipModal());
     setCourier("");

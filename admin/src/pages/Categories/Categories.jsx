@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { MdUpload, MdDownload, MdAdd } from "react-icons/md";
-import { openDrawer } from "../../redux/slices/categoriesSlice";
+import { fetchCategories, openDrawer } from "../../redux/slices/categoriesSlice";
 import CategoryStatsRow from "../../components/categories/CategoryStatsRow/CategoryStatsRow";
 import CategoryToolbar from "../../components/categories/CategoryToolbar/CategoryToolbar";
 import CategoriesTable from "../../components/categories/CategoriesTable/CategoriesTable";
@@ -11,6 +11,13 @@ import styles from "./Categories.module.css";
 
 const Categories = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, isAuthenticated]);
 
   return (
     <div className={styles.page}>

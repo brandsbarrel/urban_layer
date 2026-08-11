@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   MdDashboard,
@@ -16,11 +16,9 @@ import {
   MdClose,
 } from "react-icons/md";
 import { closeSidebar } from "../../../redux/slices/uiSlice";
+import { logout } from "../../../redux/slices/authSlice";
 import styles from "./Sidebar.module.css";
 
-// Canonical sidebar order per the Admin Panel workflow (Section 1):
-// Dashboard, Products, Categories, Orders, Customers, Coupons & Offers,
-// Blogs, Settings, Profile, Logout.
 const navItems = [
   { to: "/", label: "Dashboard", icon: MdDashboard, end: true },
   { to: "/products", label: "Products", icon: MdInventory2 },
@@ -31,31 +29,31 @@ const navItems = [
   { to: "/blogs", label: "Blogs", icon: MdArticle },
 ];
 
-const accountItems = [
+const accountLinks = [
   { to: "/settings", label: "Settings", icon: MdSettings },
   { to: "/profile", label: "Profile", icon: MdAccountCircle },
-  { to: "/login", label: "Logout", icon: MdLogout },
 ];
 
 const Sidebar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const sidebarOpen = useSelector((state) => state.ui.sidebarOpen);
 
   const linkClass = ({ isActive }) =>
     isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
 
+  const handleLogout = async () => {
+    await dispatch(logout());
+    dispatch(closeSidebar());
+    navigate("/login", { replace: true });
+  };
+
   return (
     <>
       {sidebarOpen && (
-        <div
-          className={styles.overlay}
-          onClick={() => dispatch(closeSidebar())}
-          aria-hidden="true"
-        />
+        <div className={styles.overlay} onClick={() => dispatch(closeSidebar())} aria-hidden="true" />
       )}
-      <aside
-        className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}
-      >
+      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ""}`}>
         <div className={styles.brandRow}>
           <div>
             <h1 className={styles.brandTitle}>Urban Layers Co.</h1>
@@ -86,7 +84,7 @@ const Sidebar = () => {
 
           <div className={styles.accountSection}>
             <p className={styles.accountLabel}>Account</p>
-            {accountItems.map(({ to, label, icon: Icon }) => (
+            {accountLinks.map(({ to, label, icon: Icon }) => (
               <NavLink
                 key={to}
                 to={to}
@@ -97,6 +95,10 @@ const Sidebar = () => {
                 <span>{label}</span>
               </NavLink>
             ))}
+            <button type="button" className={styles.navLink} onClick={handleLogout}>
+              <MdLogout className={styles.navIcon} />
+              <span>Logout</span>
+            </button>
           </div>
         </nav>
 

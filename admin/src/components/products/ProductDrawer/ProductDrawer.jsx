@@ -44,9 +44,9 @@ const ProductDrawer = () => {
               <div className={styles.infoSection}>
                 <div className={styles.infoTop}>
                   <div>
-                    <span className={styles.collectionLabel}>
-                      {product.collectionLabel}
-                    </span>
+                  <span className={styles.collectionLabel}>
+                      {product.phoneModel || product.collectionLabel}
+                  </span>
                     <h4 className={styles.productName}>{product.name}</h4>
                   </div>
                   <span className={styles.price}>

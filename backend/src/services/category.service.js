@@ -27,6 +27,7 @@ const mapCategoryToAdminListItem = (category) => {
     seoScore: category.seoScore,
     status: category.status,
     image: category.image || "",
+    phoneModels: category.phoneModels || [],
     parentId: category.parent?._id?.toString() || null,
     description: category.description,
     seoTitle: category.seoTitle,

@@ -91,6 +91,14 @@
   color: var(--color-secondary-fixed-dim);
   border-left: 2px solid transparent;
   transition: background-color 0.15s ease, color 0.15s ease;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
 }
 
 .navLink:hover {
