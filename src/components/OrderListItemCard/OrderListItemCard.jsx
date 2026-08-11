@@ -152,7 +152,7 @@ function OrderListItemCard({ order, variant }) {
                 </div>
             </div>
             <div className={styles.footer}>
-                <Link to="/track-order" className={styles.trackButton}>
+                <Link to={`/track-order?order=${order.id}`} className={styles.trackButton}>
                     Track Order
                 </Link>
                 <Link to={`/account/orders/${order.id}`} className={styles.detailsButton}>

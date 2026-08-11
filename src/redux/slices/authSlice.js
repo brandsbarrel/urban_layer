@@ -1,19 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Demo user pre-populated (jaise cart/wishlist mein bhi demo data hai) —
-// taaki Account Dashboard bina real login ke bhi turant dekha ja sake.
 const initialState = {
   user: {
     id: 'usr_demo',
     name: 'Aniket',
-    email: 'aniket@example.com',
+    fullName: 'Aniket Sharma',
+    email: 'aniket.s@urbanlayers.co',
+    phone: '+91 98765 43210',
+    currency: 'INR',
+    language: 'EN',
+    memberSince: 'Jan 2024',
+    location: 'Gurugram, India',
     tier: 'Gold',
     nextTier: 'Platinum',
     tierProgress: 75,
     pointsToNextTier: 550,
     rewardPoints: 2450,
     activeCoupons: 3,
+    profileCompletion: 85,
     avatarInitial: 'A',
+    communicationPrefs: {
+      emailUpdates: true,
+      smsNotifications: true,
+      whatsappConcierge: false,
+    },
   },
   isAuthenticated: true,
   status: 'idle',
@@ -59,6 +69,19 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = { isGuest: true };
     },
+    updateProfile(state, action) {
+      if (state.user) {
+        state.user = { ...state.user, ...action.payload };
+      }
+    },
+    updateCommunicationPrefs(state, action) {
+      if (state.user) {
+        state.user.communicationPrefs = {
+          ...state.user.communicationPrefs,
+          ...action.payload,
+        };
+      }
+    },
   },
 });
 
@@ -71,6 +94,8 @@ export const {
   registerFailure,
   logout,
   continueAsGuest,
+  updateProfile,
+  updateCommunicationPrefs,
 } = authSlice.actions;
 export const selectAuth = (state) => state.auth;
 export default authSlice.reducer;

@@ -1,0 +1,12 @@
+.section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-gutter);
+    margin-bottom: var(--spacing-unit-xl);
+}
+
+@media (min-width: 768px) {
+    .section {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

@@ -1,0 +1,14 @@
+.section {
+  max-width: var(--spacing-container-max);
+  margin: -96px auto 0;
+  padding: 0 var(--spacing-margin-mobile);
+  position: relative;
+  z-index: 2;
+  scroll-margin-top: 96px;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 0 var(--spacing-margin-desktop);
+  }
+}

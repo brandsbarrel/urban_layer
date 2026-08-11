@@ -1,0 +1,48 @@
+.card {
+  width: 100%;
+  min-height: 380px;
+  border: 2px dashed rgba(207, 196, 197, 0.4);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-unit-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--color-secondary);
+  background-color: rgba(115, 92, 0, 0.05);
+}
+
+.iconCircle {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-container);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-unit-md);
+  transition: all 0.3s ease;
+}
+
+.card:hover .iconCircle {
+  background-color: var(--color-secondary);
+  color: #ffffff;
+}
+
+.heading {
+  composes: text-headline-sm from global;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  composes: text-body-md from global;
+  color: rgba(76, 69, 70, 0.8);
+  max-width: 200px;
+}

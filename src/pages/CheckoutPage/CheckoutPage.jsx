@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import AuthHeader from '../../components/AuthHeader/AuthHeader';
 import MinimalFooter from '../../components/MinimalFooter/MinimalFooter';
 import CheckoutStepper from '../../components/CheckoutStepper/CheckoutStepper';
@@ -6,9 +7,12 @@ import ContactInfoSection from './sections/ContactInfoSection';
 import ShippingAddressSection from './sections/ShippingAddressSection';
 import DeliveryMethodSection from './sections/DeliveryMethodSection';
 import CheckoutOrderSummary from './sections/CheckoutOrderSummary';
+import { selectSelectedCheckoutAddress } from '../../redux/slices/addressesSlice';
 import styles from './CheckoutPage.module.css';
 
 function CheckoutPage() {
+    const selectedAddress = useSelector(selectSelectedCheckoutAddress);
+
     const [contactInfo, setContactInfo] = useState({ email: '', phone: '' });
     const [address, setAddress] = useState({
         fullName: '',
@@ -18,6 +22,20 @@ function CheckoutPage() {
         pinCode: '',
     });
     const [deliveryMethod, setDeliveryMethod] = useState('standard');
+
+    useEffect(() => {
+        if (selectedAddress) {
+            setAddress({
+                fullName: selectedAddress.fullName,
+                street: selectedAddress.street,
+                city: selectedAddress.city,
+                state: selectedAddress.state,
+                pinCode: selectedAddress.pinCode,
+            });
+            setContactInfo((prev) => ({ ...prev, phone: selectedAddress.phone || prev.phone }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className={styles.page}>

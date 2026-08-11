@@ -1,0 +1,50 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.invoiceButton {
+  width: 100%;
+  padding: var(--spacing-unit-md) 0;
+  background-color: var(--color-surface-container);
+  border: 1px solid rgba(207, 196, 197, 0.3);
+  border-radius: var(--radius-xl);
+  composes: text-label-md from global;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.invoiceButton:hover {
+  background-color: var(--color-surface-variant);
+}
+
+.invoiceButton:active {
+  transform: scale(0.95);
+}
+
+.whatsappButton {
+  width: 100%;
+  padding: var(--spacing-unit-md) 0;
+  background-color: rgba(37, 211, 102, 0.1);
+  color: #075e54;
+  border: 1px solid rgba(37, 211, 102, 0.2);
+  border-radius: var(--radius-xl);
+  composes: text-label-md from global;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.whatsappButton:hover {
+  background-color: rgba(37, 211, 102, 0.2);
+}
+
+.whatsappButton:active {
+  transform: scale(0.95);
+}

@@ -1,0 +1,40 @@
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.label {
+    composes: text-label-sm from global;
+    color: var(--color-on-surface-variant);
+}
+
+.selectWrapper {
+    position: relative;
+}
+
+.select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-outline-variant);
+    padding: 8px 24px 8px 0;
+    composes: text-body-md from global;
+    color: var(--color-on-surface);
+    outline: none;
+    appearance: none;
+    transition: border-color 0.2s ease;
+}
+
+.select:focus {
+    border-bottom-color: var(--color-primary);
+}
+
+.icon {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-on-surface-variant);
+    pointer-events: none;
+}

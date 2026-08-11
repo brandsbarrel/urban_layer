@@ -1,0 +1,15 @@
+.section {
+    max-width: var(--spacing-container-max);
+    margin: 0 auto;
+    padding: var(--spacing-unit-xl) var(--spacing-margin-mobile) 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+    .section {
+        padding: var(--spacing-unit-xl) var(--spacing-margin-desktop) 0;
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

@@ -32,10 +32,10 @@ function RecentOrderCard({ order }) {
                     Order #{order.id} • Ordered {orderDate}
                 </p>
                 <div className={styles.actions}>
-                    <Link to="/track-order" className={styles.trackButton}>
+                    <Link to={`/track-order?order=${order.id}`} className={styles.trackButton}>
                         Track Order
                     </Link>
-                    <Link to="/account/orders" className={styles.detailsButton}>
+                    <Link to={`/account/orders/${order.id}`} className={styles.detailsButton}>
                         View Details
                     </Link>
                 </div>

@@ -25,7 +25,7 @@ function OrderSuccessSummary({ order }) {
             <PriceBreakdownList lines={lines} total={`₹${total.toLocaleString('en-IN')}`} />
 
             <div className={styles.actions}>
-                <Link to="/track-order" className={styles.trackButton}>
+                <Link to={`/track-order?order=${order.id}`} className={styles.trackButton}>
                     Track My Order
                 </Link>
                 <Link to="/shop" className={styles.continueButton}>

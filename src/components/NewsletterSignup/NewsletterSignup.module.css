@@ -168,3 +168,93 @@
   composes: text-body-md from global;
   color: var(--color-secondary-fixed);
 }
+
+.darkWrapperSplit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-unit-lg);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .darkWrapperSplit {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    gap: var(--spacing-unit-xl);
+  }
+}
+
+.darkTextBlockSplit {
+  max-width: 28rem;
+}
+
+.darkFormSplit {
+  width: 100%;
+  display: flex;
+  gap: var(--spacing-unit-sm);
+}
+
+@media (min-width: 768px) {
+  .darkFormSplit {
+    max-width: 24rem;
+  }
+}
+
+.editorialWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+.editorialTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 600;
+  color: var(--color-on-background);
+}
+
+.editorialSubtitle {
+  composes: text-body-lg from global;
+  color: var(--color-on-surface-variant);
+  max-width: 28rem;
+  margin-bottom: var(--spacing-unit-sm);
+}
+
+.editorialForm {
+  display: flex;
+  gap: var(--spacing-unit-md);
+}
+
+.editorialInput {
+  flex: 1;
+  background-color: var(--color-surface-container-low);
+  border: none;
+  border-bottom: 1px solid var(--color-primary);
+  padding: var(--spacing-unit-md) 0;
+  composes: text-body-md from global;
+  outline: none;
+}
+
+.editorialButton {
+  composes: text-label-md from global;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: var(--spacing-unit-md) var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: opacity 0.2s ease;
+}
+
+.editorialButton:hover {
+  opacity: 0.9;
+}
+
+.editorialSuccess {
+  composes: text-body-md from global;
+  color: var(--color-secondary);
+}

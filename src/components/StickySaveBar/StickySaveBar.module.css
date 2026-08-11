@@ -1,0 +1,53 @@
+.bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 150;
+    background-color: rgba(251, 249, 249, 0.8);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(207, 196, 197, 0.3);
+    padding: 16px 0;
+}
+
+.inner {
+    max-width: var(--spacing-container-max);
+    margin: 0 auto;
+    padding: 0 var(--spacing-margin-mobile);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 768px) {
+    .inner {
+        padding: 0 var(--spacing-margin-desktop);
+    }
+}
+
+.savedText {
+    display: none;
+    composes: text-label-sm from global;
+    color: var(--color-on-surface-variant);
+}
+
+@media (min-width: 768px) {
+    .savedText {
+        display: block;
+    }
+}
+
+.saveButton {
+    composes: text-label-md from global;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    padding: 12px var(--spacing-unit-lg);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.saveButton:active {
+    transform: scale(0.95);
+}
