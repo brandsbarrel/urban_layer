@@ -1,7 +1,6 @@
 .page {
   padding-top: var(--spacing-unit-xl);
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 .layout {
@@ -22,7 +21,7 @@
 
 .main {
   flex: 1;
-  min-width: 0; /* CRITICAL: flex item ko sidebar ke bahar overflow karne se rokta hai */
+  min-width: 0;
   padding: 0 var(--spacing-margin-mobile) var(--spacing-unit-xl);
 }
 

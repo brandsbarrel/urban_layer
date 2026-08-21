@@ -1,0 +1,78 @@
+.sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+    position: sticky;
+    top: 96px;
+    height: fit-content;
+  }
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  color: var(--color-on-surface-variant);
+  composes: text-label-md from global;
+  transition: background-color 0.3s ease;
+}
+
+.link:hover {
+  background-color: var(--color-surface-container-low);
+  color: var(--color-primary);
+}
+
+.linkActive {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.promoCard {
+  margin-top: var(--spacing-unit-xl);
+  padding: var(--spacing-unit-md);
+  background-color: rgba(254, 214, 91, 0.1);
+  border: 1px solid rgba(115, 92, 0, 0.2);
+  border-radius: var(--radius-xl);
+}
+
+.promoLabel {
+  composes: text-label-sm from global;
+  color: var(--color-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.promoText {
+  composes: text-label-md from global;
+  color: var(--color-on-surface-variant);
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.promoButton {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 8px 0;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  composes: text-label-md from global;
+  transition: opacity 0.2s ease;
+}
+
+.promoButton:hover {
+  opacity: 0.9;
+}

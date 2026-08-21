@@ -1,0 +1,25 @@
+.section {
+    padding: var(--spacing-unit-xl) var(--spacing-margin-mobile);
+    max-width: var(--spacing-container-max);
+    margin: 0 auto;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .section {
+        padding: 96px var(--spacing-margin-desktop);
+    }
+}
+
+.heading {
+    composes: text-display-lg from global;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-unit-md);
+}
+
+.subtitle {
+    composes: text-body-lg from global;
+    color: var(--color-on-surface-variant);
+    max-width: 42rem;
+    margin: 0 auto var(--spacing-unit-xl);
+}

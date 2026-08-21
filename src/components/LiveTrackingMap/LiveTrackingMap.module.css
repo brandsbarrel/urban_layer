@@ -1,0 +1,146 @@
+.wrapper {
+  position: relative;
+  background-color: var(--color-surface-container-lowest);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(207, 196, 197, 0.1);
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+  opacity: 0.4;
+}
+
+.gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--color-surface-container-lowest), transparent);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: var(--spacing-unit-lg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 400px;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.liveBadge {
+  background-color: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+}
+
+.staticBadge {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: var(--radius-lg);
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+}
+
+.pulseWrapper {
+  position: relative;
+  display: inline-flex;
+  height: 8px;
+  width: 8px;
+}
+
+.pulseRing {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  background-color: var(--color-secondary);
+  opacity: 0.75;
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.pulseDot {
+  position: relative;
+  border-radius: var(--radius-full);
+  height: 8px;
+  width: 8px;
+  background-color: var(--color-secondary);
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.fullscreenButton {
+  background-color: rgba(251, 249, 249, 0.8);
+  backdrop-filter: blur(4px);
+  padding: 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(207, 196, 197, 0.2);
+  color: var(--color-primary);
+  transition: background-color 0.2s ease;
+}
+
+.fullscreenButton:hover {
+  background-color: var(--color-surface-container-lowest);
+}
+
+.checkpointCard {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  padding: var(--spacing-unit-md);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(207, 196, 197, 0.1);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+  max-width: 24rem;
+}
+
+.checkpointIcon {
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-surface-container-high);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-secondary);
+  flex-shrink: 0;
+}
+
+.checkpointLabel {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+}
+
+.checkpointValue {
+  composes: text-body-md from global;
+  font-weight: 600;
+  color: var(--color-primary);
+}

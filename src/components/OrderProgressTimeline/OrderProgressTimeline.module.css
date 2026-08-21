@@ -1,0 +1,94 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-lg);
+}
+
+.item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-unit-md);
+  padding-left: 4px;
+}
+
+.connector {
+  position: absolute;
+  left: 11px;
+  top: 24px;
+  bottom: -24px;
+  width: 1px;
+  background-color: rgba(207, 196, 197, 0.4);
+}
+
+.dotCompleted {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.dotCurrentWrapper {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: -2px;
+  border-radius: var(--radius-full);
+  background-color: rgba(233, 195, 73, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.dotCurrent {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-secondary);
+  box-shadow: 0 0 8px rgba(115, 92, 0, 0.5);
+}
+
+.dotPending {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-outline-variant);
+  background-color: var(--color-surface);
+  z-index: 1;
+}
+
+.pendingText {
+  opacity: 0.4;
+}
+
+.label {
+  composes: text-label-md from global;
+  color: var(--color-on-surface-variant);
+}
+
+.labelCurrent {
+  composes: text-label-md from global;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.date {
+  composes: text-label-sm from global;
+  color: rgba(76, 69, 70, 0.7);
+}
+
+.dateCurrent {
+  composes: text-label-sm from global;
+  color: var(--color-secondary);
+  font-weight: 500;
+}

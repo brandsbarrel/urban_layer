@@ -1,0 +1,15 @@
+.section {
+    max-width: var(--spacing-container-max);
+    margin: 0 auto;
+    padding: var(--spacing-unit-xl) var(--spacing-margin-mobile);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+    .section {
+        padding: var(--spacing-unit-xl) var(--spacing-margin-desktop);
+        flex-direction: row;
+    }
+}

@@ -1,0 +1,67 @@
+.card {
+  flex: 1;
+  background-color: var(--color-surface-container-low);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-unit-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 48px;
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-bottom: var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.label {
+  composes: text-label-sm from global;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.title {
+  composes: text-headline-sm from global;
+  margin-bottom: var(--spacing-unit-md);
+}
+
+.excerpt {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.ctaButton {
+  margin-top: auto;
+  composes: text-label-md from global;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 12px 32px;
+  border-radius: var(--radius-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+}
+
+.ctaButton:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}

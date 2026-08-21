@@ -2,12 +2,23 @@ import { useState } from 'react';
 import { subscribeToNewsletter } from '../../services/newsletterService';
 import styles from './NewsletterSignup.module.css';
 
-function NewsletterSignup({ variant = 'full', bannerHeading, bannerText }) {
+function NewsletterSignup({
+  variant = 'full',
+  bannerHeading,
+  bannerText,
+  darkHeading,
+  darkSubtitle,
+  darkLayout = 'center',
+  editorialHeading,
+  editorialSubtitle,
+  editorialCtaLabel = 'Join',
+}) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('idle');
   const isCompact = variant === 'compact';
   const isBanner = variant === 'banner';
   const isDark = variant === 'dark';
+  const isEditorial = variant === 'editorial';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,26 +58,61 @@ function NewsletterSignup({ variant = 'full', bannerHeading, bannerText }) {
   }
 
   if (isDark) {
+    const heading = darkHeading || 'Join the Inner Circle';
+    const subtitle =
+      darkSubtitle || 'Be the first to access limited collections and exclusive bespoke drops.';
+    const isSplit = darkLayout === 'split';
+
     return (
-      <div className={styles.darkWrapper}>
-        <h2 className={styles.darkTitle}>Join the Inner Circle</h2>
-        <p className={styles.darkSubtitle}>
-          Be the first to access limited collections and exclusive bespoke drops.
-        </p>
+      <div className={isSplit ? styles.darkWrapperSplit : styles.darkWrapper}>
+        <div className={isSplit ? styles.darkTextBlockSplit : undefined}>
+          <h2 className={styles.darkTitle}>{heading}</h2>
+          <p className={styles.darkSubtitle}>{subtitle}</p>
+        </div>
+
         {status === 'success' ? (
           <p className={styles.darkSuccess}>🎉 You're in! Check your inbox for confirmation.</p>
         ) : (
-          <form className={styles.darkForm} onSubmit={handleSubmit}>
+          <form
+            className={isSplit ? styles.darkFormSplit : styles.darkForm}
+            onSubmit={handleSubmit}
+          >
+            <input
+              type="email"
+              required
+              placeholder="Your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.darkInput}
+            />
+            <button type="submit" className={styles.darkButton} disabled={status === 'loading'}>
+              {status === 'loading' ? 'Joining...' : 'Join'}
+            </button>
+          </form>
+        )}
+      </div>
+    );
+  }
+
+  if (isEditorial) {
+    return (
+      <div className={styles.editorialWrapper}>
+        <h2 className={styles.editorialTitle}>{editorialHeading}</h2>
+        <p className={styles.editorialSubtitle}>{editorialSubtitle}</p>
+        {status === 'success' ? (
+          <p className={styles.editorialSuccess}>🎉 You're subscribed! Check your inbox.</p>
+        ) : (
+          <form className={styles.editorialForm} onSubmit={handleSubmit}>
             <input
               type="email"
               required
               placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={styles.darkInput}
+              className={styles.editorialInput}
             />
-            <button type="submit" className={styles.darkButton} disabled={status === 'loading'}>
-              {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+            <button type="submit" className={styles.editorialButton} disabled={status === 'loading'}>
+              {status === 'loading' ? 'Joining...' : editorialCtaLabel}
             </button>
           </form>
         )}

@@ -19,7 +19,14 @@ import LoginPage from '../pages/LoginPage/LoginPage';
 import RegisterPage from '../pages/RegisterPage/RegisterPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage/ForgotPasswordPage';
 import CheckoutPage from '../pages/CheckoutPage/CheckoutPage';
-
+// import TrackOrderPage from '../pages/TrackOrderPage/TrackOrderPage';
+// import OrderDetailPage from '../pages/OrderDetailPage/OrderDetailPage';
+// import AddressesPage from '../pages/AddressesPage/AddressesPage';
+// import SettingsPage from '../pages/SettingsPage/SettingsPage';
+// import ContactPage from '../pages/ContactPage/ContactPage';
+// import FAQPage from '../pages/FAQPage/FAQPage';
+// import JournalPage from '../pages/JournalPage/JournalPage';
+// import JournalArticleDetailPage from '../pages/JournalArticleDetailPage/JournalArticleDetailPage';
 function AppRoutes() {
   return (
     <Routes>

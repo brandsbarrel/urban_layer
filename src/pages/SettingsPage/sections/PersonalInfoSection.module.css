@@ -1,0 +1,96 @@
+.section {
+  background-color: var(--color-surface);
+  padding: var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--color-surface-container);
+  scroll-margin-top: 96px;
+}
+
+.heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-xl);
+}
+
+@media (min-width: 768px) {
+  .layout {
+    flex-direction: row;
+  }
+}
+
+.photoColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+  flex-shrink: 0;
+}
+
+.photoWrapper {
+  width: 128px;
+  height: 128px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--color-outline-variant);
+  background-color: var(--color-surface-container-low);
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoActions {
+  display: flex;
+  gap: var(--spacing-unit-sm);
+}
+
+.uploadButton {
+  composes: text-label-sm from global;
+  padding: 8px 16px;
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radius-lg);
+  transition: background-color 0.2s ease;
+}
+
+.uploadButton:hover {
+  background-color: var(--color-surface-container);
+}
+
+.removeButton {
+  composes: text-label-sm from global;
+  color: var(--color-error);
+  padding: 8px 4px;
+}
+
+.removeButton:hover {
+  text-decoration: underline;
+}
+
+.formGrid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-gutter) var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+  .formGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.selectRow {
+  display: flex;
+  gap: var(--spacing-unit-md);
+}

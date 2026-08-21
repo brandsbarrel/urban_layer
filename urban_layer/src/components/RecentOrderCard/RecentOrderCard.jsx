@@ -35,7 +35,7 @@ function RecentOrderCard({ order }) {
                     <Link to={`/track-order/${order.id}`} className={styles.trackButton}>
                         Track Order
                     </Link>
-                    <Link to="/account/orders" className={styles.detailsButton}>
+                    <Link to={`/account/orders/${order.id}`} className={styles.detailsButton}>
                         View Details
                     </Link>
                 </div>
