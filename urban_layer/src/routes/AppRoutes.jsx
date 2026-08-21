@@ -23,9 +23,9 @@ import CheckoutPage from '../pages/CheckoutPage/CheckoutPage';
 // import AddressesPage from '../pages/AddressesPage/AddressesPage';
 // import SettingsPage from '../pages/SettingsPage/SettingsPage';
 // import ContactPage from '../pages/ContactPage/ContactPage';
-import FAQPage from '../pages/FAQPage/FAQPage';
-import JournalPage from '../pages/JournalPage/JournalPage';
-import JournalArticleDetailPage from '../pages/JournalArticleDetailPage/JournalArticleDetailPage';
+// import FAQPage from '../pages/FAQPage/FAQPage';
+// import JournalPage from '../pages/JournalPage/JournalPage';
+// import JournalArticleDetailPage from '../pages/JournalArticleDetailPage/JournalArticleDetailPage';
 function AppRoutes() {
   return (
     <Routes>
@@ -41,9 +41,9 @@ function AppRoutes() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/order-success" element={<OrderSuccessPage />} />
         {/* <Route path="/contact" element={<ContactPage />} /> */}
-        <Route path="/faq" element={<FAQPage />} />
-        <Route path="/journal" element={<JournalPage />} />
-        <Route path="/journal/:slug" element={<JournalArticleDetailPage />} />
+        {/* <Route path="/faq" element={<FAQPage />} /> */}
+        {/* <Route path="/journal" element={<JournalPage />} /> */}
+        {/* <Route path="/journal/:slug" element={<JournalArticleDetailPage />} /> */}
 
         <Route element={<AccountLayout />}>
           <Route path="/account" element={<AccountPage />} />
