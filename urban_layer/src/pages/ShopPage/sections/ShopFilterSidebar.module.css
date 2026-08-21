@@ -5,6 +5,34 @@
   gap: var(--spacing-unit-lg);
 }
 
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filterTitle {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: 600;
+  color: var(--color-text-primary, #111);
+  letter-spacing: -0.01em;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: var(--color-accent-gold, #c5a059);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.clearButton:hover {
+  opacity: 0.8;
+}
+
 @media (min-width: 768px) {
   .sidebar {
     grid-column: span 3 / span 3;

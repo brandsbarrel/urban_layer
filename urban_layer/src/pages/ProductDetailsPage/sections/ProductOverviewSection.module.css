@@ -1,16 +1,17 @@
 .section {
-  max-width: var(--spacing-container-max);
+  position: relative;
+  max-width: var(--spacing-container-max, 1280px);
   margin: 0 auto;
-  padding: 0 var(--spacing-margin-mobile);
+  padding: 0 var(--spacing-margin-mobile, 16px);
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--spacing-gutter);
+  gap: 32px;
   align-items: start;
 }
 
 @media (min-width: 768px) {
   .section {
-    padding: 0 var(--spacing-margin-desktop);
+    padding: 0 var(--spacing-margin-desktop, 32px);
   }
 }
 
@@ -20,108 +21,379 @@
   }
 }
 
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: #111;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .infoColumn {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-unit-lg);
+  gap: 20px;
 }
 
 .headerBlock {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+}
+
+.stockBadgeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stockDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+  animation: pulseGreen 2s infinite;
+}
+
+.stockDotOut {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ef4444;
+}
+
+@keyframes pulseGreen {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.stockText {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #16a34a;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.stockTextOut {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #dc2626;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .title {
-  font-family: 'Playfair Display', serif;
-  font-size: 32px;
-  line-height: 40px;
-  font-weight: 600;
-  color: var(--color-primary);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  line-height: 2.4rem;
+  font-weight: 700;
+  color: var(--color-primary, #111);
 }
 
-.tagline {
-  composes: text-body-lg from global;
-  color: var(--color-on-surface-variant);
-  font-style: italic;
-  font-weight: 300;
-}
-
-.ratingRow {
+.compatibilityLine {
   display: flex;
   align-items: center;
-  gap: var(--spacing-unit-sm);
-  padding-top: 8px;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin-top: 2px;
 }
 
-.starRow {
+.categoryBadgeRow {
   display: flex;
-  gap: 2px;
-  color: var(--color-secondary);
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
 }
 
-.ratingText {
-  composes: text-label-md from global;
-  color: var(--color-on-surface-variant);
+.categoryIcon {
+  color: #6b7280;
+}
+
+.categoryTag {
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.categoryTag:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 4px;
 }
 
 .price {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
-  line-height: 32px;
-  font-weight: 600;
-  color: var(--color-primary);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-primary, #111);
+}
+
+.originalPrice {
+  font-size: 1.1rem;
+  color: #888;
+  text-decoration: line-through;
+}
+
+.discountBadge {
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.descriptionBox {
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.descriptionText p {
+  margin-bottom: 8px;
+}
+
+.descriptionText p:last-child {
+  margin-bottom: 0;
 }
 
 .optionsBlock {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-unit-md);
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.quantitySection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.quantityLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .actions {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-unit-sm);
-  padding-top: var(--spacing-unit-md);
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
 }
 
 .addToCartButton {
-  width: 100%;
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
-  padding: 20px 0;
-  border-radius: var(--radius-xl);
-  composes: text-title-lg from global;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--color-primary, #111);
+  color: #fff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.addToCartButton:hover {
-  opacity: 0.9;
+.addToCartButton:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
-.addToCartButton:active {
-  transform: scale(0.98);
+.addToCartButton:hover:not(:disabled) {
+  background-color: #222;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .buyNowButton {
-  width: 100%;
-  border: 2px solid var(--color-secondary);
-  color: var(--color-primary);
-  padding: 20px 0;
-  border-radius: var(--radius-xl);
-  composes: text-title-lg from global;
-  transition: background-color 0.2s ease;
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #c5a059;
+  color: #fff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.buyNowButton:hover {
-  background-color: rgba(115, 92, 0, 0.05);
+.buyNowButton:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
-.featureList {
+.buyNowButton:hover:not(:disabled) {
+  background-color: #b38e47;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(197, 160, 89, 0.3);
+}
+
+.wishlistButton {
+  flex: 0 0 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f7;
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.wishlistButton:hover {
+  background-color: #eee;
+  border-color: #ccc;
+}
+
+.wishlisted {
+  background-color: #fff0f0;
+  border-color: #fca5a5;
+}
+
+.guaranteeBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f9f9fb;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #efeff4;
+  font-size: 0.82rem;
+  color: #444;
+  font-weight: 500;
+}
+
+.specsCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-unit-md);
-  padding-top: var(--spacing-unit-lg);
-  border-top: 1px solid var(--color-outline-variant);
+  gap: 14px;
+}
+
+.specsTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.specsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+}
+
+@media (max-width: 480px) {
+  .specsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.specItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.specLabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.specValue {
+  font-size: 0.9rem;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.tagsRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.tagIcon {
+  color: #9ca3af;
+}
+
+.tagChip {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
 }

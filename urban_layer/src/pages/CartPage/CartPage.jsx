@@ -1,12 +1,41 @@
-import { useSelector } from 'react-redux';
-import { selectCartItems } from '../../redux/slices/cartSlice';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCartItems, selectCartLoading, selectCartError, fetchCart } from '../../redux/slices/cartSlice';
 import CartItemsSection from './sections/CartItemsSection';
 import OrderSummarySection from './sections/OrderSummarySection';
 import styles from './CartPage.module.css';
 
 function CartPage() {
+    const dispatch = useDispatch();
     const items = useSelector(selectCartItems);
+    const loading = useSelector(selectCartLoading);
+    const error = useSelector(selectCartError);
     const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+
+    useEffect(() => {
+        dispatch(fetchCart());
+    }, [dispatch]);
+
+    if (loading && items.length === 0) {
+        return (
+            <div className={styles.page}>
+                <div className={styles.loading}>Loading cart...</div>
+            </div>
+        );
+    }
+
+    if (error && items.length === 0) {
+        return (
+            <div className={styles.page}>
+                <div className={styles.error}>
+                    <p className={styles.errorText}>{error}</p>
+                    <button onClick={() => dispatch(fetchCart())} className={styles.retryButton}>
+                        Retry
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.page}>

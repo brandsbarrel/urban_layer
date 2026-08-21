@@ -86,10 +86,10 @@ const productSchema = new mongoose.Schema(
       unique: true,
       trim: true
     },
-    phoneModel: {
-      type: String,
+    phoneModelId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "PhoneModel",
       required: true,
-      trim: true
     },
     shortDescription: {
       type: String,
@@ -235,7 +235,8 @@ const productSchema = new mongoose.Schema(
 
 productSchema.index({ slug: 1 }, { unique: true });
 productSchema.index({ sku: 1 }, { unique: true });
-productSchema.index({ name: "text", sku: "text", phoneModel: "text", tags: "text" });
+productSchema.index({ name: "text", sku: "text", tags: "text" });
+productSchema.index({ phoneModelId: 1 });
 
 const ProductModel = mongoose.model("Product", productSchema);
 

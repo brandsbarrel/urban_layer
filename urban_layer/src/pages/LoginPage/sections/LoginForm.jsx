@@ -15,6 +15,7 @@ import {
 import { loginUser } from '../../../services/authService';
 import styles from './LoginForm.module.css';
 
+
 const LOGO_IMAGE =
     'https://lh3.googleusercontent.com/aida/AP1WRLuM8MJ3KmurenQcOLHRpiykXhdIlUWmGH2uIzgwngzBiE_pmX-vaLFNFgPrYhPkk_7GphrkrQcKij7hhHljKNqd5adJpgSv3HSQHWhH6IdyWyO3EdW8OyXnaLS2XamQr3NbqnULxKlan16wXIxek9BaWePbDfIYO2jOI9sWCGivl3t2U8QwE888AaxW5tHq1m9rzHH3d9Rx6jR-flBS-9R88oLeKr2CscYlmsr2IEv0lcHrlxyN4FhH7w';
 
@@ -34,16 +35,23 @@ function LoginForm() {
     const [rememberMe, setRememberMe] = useState(false);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        dispatch(loginStart());
-        try {
-            const user = await loginUser({ email, password });
-            dispatch(loginSuccess(user));
-            navigate('/');
-        } catch (err) {
-            dispatch(loginFailure(err.message));
-        }
-    };
+    e.preventDefault();
+
+    dispatch(loginStart());
+
+    try {
+        const customer = await loginUser({
+            email,
+            password,
+        });
+
+        dispatch(loginSuccess(customer));
+
+        navigate("/");
+    } catch (err) {
+        dispatch(loginFailure(err.message));
+    }
+};
 
     const handleGuest = () => {
         dispatch(continueAsGuest());

@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Products from "./pages/Products/Products";
 import ProductForm from "./pages/ProductForm/ProductForm";
 import Categories from "./pages/Categories/Categories";
+import PhoneModels from "./pages/PhoneModels/PhoneModels";
 import Orders from "./pages/Orders/Orders";
 import Customers from "./pages/Customers/Customers";
 import Coupons from "./pages/Coupons/Coupons";
@@ -54,6 +55,7 @@ const App = () => {
                 <Route path="/products/new" element={<ProductForm />} />
                 <Route path="/products/edit/:id" element={<ProductForm />} />
                 <Route path="/categories" element={<Categories />} />
+                <Route path="/phone-models" element={<PhoneModels />} />
                 <Route
                   path="/categories/edit/:id"
                   element={<ComingSoon featureName="Edit Category" />}

@@ -2,17 +2,20 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { MdVerified, MdReplay, MdDownload, MdChevronRight } from 'react-icons/md';
 import MiniOrderTimeline from '../MiniOrderTimeline/MiniOrderTimeline';
-import { addToCart } from '../../redux/slices/cartSlice';
+import { addToCartAsync } from '../../redux/slices/cartSlice';
 import { formatOrderDate } from '../../utils/orderHelpers';
 import styles from './OrderListItemCard.module.css';
 
 function OrderListItemCard({ order, variant }) {
     const dispatch = useDispatch();
-    const primaryItem = order.items[0];
+    if (!order) return null;
+    const primaryItem = order.items?.[0] || { name: 'Product', quantity: 1, image: '' };
 
     const handleBuyAgain = () => {
-        order.items.forEach((item) => {
-            dispatch(addToCart({ id: item.id, name: item.name, price: item.price, image: item.image }));
+        (order.items || []).forEach((item) => {
+            if (item) {
+                dispatch(addToCartAsync({ productId: item.id || item.productId, quantity: item.quantity || 1 }));
+            }
         });
     };
 
@@ -44,7 +47,7 @@ function OrderListItemCard({ order, variant }) {
                     <div className={styles.compactInfo}>
                         <h3 className={styles.itemTitle}>{primaryItem.name}</h3>
                         <p className={styles.itemMeta}>
-                            Quantity: {primaryItem.quantity} • Total: ₹{order.totals.total.toLocaleString('en-IN')}
+                            Quantity: {primaryItem.quantity} • Total: ₹{(order.totals?.total || 0).toLocaleString('en-IN')}
                         </p>
                     </div>
                     <Link
@@ -87,7 +90,7 @@ function OrderListItemCard({ order, variant }) {
                             <h3 className={styles.itemTitle}>{primaryItem.name}</h3>
                             <p className={styles.itemMeta}>
                                 Quantity: {primaryItem.quantity} • Total: ₹
-                                {order.totals.total.toLocaleString('en-IN')}
+                                {(order.totals?.total || 0).toLocaleString('en-IN')}
                             </p>
                             <div className={styles.actionLinks}>
                                 <button type="button" onClick={handleBuyAgain} className={styles.buyAgainLink}>
@@ -102,15 +105,17 @@ function OrderListItemCard({ order, variant }) {
                                 </button>
                             </div>
                         </div>
-                        {order.items.length > 1 && (
+                        {(order.items || []).length > 1 && (
                             <div className={styles.stackedThumbs}>
-                                {order.items.slice(0, 2).map((item) => (
-                                    <div key={item.id} className={styles.thumbAvatar}>
-                                        <img src={item.image} alt={item.name} />
-                                    </div>
+                                {(order.items || []).slice(0, 2).map((item, idx) => (
+                                    item ? (
+                                        <div key={item.id || idx} className={styles.thumbAvatar}>
+                                            <img src={item.image} alt={item.name || ''} />
+                                        </div>
+                                    ) : null
                                 ))}
-                                {order.items.length > 2 && (
-                                    <div className={styles.thumbAvatarMore}>+{order.items.length - 2}</div>
+                                {(order.items || []).length > 2 && (
+                                    <div className={styles.thumbAvatarMore}>+{(order.items || []).length - 2}</div>
                                 )}
                             </div>
                         )}
@@ -146,13 +151,13 @@ function OrderListItemCard({ order, variant }) {
                 <div className={styles.activeInfo}>
                     <h3 className={styles.itemTitle}>{primaryItem.name}</h3>
                     <p className={styles.itemMeta}>
-                        Quantity: {primaryItem.quantity} • Total: ₹{order.totals.total.toLocaleString('en-IN')}
+                        Quantity: {primaryItem.quantity || primaryItem.qty || 1} • Total: ₹{(order.totals?.total ?? order.totalAmount ?? order.amount ?? 0).toLocaleString('en-IN')}
                     </p>
                     <MiniOrderTimeline status={order.status} />
                 </div>
             </div>
             <div className={styles.footer}>
-                <Link to="/track-order" className={styles.trackButton}>
+                <Link to={`/track-order/${order.id}`} className={styles.trackButton}>
                     Track Order
                 </Link>
                 <Link to={`/account/orders/${order.id}`} className={styles.detailsButton}>

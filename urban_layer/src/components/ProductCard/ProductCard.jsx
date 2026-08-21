@@ -2,17 +2,36 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
 import { MdShoppingBag, MdVisibility, MdAddShoppingCart } from 'react-icons/md';
-import { addToCart } from '../../redux/slices/cartSlice';
+import { addToCartAsync } from '../../redux/slices/cartSlice';
 import styles from './ProductCard.module.css';
 
 function ProductCard({ product, variant = 'compact', onQuickView, badgePosition = 'left' }) {
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const productPath = `/product/${product.id}`;
+  const productImage = product.featuredImage || product.image || product.images?.[0] || '';
+  const productPrice = Number(product.price || 0);
+  const originalPrice =
+    product.basePrice && product.basePrice !== productPrice ? product.basePrice : product.originalPrice;
+  const rawCompatibility = product.phoneModel || product.compatibility;
+  const compatibility =
+    typeof rawCompatibility === 'object' && rawCompatibility !== null
+      ? (rawCompatibility.name || rawCompatibility.title || `${rawCompatibility.brand || ''} ${rawCompatibility.name || ''}`.trim())
+      : (rawCompatibility || '');
+  const productPath = `/product/${product.slug || product.id || product._id}`;
 
   const handleAddToCart = () => {
+    const id = product.id || product._id;
     dispatch(
-      addToCart({ id: product.id, name: product.name, price: product.price, image: product.image })
+      addToCartAsync({
+        productId: id,
+        id: id,
+        name: product.name,
+        price: productPrice,
+        image: productImage,
+        subtitle: compatibility || product.category || '',
+        quantity: 1,
+      })
     );
   };
 
@@ -30,7 +49,7 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
         <div className={styles.imageWrapperCornerAdd}>
           {product.badge && <span className={styles.badgeCornerAdd}>{product.badge}</span>}
           <Link to={productPath}>
-            <img src={product.image} alt={product.name} className={styles.image} />
+            <img src={productImage} alt={product.name} className={styles.image} />
           </Link>
           <button
             className={styles.cornerAddButton}
@@ -43,7 +62,7 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
         <Link to={productPath} className={styles.nameCornerAdd}>
           {product.name}
         </Link>
-        <p className={styles.priceCornerAdd}>₹{product.price.toLocaleString('en-IN')}</p>
+        <p className={styles.priceCornerAdd}>₹{productPrice.toLocaleString('en-IN')}</p>
       </div>
     );
   }
@@ -62,7 +81,7 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
             </span>
           )}
           <Link to={productPath}>
-            <img src={product.image} alt={product.name} className={styles.image} />
+            <img src={productImage} alt={product.name} className={styles.image} />
           </Link>
           <div className={styles.iconOverlayActions}>
             <button
@@ -87,10 +106,10 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
               {product.name}
             </Link>
             <span className={styles.priceIconOverlay}>
-              ₹{product.price.toLocaleString('en-IN')}
+              ₹{productPrice.toLocaleString('en-IN')}
             </span>
           </div>
-          <p className={styles.compatibility}>{product.compatibility}</p>
+          <p className={styles.compatibility}>{compatibility}</p>
           {product.rating && (
             <div className={styles.ratingRowIconOverlay}>
               {Array.from({ length: 5 }).map((_, i) => (
@@ -119,7 +138,7 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
               {product.badge}
             </span>
           )}
-          <img src={product.image} alt={product.name} className={styles.image} />
+          <img src={productImage} alt={product.name} className={styles.image} />
         </Link>
         <button className={styles.revealAddButton} onClick={handleAddToCart}>
           ADD TO CART
@@ -136,12 +155,12 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
               </span>
             )}
           </div>
-          <p className={styles.compatibility}>{product.compatibility}</p>
+          <p className={styles.compatibility}>{compatibility}</p>
           <div className={styles.priceRowDetailed}>
-            <span className={styles.price}>₹{product.price.toLocaleString('en-IN')}</span>
-            {product.originalPrice && (
+            <span className={styles.price}>₹{productPrice.toLocaleString('en-IN')}</span>
+            {originalPrice && (
               <span className={styles.originalPrice}>
-                ₹{product.originalPrice.toLocaleString('en-IN')}
+                ₹{originalPrice.toLocaleString('en-IN')}
               </span>
             )}
           </div>
@@ -163,7 +182,7 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
           </span>
         )}
         <Link to={productPath}>
-          <img src={product.image} alt={product.name} className={styles.image} />
+          <img src={productImage} alt={product.name} className={styles.image} />
         </Link>
 
         {isDetailed ? (
@@ -197,12 +216,12 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
             </span>
           )}
         </div>
-        <p className={styles.compatibility}>{product.compatibility}</p>
+        <p className={styles.compatibility}>{compatibility}</p>
         <div className={isDetailed ? styles.priceRowDetailed : styles.priceRow}>
-          <span className={styles.price}>₹{product.price.toLocaleString('en-IN')}</span>
-          {isDetailed && product.originalPrice && (
+          <span className={styles.price}>₹{productPrice.toLocaleString('en-IN')}</span>
+          {isDetailed && originalPrice && (
             <span className={styles.originalPrice}>
-              ₹{product.originalPrice.toLocaleString('en-IN')}
+              ₹{originalPrice.toLocaleString('en-IN')}
             </span>
           )}
         </div>

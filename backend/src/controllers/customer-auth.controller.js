@@ -7,6 +7,7 @@ import {
 
 const customerRegister = async (req, res, next) => {
   try {
+      console.log("BODY =", req.body);
     const customer = await registerCustomer(req.body);
 
     return sendSuccess({

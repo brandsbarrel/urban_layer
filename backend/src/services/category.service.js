@@ -13,6 +13,7 @@ import {
 import { countProductsByCategoryId, reassignProductsFromCategory } from "../repositories/product.repository.js";
 import { buildPaginationMeta } from "../utils/pagination.js";
 import { computeSeoScore } from "../utils/seo-score.js";
+import { runWithOptionalTransaction } from "../helpers/transaction.helper.js";
 import { slugify } from "../utils/slugify.js";
 
 const mapCategoryToAdminListItem = (category) => {
@@ -189,23 +190,17 @@ const deleteCategoryRecord = async ({ id, force = false, reassignToCategoryId = 
     });
   }
 
-  const session = await mongoose.startSession();
+  await runWithOptionalTransaction(async (options) => {
+    if (productsAssignedCount > 0) {
+      await reassignProductsFromCategory(
+        new mongoose.Types.ObjectId(id),
+        new mongoose.Types.ObjectId(reassignToCategoryId),
+        options
+      );
+    }
 
-  try {
-    await session.withTransaction(async () => {
-      if (productsAssignedCount > 0) {
-        await reassignProductsFromCategory(
-          new mongoose.Types.ObjectId(id),
-          new mongoose.Types.ObjectId(reassignToCategoryId),
-          { session }
-        );
-      }
-
-      await deleteCategoryById(id, { session });
-    });
-  } finally {
-    await session.endSession();
-  }
+    await deleteCategoryById(id, options);
+  });
 };
 
 export {

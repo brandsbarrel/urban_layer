@@ -2,6 +2,7 @@ import { sendSuccess } from "../shared/api-response.js";
 import {
   cancelAdminOrder,
   confirmAdminOrder,
+  processAdminOrder,
   deliverAdminOrder,
   getAdminOrderDetails,
   getOrderStats,
@@ -47,6 +48,15 @@ const confirmOrderHandler = async (req, res, next) => {
   }
 };
 
+const processOrderHandler = async (req, res, next) => {
+  try {
+    const order = await processAdminOrder(req.params.id);
+    return sendSuccess({ res, message: "Order processing started successfully.", data: order });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 const packOrderHandler = async (req, res, next) => {
   try {
     const order = await packAdminOrder(req.params.id);
@@ -85,7 +95,7 @@ const deliverOrderHandler = async (req, res, next) => {
 
 const cancelOrderHandler = async (req, res, next) => {
   try {
-    const order = await cancelAdminOrder(req.params.id, req.body.reason);
+    const order = await cancelAdminOrder(req.params.id, req.body.reason, req.user?.role || "admin", req.user?._id || null);
     return sendSuccess({ res, message: "Order cancelled successfully.", data: order });
   } catch (error) {
     return next(error);
@@ -105,6 +115,7 @@ export {
   getAdminOrders,
   getAdminOrderById,
   confirmOrderHandler,
+  processOrderHandler,
   packOrderHandler,
   shipOrderHandler,
   outForDeliveryOrderHandler,

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   cancelOrderHandler,
   confirmOrderHandler,
+  processOrderHandler,
   deliverOrderHandler,
   getAdminOrderById,
   getAdminOrders,
@@ -24,6 +25,7 @@ orderRouter.get("/", validate(adminOrderListQuerySchema, "query"), getAdminOrder
 orderRouter.get("/stats", getOrderStatsHandler);
 orderRouter.get("/:id", getAdminOrderById);
 orderRouter.post("/:id/confirm", confirmOrderHandler);
+orderRouter.post("/:id/process", processOrderHandler);
 orderRouter.post("/:id/pack", packOrderHandler);
 orderRouter.post("/:id/ship", validate(markShippedSchema), shipOrderHandler);
 orderRouter.post("/:id/out-for-delivery", outForDeliveryOrderHandler);

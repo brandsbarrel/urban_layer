@@ -1,6 +1,7 @@
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { selectLastOrder } from '../../redux/slices/ordersSlice';
+import { useEffect } from 'react';
+import { useParams, useSearchParams, useLocation, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectOrders, fetchOrderById } from '../../redux/slices/ordersSlice';
 import { formatOrderDate } from '../../utils/orderHelpers';
 import SuccessBanner from './sections/SuccessBanner';
 import OrderStatusSection from './sections/OrderStatusSection';
@@ -11,7 +12,25 @@ import PostPurchaseSection from './sections/PostPurchaseSection';
 import styles from './OrderSuccessPage.module.css';
 
 function OrderSuccessPage() {
-    const order = useSelector(selectLastOrder);
+    const [searchParams] = useSearchParams();
+    const { orderId } = useParams();
+    const location = useLocation();
+    const navOrder = location.state?.order;
+    const urlOrderId = searchParams.get('orderId') || orderId || navOrder?.id || navOrder?.orderNumber || navOrder?.orderId;
+    const dispatch = useDispatch();
+    const orders = useSelector(selectOrders);
+
+    // Find order in state first
+    const orderInState = orders.find(o => o.id === urlOrderId || o.orderDbId === urlOrderId);
+    
+    // If not in state, fetch from API
+    useEffect(() => {
+        if (urlOrderId && !orderInState && !navOrder) {
+            dispatch(fetchOrderById(urlOrderId));
+        }
+    }, [dispatch, urlOrderId, orderInState, navOrder]);
+
+    const order = navOrder || orderInState || orders.find(o => o.id === urlOrderId);
 
     if (!order) {
         return (
@@ -27,14 +46,14 @@ function OrderSuccessPage() {
 
     return (
         <div className={styles.page}>
-            <SuccessBanner orderId={order.id} estimatedDelivery={order.estimatedDelivery} />
+            <SuccessBanner orderId={order.id || order.orderNumber} estimatedDelivery={order.estimatedDelivery} />
 
             <div className={styles.grid}>
                 <div className={styles.mainColumn}>
-                    <OrderStatusSection status={order.status} confirmedDate={formatOrderDate(order.placedAt)} />
+                    <OrderStatusSection status={order.status || 'Confirmed'} confirmedDate={formatOrderDate(order.placedAt || order.createdAt || new Date())} />
                     <OrderDetailCards
                         shippingAddress={order.shippingAddress}
-                        deliveryMethod={order.deliveryMethod}
+                        deliveryMethod={order.deliveryMethod || order.shippingMethod}
                     />
                 </div>
                 <div className={styles.summaryColumn}>
@@ -42,7 +61,7 @@ function OrderSuccessPage() {
                 </div>
             </div>
 
-            <OrderItemsSection items={order.items} />
+            <OrderItemsSection items={order.items || []} />
             <PostPurchaseSection />
         </div>
     );

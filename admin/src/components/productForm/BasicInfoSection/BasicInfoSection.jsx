@@ -4,12 +4,20 @@ import {
   MdEditNote,
 } from "react-icons/md";
 import { updateField } from "../../../redux/slices/productFormSlice";
-import { PHONE_MODELS } from "../../../constants/phoneModels";
 import styles from "./BasicInfoSection.module.css";
 
 const BasicInfoSection = () => {
   const dispatch = useDispatch();
   const form = useSelector((state) => state.productForm.form);
+  const phoneModels = useSelector((state) => state.phoneModels.items);
+  const selectedPhoneModel = phoneModels.find((phoneModel) => phoneModel.id === form.phoneModelId);
+  const [phoneModelSearch, setPhoneModelSearch] = React.useState("");
+
+  React.useEffect(() => {
+    if (selectedPhoneModel) {
+      setPhoneModelSearch(`${selectedPhoneModel.brand} ${selectedPhoneModel.name}`);
+    }
+  }, [selectedPhoneModel]);
 
   const set = (field) => (e) =>
     dispatch(updateField({ field, value: e.target.value }));
@@ -37,18 +45,25 @@ const BasicInfoSection = () => {
       <div className={styles.twoCol}>
         <div className={styles.fieldGroup}>
           <label className={styles.label}>Phone Model</label>
-          <select
+          <input
             className={styles.input}
-            value={form.phoneModel}
-            onChange={set("phoneModel")}
-          >
-            <option value="">Select phone model...</option>
-            {PHONE_MODELS.map((phoneModel) => (
-              <option key={phoneModel} value={phoneModel}>
-                {phoneModel}
-              </option>
+            type="text"
+            list="phone-model-options"
+            placeholder="Search phone model..."
+            value={phoneModelSearch}
+            onChange={(event) => {
+              const value = event.target.value;
+              const matched = phoneModels.find((phoneModel) => `${phoneModel.brand} ${phoneModel.name}` === value);
+
+              setPhoneModelSearch(value);
+              dispatch(updateField({ field: "phoneModelId", value: matched?.id || "" }));
+            }}
+          />
+          <datalist id="phone-model-options">
+            {phoneModels.map((phoneModel) => (
+              <option key={phoneModel.id} value={`${phoneModel.brand} ${phoneModel.name}`} />
             ))}
-          </select>
+          </datalist>
         </div>
         <div className={styles.fieldGroup}>
           <label className={styles.label}>SKU Reference</label>

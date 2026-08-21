@@ -2,7 +2,6 @@ export const NAV_LINKS = [
   { label: 'Home', path: '/' },
   { label: 'Shop', path: '/shop' },
   { label: 'Collections', path: '/collections' },
-  { label: 'Accessories', path: '/accessories' },
   { label: 'About', path: '/about' },
 ];
 
@@ -10,7 +9,6 @@ export const FOOTER_LINKS = {
   shop: [
     { label: 'Shop All', path: '/shop' },
     { label: 'Collections', path: '/collections' },
-    { label: 'Accessories', path: '/accessories' },
     { label: 'About Us', path: '/about' },
   ],
   support: [
@@ -18,6 +16,5 @@ export const FOOTER_LINKS = {
     { label: 'Terms of Service', path: '/terms-conditions' },
     { label: 'Shipping & Returns', path: '/shipping-policy' },
     { label: 'Contact Us', path: '/contact' },
-    { label: 'Wholesale', path: '/wholesale' },
   ],
 };

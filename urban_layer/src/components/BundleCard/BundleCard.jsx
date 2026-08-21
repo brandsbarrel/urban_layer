@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/slices/cartSlice';
+import { addToCartAsync } from '../../redux/slices/cartSlice';
 import styles from './BundleCard.module.css';
 
 function BundleCard({
@@ -20,7 +20,7 @@ function BundleCard({
     const dispatch = useDispatch();
 
     const handleAddBundle = () => {
-        dispatch(addToCart({ id: id || title, name: title, price, image }));
+        dispatch(addToCartAsync({ productId: id || title, quantity: 1 }));
     };
 
     if (compact) {

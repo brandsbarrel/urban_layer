@@ -23,7 +23,12 @@ app.use(cors({
   origin: env.FRONTEND_ORIGINS
 }));
 app.use(compression());
-app.use(express.json({ limit: "25mb" }));
+app.use(express.json({
+  limit: "25mb",
+  verify: (req, res, buf) => {
+    req.rawBody = buf;
+  }
+}));
 app.use(express.urlencoded({ extended: true, limit: "25mb" }));
 
 app.use(env.API_BASE_PATH, apiRouter);

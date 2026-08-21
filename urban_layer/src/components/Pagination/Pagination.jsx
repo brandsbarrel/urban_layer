@@ -8,6 +8,14 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 
     return (
         <div className={styles.pagination}>
+            <button
+                type="button"
+                onClick={() => onPageChange(currentPage - 1)}
+                disabled={currentPage <= 1}
+                className={styles.pageButton}
+            >
+                Previous
+            </button>
             {pages.map((page) => (
                 <button
                     key={page}
@@ -18,6 +26,14 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
                     {page}
                 </button>
             ))}
+            <button
+                type="button"
+                onClick={() => onPageChange(currentPage + 1)}
+                disabled={currentPage >= totalPages}
+                className={styles.pageButton}
+            >
+                Next
+            </button>
         </div>
     );
 }

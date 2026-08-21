@@ -93,7 +93,7 @@ const OrdersTable = () => {
                 </div>
               </td>
               <td className={styles.cell}>
-                <p className={styles.amount}>${order.amount.toFixed(2)}</p>
+                <p className={styles.amount}>₹{(order.totalAmount || order.amount || 0).toLocaleString('en-IN')}</p>
               </td>
               <td className={styles.cell}>
                 <span

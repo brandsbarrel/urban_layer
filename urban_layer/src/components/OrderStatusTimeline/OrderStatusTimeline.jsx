@@ -1,15 +1,20 @@
-import { MdCheck, MdSync, MdLocalShipping, MdHome } from 'react-icons/md';
+import { MdCheck, MdSync, MdLocalShipping, MdHome, MdFactory, MdInventory2 } from 'react-icons/md';
 import styles from './OrderStatusTimeline.module.css';
 
+// Order lifecycle steps matching backend statuses
 const STEPS = [
+    { key: 'pending', label: 'Order Placed', icon: MdCheck },
     { key: 'confirmed', label: 'Confirmed', icon: MdCheck },
-    { key: 'processing', label: 'Processing', icon: MdSync },
+    { key: 'processing', label: 'Processing', icon: MdFactory },
+    { key: 'packed', label: 'Packed', icon: MdInventory2 },
     { key: 'shipped', label: 'Shipped', icon: MdLocalShipping },
+    { key: 'out_for_delivery', label: 'Out for Delivery', icon: MdLocalShipping },
     { key: 'delivered', label: 'Delivered', icon: MdHome },
 ];
 
 function OrderStatusTimeline({ currentStatus, confirmedDate }) {
-    const currentIndex = STEPS.findIndex((step) => step.key === currentStatus);
+    const normalizedStatus = (currentStatus || 'pending').toLowerCase();
+    const currentIndex = STEPS.findIndex((step) => step.key === normalizedStatus);
 
     return (
         <div className={styles.wrapper}>

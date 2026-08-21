@@ -1,12 +1,12 @@
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/slices/cartSlice';
+import { addToCartAsync } from '../../redux/slices/cartSlice';
 import styles from './FrequentlyBoughtTogetherCard.module.css';
 
 function FrequentlyBoughtTogetherCard({ id, images, title, description, price, originalPrice }) {
     const dispatch = useDispatch();
 
     const handleAddBundle = () => {
-        dispatch(addToCart({ id, name: title, price, image: images[0] }));
+        dispatch(addToCartAsync({ productId: id, quantity: 1 }));
     };
 
     return (

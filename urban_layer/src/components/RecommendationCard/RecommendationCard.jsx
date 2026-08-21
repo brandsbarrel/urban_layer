@@ -1,21 +1,23 @@
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/slices/cartSlice';
+import { addToCartAsync } from '../../redux/slices/cartSlice';
 import styles from './RecommendationCard.module.css';
 
 function RecommendationCard({ product }) {
     const dispatch = useDispatch();
+    const productImage = product.featuredImage || product.image || product.images?.[0] || '';
+    const productPrice = Number(product.price || 0);
 
     const handleAddToCart = () => {
-        dispatch(addToCart({ id: product.id, name: product.name, price: product.price, image: product.image }));
+        dispatch(addToCartAsync({ productId: product.id, quantity: 1 }));
     };
 
     return (
         <button type="button" className={styles.card} onClick={handleAddToCart}>
             <div className={styles.imageWrapper}>
-                <img src={product.image} alt={product.name} className={styles.image} />
+                <img src={productImage} alt={product.name} className={styles.image} />
             </div>
             <h4 className={styles.name}>{product.name}</h4>
-            <p className={styles.price}>₹{product.price.toLocaleString('en-IN')}</p>
+            <p className={styles.price}>₹{productPrice.toLocaleString('en-IN')}</p>
         </button>
     );
 }

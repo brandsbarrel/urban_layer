@@ -1,82 +1,157 @@
-import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
-import ShopHeroBanner from './sections/ShopHeroBanner';
-import ShopFilterSidebar from './sections/ShopFilterSidebar';
-import ProductGridSection from './sections/ProductGridSection';
-import PromotionalBanner from './sections/PromotionalBanner';
-import RecommendationsSlider from './sections/RecommendationsSlider';
-import { shopProducts, priceFilterRange } from '../../services/shopPageData';
-import styles from './ShopPage.module.css';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
-const PAGE_SIZE = 9;
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
+
+import ShopHeroBanner from "./sections/ShopHeroBanner";
+import ShopFilterSidebar from "./sections/ShopFilterSidebar";
+import ProductGridSection from "./sections/ProductGridSection";
+import PromotionalBanner from "./sections/PromotionalBanner";
+import RecommendationsSlider from "./sections/RecommendationsSlider";
+
+import styles from "./ShopPage.module.css";
+
+import {
+    fetchProductsStart,
+    fetchProductsSuccess,
+    fetchProductsFailure,
+    selectProducts,
+} from "../../redux/slices/productSlice";
+
+import { getCategories, getPhoneModels, getProducts } from "../../services/productsService";
 
 function ShopPage() {
-  const [searchParams] = useSearchParams();
-  const initialMaterial = searchParams.get('material');
+    const dispatch = useDispatch();
 
-  const [filters, setFilters] = useState({
-    search: '',
-    devices: [],
-    materials: initialMaterial ? [initialMaterial] : [],
-    color: null,
-    maxPrice: priceFilterRange.max,
-  });
-  const [sortBy, setSortBy] = useState('best-sellers');
-  const [currentPage, setCurrentPage] = useState(1);
+    const { items, meta, loading, error } = useSelector(selectProducts);
 
-  const filteredProducts = useMemo(() => {
-    let result = shopProducts.filter((product) => {
-      const matchesSearch =
-        !filters.search || product.name.toLowerCase().includes(filters.search.toLowerCase());
-      const matchesDevice =
-        filters.devices.length === 0 || product.device.some((d) => filters.devices.includes(d));
-      const matchesMaterial =
-        filters.materials.length === 0 || filters.materials.includes(product.material);
-      const matchesColor = !filters.color || product.color === filters.color;
-      const matchesPrice = product.price <= filters.maxPrice;
-      return matchesSearch && matchesDevice && matchesMaterial && matchesColor && matchesPrice;
+    const [searchParams] = useSearchParams();
+    const initialCategory = searchParams.get("category") || "";
+
+    const [filters, setFilters] = useState({
+        search: "",
+        category: initialCategory,
+        phoneModel: "",
+        material: "",
+        color: "",
+        maxPrice: 4999,
     });
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [phoneModels, setPhoneModels] = useState([]);
 
-    if (sortBy === 'price-high') result = [...result].sort((a, b) => b.price - a.price);
-    if (sortBy === 'price-low') result = [...result].sort((a, b) => a.price - b.price);
-    if (sortBy === 'newest') result = [...result].reverse();
+    const [sortBy, setSortBy] = useState("best-sellers");
 
-    return result;
-  }, [filters, sortBy]);
+    const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
-  const paginatedProducts = filteredProducts.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
-  );
+    useEffect(() => {
+        const timer = window.setTimeout(() => {
+            setDebouncedSearch(filters.search);
+            setCurrentPage(1);
+        }, 300);
 
-  const handleFilterChange = (nextFilters) => {
-    setFilters(nextFilters);
-    setCurrentPage(1);
-  };
+        return () => window.clearTimeout(timer);
+    }, [filters.search]);
 
-  return (
-    <div className={styles.page}>
-      <Breadcrumb items={[{ label: 'Home', path: '/' }, { label: 'Shop' }]} />
-      <ShopHeroBanner />
+    useEffect(() => {
+        loadProducts();
+    }, [
+        currentPage,
+        debouncedSearch,
+        filters.category,
+        filters.phoneModel,
+        filters.maxPrice,
+        sortBy,
+    ]);
 
-      <div className={styles.contentGrid}>
-        <ShopFilterSidebar filters={filters} onFilterChange={handleFilterChange} />
-        <ProductGridSection
-          products={paginatedProducts}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </div>
+    useEffect(() => {
+        const loadInitialData = async () => {
+            try {
+                const [categoryList, phoneList] = await Promise.all([
+                    getCategories(),
+                    getPhoneModels(),
+                ]);
+                setCategories(categoryList || []);
+                setPhoneModels(phoneList || []);
+            } catch {
+                setCategories([]);
+                setPhoneModels([]);
+            }
+        };
 
-      <PromotionalBanner />
-      <RecommendationsSlider />
-    </div>
-  );
+        loadInitialData();
+    }, []);
+
+    const loadProducts = async () => {
+        dispatch(fetchProductsStart());
+
+        try {
+            const response = await getProducts({
+                page: currentPage,
+                perPage: 9,
+                search: debouncedSearch,
+                category: filters.category,
+                phoneModel: filters.phoneModel,
+                material: filters.material,
+                color: filters.color,
+                maxPrice: filters.maxPrice,
+                sortBy: sortBy,
+            });
+
+            dispatch(fetchProductsSuccess(response));
+        } catch (err) {
+            dispatch(fetchProductsFailure(err.message || "Failed to load products."));
+        }
+    };
+
+    const handleFilterChange = (nextFilters) => {
+        setFilters(nextFilters);
+        setCurrentPage(1);
+    };
+
+    const handleSortChange = (newSort) => {
+        setSortBy(newSort);
+        setCurrentPage(1);
+    };
+
+    return (
+        <div className={styles.page}>
+            <Breadcrumb
+                items={[
+                    { label: "Home", path: "/" },
+                    { label: "Shop" },
+                ]}
+            />
+
+            <ShopHeroBanner />
+
+            <div className={styles.contentGrid}>
+                <ShopFilterSidebar
+                    filters={filters}
+                    categories={categories}
+                    phoneModels={phoneModels}
+                    onFilterChange={handleFilterChange}
+                />
+
+                <ProductGridSection
+                    products={items || []}
+                    loading={loading}
+                    sortBy={sortBy}
+                    onSortChange={handleSortChange}
+                    currentPage={currentPage}
+                    totalPages={meta?.totalPages || 1}
+                    totalItems={meta?.totalItems || (items ? items.length : 0)}
+                    error={error}
+                    onPageChange={setCurrentPage}
+                />
+            </div>
+
+            <PromotionalBanner />
+
+            <RecommendationsSlider />
+        </div>
+    );
 }
 
 export default ShopPage;

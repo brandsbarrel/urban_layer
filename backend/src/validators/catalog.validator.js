@@ -26,7 +26,7 @@ const categoryCreateSchema = z.object({
 
     return value;
   }),
-  image: httpsUrlSchema.optional().or(z.literal("")).default(""),
+  image: imageSourceSchema.optional().or(z.literal("")).default(""),
   phoneModels: z.array(z.string().trim().min(1).max(120)).optional().default([]),
   seoTitle: z.string().trim().max(65).optional().default(""),
   seoDescription: z.string().trim().max(160).optional().default("")
@@ -44,7 +44,7 @@ const productCreateSchema = z.object({
   name: z.string().trim().min(1).max(160),
   slug: slugSchema.optional(),
   sku: skuSchema,
-  phoneModel: z.string().trim().min(1).max(120),
+  phoneModelId: objectIdSchema,
   shortDescription: z.string().trim().max(500).optional().default(""),
   description: z.string().trim().max(10000).optional().default(""),
   brand: z.string().trim().max(120).optional().default(""),

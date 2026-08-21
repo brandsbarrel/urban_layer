@@ -5,6 +5,7 @@ import dashboardReducer from "./slices/dashboardSlice";
 import productsReducer from "./slices/productsSlice";
 import productFormReducer from "./slices/productFormSlice";
 import categoriesReducer from "./slices/categoriesSlice";
+import phoneModelsReducer from "./slices/phoneModelsSlice";
 import ordersReducer from "./slices/ordersSlice";
 import customersReducer from "./slices/customersSlice";
 import couponsReducer from "./slices/couponsSlice";
@@ -19,6 +20,7 @@ export const store = configureStore({
     products: productsReducer,
     productForm: productFormReducer,
     categories: categoriesReducer,
+    phoneModels: phoneModelsReducer,
     orders: ordersReducer,
     customers: customersReducer,
     coupons: couponsReducer,

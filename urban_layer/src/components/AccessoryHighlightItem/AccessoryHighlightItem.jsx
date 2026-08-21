@@ -1,12 +1,12 @@
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../redux/slices/cartSlice';
+import { addToCartAsync } from '../../redux/slices/cartSlice';
 import styles from './AccessoryHighlightItem.module.css';
 
 function AccessoryHighlightItem({ id, icon: Icon, name, subtitle, price, image }) {
     const dispatch = useDispatch();
 
     const handleAdd = () => {
-        dispatch(addToCart({ id, name, price, image, subtitle }));
+        dispatch(addToCartAsync({ productId: id, quantity: 1 }));
     };
 
     return (

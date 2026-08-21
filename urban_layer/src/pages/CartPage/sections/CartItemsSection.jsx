@@ -5,10 +5,9 @@ import ShippingProgressBar from '../../../components/ShippingProgressBar/Shippin
 import FrequentlyBoughtTogetherCard from '../../../components/FrequentlyBoughtTogetherCard/FrequentlyBoughtTogetherCard';
 import {
     selectCartItems,
-    incrementQuantity,
-    decrementQuantity,
+    updateCartItemAsync,
+    removeFromCartAsync,
     moveToSaved,
-    removeFromCart,
 } from '../../../redux/slices/cartSlice';
 import { calculateCartTotals } from '../../../utils/pricing';
 import styles from './CartItemsSection.module.css';
@@ -54,10 +53,10 @@ function CartItemsSection() {
                 <CartItemCard
                     key={item.id}
                     item={item}
-                    onIncrement={(id) => dispatch(incrementQuantity(id))}
-                    onDecrement={(id) => dispatch(decrementQuantity(id))}
+                    onIncrement={(id) => dispatch(updateCartItemAsync({ productId: id, quantity: (item.quantity || 1) + 1 }))}
+                    onDecrement={(id) => dispatch(updateCartItemAsync({ productId: id, quantity: Math.max(1, (item.quantity || 1) - 1) }))}
                     onSaveForLater={(id) => dispatch(moveToSaved(id))}
-                    onRemove={(id) => dispatch(removeFromCart(id))}
+                    onRemove={(id) => dispatch(removeFromCartAsync({ productId: id }))}
                 />
             ))}
 

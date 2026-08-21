@@ -18,8 +18,8 @@ const ItemsSummary = ({ products }) => {
               </p>
             </div>
             <div className={styles.priceCol}>
-              <p className={styles.price}>${product.price.toFixed(2)}</p>
-              <p className={styles.qty}>Qty: {product.qty}</p>
+              <p className={styles.price}>₹{(product.price || 0).toLocaleString('en-IN')}</p>
+              <p className={styles.qty}>Qty: {product.qty || product.quantity || 1}</p>
             </div>
           </div>
         ))}

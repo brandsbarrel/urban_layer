@@ -26,6 +26,7 @@ const addCategory = createAsyncThunk("categories/addCategory", async (payload) =
       name: payload.name,
       slug: payload.slug.replace(/^\//, ""),
       description: payload.description || "",
+      image: payload.image || "",
       phoneModels: payload.phoneModels || [],
       seoTitle: payload.seoTitle || "",
       seoDescription: payload.seoDescription || "",
@@ -43,6 +44,7 @@ const updateCategory = createAsyncThunk("categories/updateCategory", async ({ id
       name: payload.name,
       slug: payload.slug.replace(/^\//, ""),
       description: payload.description || "",
+      image: payload.image || "",
       phoneModels: payload.phoneModels || [],
     })
   });

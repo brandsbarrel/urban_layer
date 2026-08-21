@@ -1,0 +1,618 @@
+.content {
+    padding: 24px 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--color-surface-container-low);
+}
+
+.loading,
+.error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.loadingIcon {
+    color: var(--color-primary);
+    animation: spin 1s linear infinite;
+    margin-bottom: 12px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.errorIcon {
+    color: var(--color-error);
+    margin-bottom: 12px;
+}
+
+.errorText {
+    color: var(--color-on-surface-variant);
+    margin-bottom: 8px;
+}
+
+.retryButton,
+.backButtonMuted {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-size: 14px;
+}
+
+.retryButton {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.retryButton:hover {
+    opacity: 0.9;
+}
+
+.backButtonMuted {
+    background: var(--color-surface-container);
+    color: var(--color-on-surface);
+    text-decoration: none;
+}
+/* Header Card */
+.headerCard {
+    background: var(--color-surface);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.titleGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.orderTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-on-surface);
+    margin: 0;
+}
+
+.orderMeta {
+    font-size: 14px;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+}
+
+.badgeGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.statusBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.statusPending {
+    background: var(--color-secondary-container);
+    color: var(--color-on-secondary-container);
+}
+
+.statusProcessing {
+    background: var(--color-tertiary-container);
+    color: var(--color-on-tertiary-container);
+}
+
+.statusShipped {
+    background: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+}
+
+.statusDelivered {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.statusCancelled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.trackingBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+}
+
+/* Grid Layout */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+@media (min-width: 960px) {
+    .grid {
+        grid-template-columns: 1fr 380px;
+    }
+}
+
+/* Cards */
+.card {
+    background: var(--color-surface);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-1);
+}
+
+.card:last-child {
+    margin-bottom: 0;
+}
+
+.cardTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-on-surface);
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-outline-variant);
+}
+
+/* Timeline Styles */
+.timelineWrapper {
+    position: relative;
+    padding-left: 36px;
+}
+
+.timelineLine {
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-outline-variant);
+    border-radius: 1px;
+}
+
+.timelineLineFill {
+    position: absolute;
+    left: 11px;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-primary);
+    border-radius: 1px;
+    transition: height 0.5s ease;
+}
+
+.timelineStep {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    padding-bottom: 28px;
+}
+
+.timelineStep:last-child {
+    padding-bottom: 0;
+}
+
+/* Timeline circle styles for JSX */
+.timelineCircle {
+    position: relative;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.timelineCircleCompleted {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border: 3px solid var(--color-primary);
+}
+
+.timelineCircleCurrent {
+    background: var(--color-surface);
+    border: 3px solid var(--color-primary);
+    color: var(--color-primary);
+    box-shadow: 0 0 0 4px var(--color-primary-container);
+}
+
+.timelineCircleFuture {
+    background: var(--color-surface);
+    border: 2px solid var(--color-outline-variant);
+    color: var(--color-on-surface-variant);
+}
+
+/* Timeline content styles for JSX */
+.timelineContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.timelineLabel {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.timelineLabelActive {
+    color: var(--color-on-surface);
+}
+
+.timelineLabelFuture {
+    color: var(--color-on-surface-variant);
+}
+
+.timelineDescription {
+    font-size: 13px;
+    color: var(--color-on-surface-variant);
+    margin: 0 0 4px 0;
+    line-height: 1.5;
+}
+
+.timelineDate {
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.backButtonMuted:hover {
+    background: var(--color-surface-container-high);
+/* Detailed Timeline */
+.detailedTimeline {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.timelineEntry {
+    display: flex;
+    gap: 12px;
+    padding-left: 4px;
+}
+
+.entryDot {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+    margin-top: 2px;
+}
+
+.entryContent {
+    flex: 1;
+}
+
+.entryHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.entryTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-on-surface);
+}
+
+.entryDate {
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+    white-space: nowrap;
+}
+
+.entryNote {
+    font-size: 13px;
+    color: var(--color-on-surface-variant);
+    margin: 0 0 8px 0;
+    line-height: 1.5;
+}
+
+.entryMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.metaTag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--color-surface-container);
+    color: var(--color-on-surface-variant);
+    font-weight: 500;
+}
+
+/* Shipping Info */
+.shippingInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.trackingCard {
+    background: var(--color-primary-container);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.trackingRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-primary);
+}
+
+.trackingRow:last-child {
+    border-bottom: none;
+}
+
+.trackingLabel {
+    font-size: 13px;
+    color: var(--color-on-primary-container);
+    opacity: 0.8;
+}
+
+.trackingValue {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-on-primary-container);
+    font-family: monospace;
+}
+
+.trackExternalLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 16px;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    transition: opacity 0.2s;
+}
+
+.trackExternalLink:hover {
+    opacity: 0.9;
+}
+
+.shippingAddress {
+    padding: 12px 0 0;
+}
+
+.addressLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-on-surface-variant);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 8px 0;
+}
+
+.addressValue {
+    font-size: 14px;
+    color: var(--color-on-surface);
+    margin: 0;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+.noTrackingInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 16px;
+}
+
+.infoIcon {
+    color: var(--color-on-surface-variant);
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+.noTrackingInfo p {
+    color: var(--color-on-surface-variant);
+    margin: 0 0 8px 0;
+}
+
+.subText {
+    font-size: 13px !important;
+    opacity: 0.7;
+}
+
+.addressBlock {
+    font-size: 14px;
+    color: var(--color-on-surface);
+    margin: 0;
+    line-height: 1.7;
+    white-space: pre-line;
+}
+
+/* Sidebar - Order Items */
+.itemsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.itemRow {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.itemImage {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: var(--color-surface-container);
+}
+
+.itemDetails {
+    flex: 1;
+    min-width: 0;
+}
+
+.itemName {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-on-surface);
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.itemMeta {
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.variant {
+    background: var(--color-surface-container);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.itemPrice {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-on-surface);
+    white-space: nowrap;
+}
+
+/* Price Summary */
+.summaryRows {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.summaryRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--color-on-surface);
+}
+
+.summaryRow:first-child {
+    padding-top: 4px;
+}
+
+.summaryRow span:first-child {
+    color: var(--color-on-surface-variant);
+}
+
+.summaryTotalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    margin-top: 4px;
+    border-top: 1px solid var(--color-outline-variant);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-on-surface);
+}
+
+.paymentInfo {
+    font-size: 14px;
+    color: var(--color-on-surface);
+    margin: 0;
+}
+
+.actionsCard {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 8px;
+}
+
+.detailsButton,
+.continueShoppingButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.detailsButton {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.detailsButton:hover {
+    opacity: 0.9;
+}
+
+.continueShoppingButton {
+    background: var(--color-surface-container);
+    color: var(--color-on-surface);
+    border: 1px solid var(--color-outline-variant);
+}
+
+.continueShoppingButton:hover {
+    background: var(--color-surface-container-high);
+}
+}

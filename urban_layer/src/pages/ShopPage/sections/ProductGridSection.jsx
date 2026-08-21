@@ -9,13 +9,54 @@ const SORT_OPTIONS = [
     { value: 'price-low', label: 'Price: Low to High' },
 ];
 
-function ProductGridSection({ products, sortBy, onSortChange, currentPage, totalPages, onPageChange }) {
+function ProductGridSection({
+    products = [],
+    loading,
+    sortBy,
+    onSortChange,
+    currentPage,
+    totalPages,
+    totalItems,
+    error,
+    onPageChange,
+}) {
+    if (loading) {
+        return (
+            <div id="product-grid" className={styles.grid}>
+                <div className={styles.header}>
+                    <p className={styles.resultsText}>Loading catalog...</p>
+                </div>
+                <div className={styles.productsGrid}>
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <div key={index} style={{
+                            height: '340px',
+                            background: 'var(--color-surface-hover, #f3f3f3)',
+                            borderRadius: '12px',
+                            animation: 'pulse 1.5s infinite ease-in-out'
+                        }} />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div id="product-grid" className={styles.grid}>
+                <div className={styles.emptyState}>
+                    <p style={{ marginBottom: '1rem', color: '#c53030' }}>Unable to load products. Please check back shortly.</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div id="product-grid" className={styles.grid}>
             <div className={styles.header}>
                 <p className={styles.resultsText}>
-                    Showing <span className={styles.resultsCount}>{products.length}</span> results
+                    Showing <span className={styles.resultsCount}>{totalItems}</span> products
                 </p>
+
                 <select
                     value={sortBy}
                     onChange={(e) => onSortChange(e.target.value)}
@@ -30,16 +71,28 @@ function ProductGridSection({ products, sortBy, onSortChange, currentPage, total
             </div>
 
             {products.length === 0 ? (
-                <p className={styles.emptyState}>No products match your filters. Try adjusting them.</p>
+                <div className={styles.emptyState}>
+                    <p>No products match your selected filters.</p>
+                </div>
             ) : (
                 <div className={styles.productsGrid}>
                     {products.map((product) => (
-                        <ProductCard key={product.id} product={product} variant="detailed" />
+                        <ProductCard
+                            key={product.id || product.slug}
+                            product={product}
+                            variant="detailed"
+                        />
                     ))}
                 </div>
             )}
 
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+            {totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={onPageChange}
+                />
+            )}
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdImage } from "react-icons/md";
 import {
   closeDrawer,
   addCategory,
@@ -13,7 +13,16 @@ const emptyForm = {
   slug: "",
   description: "",
   phoneModels: "",
+  image: "",
 };
+
+const readFileAsDataUrl = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 
 const AddCategoryDrawer = () => {
   const dispatch = useDispatch();
@@ -29,6 +38,7 @@ const AddCategoryDrawer = () => {
         slug: (editingCategory.slug || "").replace(/^\//, ""),
         description: editingCategory.description || "",
         phoneModels: (editingCategory.phoneModels || []).join(", "),
+        image: editingCategory.image || "",
       });
     } else if (isOpen) {
       setForm(emptyForm);
@@ -37,6 +47,23 @@ const AddCategoryDrawer = () => {
 
   const set = (field) => (e) =>
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
+
+  const handleImageSelect = async (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      setError("Only image files are allowed.");
+      return;
+    }
+
+    const image = await readFileAsDataUrl(file);
+    setForm((prev) => ({ ...prev, image }));
+    event.target.value = "";
+  };
 
   const slugify = (value) =>
     value
@@ -61,6 +88,7 @@ const AddCategoryDrawer = () => {
         name: form.name.trim(),
         slug: form.slug.trim() || slugify(form.name),
         description: form.description.trim(),
+        image: form.image,
         phoneModels: form.phoneModels
           .split(",")
           .map((phone) => phone.trim())
@@ -121,6 +149,28 @@ const AddCategoryDrawer = () => {
                     onChange={set("slug")}
                   />
                 </div>
+              </div>
+              <div className={styles.fullWidth}>
+                <label className={styles.label}>Category Image</label>
+                {form.image ? (
+                  <div className={styles.imagePreview}>
+                    <img src={form.image} alt="Category preview" />
+                    <button
+                      className={styles.removeImageButton}
+                      type="button"
+                      aria-label="Remove category image"
+                      onClick={() => setForm((prev) => ({ ...prev, image: "" }))}
+                    >
+                      <MdClose />
+                    </button>
+                  </div>
+                ) : (
+                  <label className={styles.imageUpload}>
+                    <MdImage />
+                    <span>Upload Category Image</span>
+                    <input type="file" accept="image/*" onChange={handleImageSelect} />
+                  </label>
+                )}
               </div>
               <div className={styles.fullWidth}>
                 <label className={styles.label}>Description</label>

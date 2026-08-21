@@ -8,6 +8,7 @@ import {
   discardChanges,
 } from "../../redux/slices/productFormSlice";
 import { fetchCategories } from "../../redux/slices/categoriesSlice";
+import { fetchPhoneModels } from "../../redux/slices/phoneModelsSlice";
 import { apiRequest } from "../../lib/api";
 import ProductFormHeader from "../../components/productForm/ProductFormHeader/ProductFormHeader";
 import BasicInfoSection from "../../components/productForm/BasicInfoSection/BasicInfoSection";
@@ -32,6 +33,7 @@ const ProductForm = () => {
 
   useEffect(() => {
     dispatch(fetchCategories());
+    dispatch(fetchPhoneModels());
   }, [dispatch]);
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const ProductForm = () => {
           loadForExisting({
             ...productForm,
             categories: productForm.categoryIds || [],
+            phoneModelId: productForm.phoneModelId || "",
             galleryImages,
             costPrice: productForm.costPrice || "",
             taxRate: productForm.taxRate || "",
@@ -96,7 +99,7 @@ const ProductForm = () => {
   const buildPayload = (status) => ({
     name: form.name.trim(),
     sku: form.sku.trim().toUpperCase(),
-    phoneModel: form.phoneModel,
+    phoneModelId: form.phoneModelId,
     description: form.description.trim(),
     featuredImage: form.featuredImage.trim(),
     gallery: form.galleryImages
@@ -127,7 +130,7 @@ const ProductForm = () => {
       window.alert("Product Name is required.");
       return false;
     }
-    if (!form.phoneModel) {
+    if (!form.phoneModelId) {
       window.alert("Phone Model is required.");
       return false;
     }

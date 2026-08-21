@@ -1,11 +1,25 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MdArrowBack, MdArrowForward } from 'react-icons/md';
 import RecommendationCard from '../../../components/RecommendationCard/RecommendationCard';
-import { recommendedProducts } from '../../../services/shopPageData';
+import { getProducts } from '../../../services/productsService';
 import styles from './RecommendationsSlider.module.css';
 
 function RecommendationsSlider() {
     const scrollRef = useRef(null);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const loadRecommendations = async () => {
+            try {
+                const response = await getProducts({ page: 1, perPage: 8 });
+                setProducts(response.data.items);
+            } catch {
+                setProducts([]);
+            }
+        };
+
+        loadRecommendations();
+    }, []);
 
     const scroll = (direction) => {
         scrollRef.current?.scrollBy({ left: direction === 'left' ? -300 : 300, behavior: 'smooth' });
@@ -29,7 +43,7 @@ function RecommendationsSlider() {
             </div>
 
             <div ref={scrollRef} className={styles.scrollRow}>
-                {recommendedProducts.map((product) => (
+                {products.map((product) => (
                     <RecommendationCard key={product.id} product={product} />
                 ))}
             </div>

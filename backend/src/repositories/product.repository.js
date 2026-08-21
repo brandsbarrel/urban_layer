@@ -1,12 +1,14 @@
+import mongoose from "mongoose";
 import { ProductModel } from "../models/index.js";
 
 const buildProductQuery = () => {
-  return ProductModel.find().populate("categories");
+  return ProductModel.find().populate("categories").populate("phoneModelId");
 };
 
 const findProducts = ({ filter = {}, skip = 0, limit = 10, sort = { createdAt: -1 } }) => {
   return ProductModel.find(filter)
     .populate("categories")
+    .populate("phoneModelId")
     .sort(sort)
     .skip(skip)
     .limit(limit);
@@ -17,7 +19,11 @@ const countProducts = (filter = {}) => {
 };
 
 const findProductById = (id) => {
-  return ProductModel.findById(id).populate("categories");
+  if (!id) return Promise.resolve(null);
+  if (mongoose.Types.ObjectId.isValid(id)) {
+    return ProductModel.findById(id).populate("categories").populate("phoneModelId");
+  }
+  return ProductModel.findOne({ slug: id }).populate("categories").populate("phoneModelId");
 };
 
 const findProductBySlug = (slug) => {
@@ -33,10 +39,16 @@ const createProduct = (payload, options = {}) => {
 };
 
 const updateProductById = (id, update, options = {}) => {
-  return ProductModel.findByIdAndUpdate(id, update, {
+  if (mongoose.Types.ObjectId.isValid(id)) {
+    return ProductModel.findByIdAndUpdate(id, update, {
+      new: true,
+      ...options
+    }).populate("categories").populate("phoneModelId");
+  }
+  return ProductModel.findOneAndUpdate({ slug: id }, update, {
     new: true,
     ...options
-  }).populate("categories");
+  }).populate("categories").populate("phoneModelId");
 };
 
 const deleteProductById = (id, options = {}) => {
@@ -45,6 +57,10 @@ const deleteProductById = (id, options = {}) => {
 
 const countProductsByCategoryId = (categoryId) => {
   return ProductModel.countDocuments({ categories: categoryId });
+};
+
+const countProductsByPhoneModelId = (phoneModelId) => {
+  return ProductModel.countDocuments({ phoneModelId });
 };
 
 const reassignProductsFromCategory = (fromCategoryId, toCategoryId, options = {}) => {
@@ -83,5 +99,6 @@ export {
   updateProductById,
   deleteProductById,
   countProductsByCategoryId,
+  countProductsByPhoneModelId,
   reassignProductsFromCategory
 };

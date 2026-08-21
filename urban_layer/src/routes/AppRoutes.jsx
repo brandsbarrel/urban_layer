@@ -6,7 +6,6 @@ import HomePage from '../pages/HomePage/HomePage';
 import AboutPage from '../pages/AboutPage/AboutPage';
 import ShopPage from '../pages/ShopPage/ShopPage';
 import CollectionsPage from '../pages/CollectionsPage/CollectionsPage';
-import AccessoriesPage from '../pages/AccessoriesPage/AccessoriesPage';
 import ProductDetailsPage from '../pages/ProductDetailsPage/ProductDetailsPage';
 import SearchResultsPage from '../pages/SearchResultsPage/SearchResultsPage';
 import WishlistPage from '../pages/WishlistPage/WishlistPage';
@@ -14,6 +13,8 @@ import CartPage from '../pages/CartPage/CartPage';
 import OrderSuccessPage from '../pages/OrderSuccessPage/OrderSuccessPage';
 import AccountPage from '../pages/AccountPage/AccountPage';
 import OrdersPage from '../pages/OrdersPage/OrdersPage';
+import OrderDetailsPage from '../pages/OrderDetailsPage/OrderDetailsPage';
+import TrackOrderPage from '../pages/TrackOrderPage/TrackOrderPage';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import RegisterPage from '../pages/RegisterPage/RegisterPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage/ForgotPasswordPage';
@@ -27,16 +28,17 @@ function AppRoutes() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/collections" element={<CollectionsPage />} />
-        <Route path="/accessories" element={<AccessoriesPage />} />
         <Route path="/product/:productId" element={<ProductDetailsPage />} />
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/order-success" element={<OrderSuccessPage />} />
+        <Route path="/order-success/:orderId?" element={<OrderSuccessPage />} />
+        <Route path="/track-order/:orderId" element={<TrackOrderPage />} />
 
         <Route element={<AccountLayout />}>
           <Route path="/account" element={<AccountPage />} />
           <Route path="/account/orders" element={<OrdersPage />} />
+          <Route path="/account/orders/:orderId" element={<OrderDetailsPage />} />
         </Route>
       </Route>
 

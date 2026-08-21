@@ -8,7 +8,7 @@ import {
     removeItems,
     clearWishlist,
 } from '../../redux/slices/wishlistSlice';
-import { addToCart } from '../../redux/slices/cartSlice';
+import { addToCartAsync } from '../../redux/slices/cartSlice';
 import WishlistHeader from './sections/WishlistHeader';
 import PriceDropAlert from './sections/PriceDropAlert';
 import BulkActionsBar from './sections/BulkActionsBar';
@@ -46,14 +46,14 @@ function WishlistPage() {
     };
 
     const handleMoveToCart = (item) => {
-        dispatch(addToCart({ id: item.id, name: item.name, price: item.price, image: item.image }));
+        dispatch(addToCartAsync({ productId: item.id, quantity: 1 }));
         dispatch(removeItem(item.id));
         setSelectedIds((prev) => prev.filter((i) => i !== item.id));
     };
 
     const handleMoveAllToCart = () => {
         items.forEach((item) => {
-            dispatch(addToCart({ id: item.id, name: item.name, price: item.price, image: item.image }));
+            dispatch(addToCartAsync({ productId: item.id, quantity: 1 }));
         });
         dispatch(clearWishlist());
         setSelectedIds([]);

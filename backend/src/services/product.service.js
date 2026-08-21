@@ -36,12 +36,21 @@ const mapProductStatusForTable = (product) => {
 const mapProductToAdminListItem = (product) => {
   const primaryCategory = product.categories?.[0]?.name || "Uncategorized";
   const effectivePrice = product.salePrice ?? product.basePrice;
+  const phoneModel = product.phoneModelId
+    ? {
+        id: product.phoneModelId.id,
+        brand: product.phoneModelId.brand,
+        name: product.phoneModelId.name,
+        slug: product.phoneModelId.slug
+      }
+    : null;
 
   return {
     id: product.id,
     name: product.name,
     sku: product.sku,
-    phoneModel: product.phoneModel,
+    phoneModel,
+    phoneModelName: phoneModel ? `${phoneModel.brand} ${phoneModel.name}` : "",
     category: primaryCategory,
     collectionLabel: product.collection ? product.collection.toUpperCase() : "",
     price: effectivePrice / 100,
@@ -65,7 +74,15 @@ const mapProductToFormShape = (product) => {
     name: product.name,
     slug: product.slug,
     sku: product.sku,
-    phoneModel: product.phoneModel,
+    phoneModelId: product.phoneModelId?.id || "",
+    phoneModel: product.phoneModelId
+      ? {
+          id: product.phoneModelId.id,
+          brand: product.phoneModelId.brand,
+          name: product.phoneModelId.name,
+          slug: product.phoneModelId.slug
+        }
+      : null,
     description: product.description,
     featuredImage: product.featuredImage,
     galleryImages: product.gallery.map((image) => image.url),

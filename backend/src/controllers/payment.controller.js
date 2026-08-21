@@ -1,5 +1,5 @@
 import { sendSuccess } from "../shared/api-response.js";
-import { createCheckoutPaymentOrder, verifyCheckoutPayment } from "../services/payment.service.js";
+import { createCheckoutPaymentOrder, verifyCheckoutPayment, handleRazorpayWebhook } from "../services/payment.service.js";
 
 const createPaymentOrderHandler = async (req, res, next) => {
   try {
@@ -27,4 +27,19 @@ const verifyPaymentHandler = async (req, res, next) => {
   }
 };
 
-export { createPaymentOrderHandler, verifyPaymentHandler };
+const razorpayWebhookHandler = async (req, res, next) => {
+  try {
+    const signature = req.headers["x-razorpay-signature"] || req.headers["x-razorpay-signature-256"];
+    const rawBody = req.rawBody || JSON.stringify(req.body);
+    const result = await handleRazorpayWebhook({
+      rawBody,
+      signature,
+      eventData: req.body
+    });
+    return res.status(200).json({ status: "ok", data: result });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export { createPaymentOrderHandler, verifyPaymentHandler, razorpayWebhookHandler };

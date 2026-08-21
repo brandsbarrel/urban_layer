@@ -46,8 +46,11 @@ function RegisterForm() {
 
         dispatch(registerStart());
         try {
+            
+            
+
             const user = await registerUser({
-                fullName,
+                name: fullName,
                 email,
                 mobile: `${countryCode}${mobile}`,
                 password,

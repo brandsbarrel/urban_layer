@@ -5,7 +5,7 @@ const emptyForm = {
   name: "",
   slug: "",
   sku: "",
-  phoneModel: "",
+  phoneModelId: "",
   description: "",
   featuredImage: "",
   galleryImages: ["", "", ""],

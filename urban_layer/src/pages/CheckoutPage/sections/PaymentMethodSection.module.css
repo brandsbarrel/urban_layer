@@ -1,0 +1,186 @@
+.section {
+    margin-top: 24px;
+}
+
+.heading {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-on-surface);
+    margin: 0 0 16px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+@media (min-width: 640px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.card {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border: 2px solid var(--color-outline-variant);
+    border-radius: 12px;
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.card:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-container);
+}
+
+.card.hovered {
+    border-color: var(--color-primary);
+    background: var(--color-primary-container);
+}
+
+.card.selected {
+    border-color: var(--color-primary);
+    background: var(--color-primary-container);
+    box-shadow: 0 0 0 2px var(--color-primary-container);
+}
+
+.radioWrapper {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.radioOuter {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--color-outline);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.card.selected .radioOuter {
+    border-color: var(--color-primary);
+}
+
+.radioInner {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.radioInnerActive {
+    background: var(--color-primary);
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--color-surface-container);
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.icon {
+    color: var(--color-on-surface-variant);
+}
+
+.iconActive {
+    color: var(--color-primary);
+}
+
+.card.selected .iconWrapper {
+    background: var(--color-primary-container);
+}
+
+.card.selected .icon {
+    color: var(--color-primary);
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.labelRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-on-surface);
+}
+
+.badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--color-secondary-container);
+    color: var(--color-on-secondary-container);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card.selected .badge {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.description {
+    font-size: 13px;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+}
+
+.details {
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+    margin: 0;
+    opacity: 0.8;
+}
+
+.checkIcon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    color: var(--color-primary);
+}
+
+.secureNote {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 12px;
+    background: var(--color-surface-container);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--color-on-surface-variant);
+}
+
+.secureNote svg {
+    color: var(--color-primary);
+}

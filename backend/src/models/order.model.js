@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
-import { ORDER_STATUSES, PAYMENT_METHODS, PAYMENT_STATUSES } from "../constants/index.js";
+import {
+  ORDER_STATUSES,
+  PAYMENT_METHODS,
+  PAYMENT_STATUSES,
+  SHIPPING_STATUSES
+} from "../constants/index.js";
 import { addressSchema } from "./address.schema.js";
 
 const orderItemSchema = new mongoose.Schema(
@@ -72,6 +77,31 @@ const timelineEntrySchema = new mongoose.Schema(
     active: {
       type: Boolean,
       default: false
+    },
+    // New fields for enhanced timeline
+    source: {
+      type: String,
+      enum: ["order", "payment", "shipping", "return", "refund", "system"],
+      default: "order"
+    },
+    actor: {
+      type: String,
+      enum: ["customer", "admin", "system", "courier"],
+      default: "system"
+    },
+    actorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: "actorModel",
+      default: null
+    },
+    actorModel: {
+      type: String,
+      enum: ["Customer", "Admin"],
+      default: null
+    },
+    metadata: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {}
     }
   },
   {
@@ -169,6 +199,12 @@ const orderSchema = new mongoose.Schema(
       trim: true,
       default: null
     },
+    // NEW: Separate shipping status
+    shippingStatus: {
+      type: String,
+      enum: SHIPPING_STATUSES,
+      default: "Label Created"
+    },
     shipping: {
       recipient: {
         type: String,
@@ -189,6 +225,107 @@ const orderSchema = new mongoose.Schema(
         type: String,
         trim: true,
         default: null
+      },
+      // Shiprocket specific fields
+      shiprocketShipmentId: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      shiprocketAwbCode: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      shiprocketTrackingUrl: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      labelUrl: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      invoiceUrl: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      pickupDate: {
+        type: Date,
+        default: null
+      },
+      estimatedDeliveryDate: {
+        type: Date,
+        default: null
+      },
+      actualDeliveryDate: {
+        type: Date,
+        default: null
+      }
+    },
+    // Return request (embedded for quick access)
+    returnRequest: {
+      reason: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      requestedAt: {
+        type: Date,
+        default: null
+      },
+      status: {
+        type: String,
+        default: null
+      },
+      rejectionReason: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      approvedAt: {
+        type: Date,
+        default: null
+      },
+      items: [{
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product"
+        },
+        variantId: String,
+        quantity: Number,
+        unitPrice: Number
+      }]
+    },
+    // Refund info (embedded for quick access)
+    refund: {
+      amount: {
+        type: Number,
+        default: 0
+      },
+      reason: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      status: {
+        type: String,
+        default: null
+      },
+      processedAt: {
+        type: Date,
+        default: null
+      },
+      razorpayRefundId: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      method: {
+        type: String,
+        default: null
       }
     },
     notes: {
@@ -208,6 +345,9 @@ const orderSchema = new mongoose.Schema(
 
 orderSchema.index({ orderNumber: 1 }, { unique: true });
 orderSchema.index({ customer: 1, createdAt: -1 });
+orderSchema.index({ status: 1, createdAt: -1 });
+orderSchema.index({ shippingStatus: 1 });
+orderSchema.index({ paymentStatus: 1 });
 
 const OrderModel = mongoose.model("Order", orderSchema);
 

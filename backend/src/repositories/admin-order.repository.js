@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { OrderModel } from "../models/index.js";
 
 const findAdminOrders = ({ filter = {}, skip = 0, limit = 20, sort = { createdAt: -1 } }) => {
@@ -13,11 +14,15 @@ const countAdminOrders = (filter = {}) => {
 };
 
 const findAdminOrderById = (id) => {
-  return OrderModel.findById(id).populate("customer");
+  if (id && mongoose.Types.ObjectId.isValid(id)) {
+    return OrderModel.findById(id).populate("customer");
+  }
+  return OrderModel.findOne({ orderNumber: id }).populate("customer");
 };
 
 const updateAdminOrderById = (id, update, options = {}) => {
-  return OrderModel.findByIdAndUpdate(id, update, {
+  const query = (id && mongoose.Types.ObjectId.isValid(id)) ? { _id: id } : { orderNumber: id };
+  return OrderModel.findOneAndUpdate(query, update, {
     new: true,
     ...options
   }).populate("customer");

@@ -1,62 +1,124 @@
 import SearchFilterInput from '../../../components/SearchFilterInput/SearchFilterInput';
 import CheckboxFilterGroup from '../../../components/CheckboxFilterGroup/CheckboxFilterGroup';
 import PriceRangeFilter from '../../../components/PriceRangeFilter/PriceRangeFilter';
-import ColorSwatchFilter from '../../../components/ColorSwatchFilter/ColorSwatchFilter';
-import {
-    deviceFilterOptions,
-    materialFilterOptions,
-    colorFilterOptions,
-    priceFilterRange,
-} from '../../../services/shopPageData';
 import styles from './ShopFilterSidebar.module.css';
 
-function ShopFilterSidebar({ filters, onFilterChange }) {
-    const toggleDevice = (id) => {
-        const next = filters.devices.includes(id)
-            ? filters.devices.filter((d) => d !== id)
-            : [...filters.devices, id];
-        onFilterChange({ ...filters, devices: next });
+const DEFAULT_DEVICES = [
+    { id: 'iPhone 15 Pro Max', label: 'iPhone 15 Pro Max' },
+    { id: 'iPhone 15 Pro', label: 'iPhone 15 Pro' },
+    { id: 'Samsung S24 Ultra', label: 'Samsung S24 Ultra' },
+];
+
+function ShopFilterSidebar({ filters, categories = [], phoneModels = [], onFilterChange }) {
+    const categoryOptions = categories.map((category) => ({
+        id: category.slug || category.id,
+        label: category.name,
+    }));
+
+    // Collect all unique phone models dynamically from API models, category models, and defaults
+    const apiPhoneNames = (phoneModels || []).map((pm) =>
+        typeof pm === 'string' ? pm : pm.name || pm.label || pm.id
+    );
+    const categoryPhoneNames = categories.flatMap((cat) => cat.phoneModels || []);
+    const defaultPhoneNames = DEFAULT_DEVICES.map((d) => d.label);
+
+    const allPhoneNames = Array.from(
+        new Set([...apiPhoneNames, ...categoryPhoneNames, ...defaultPhoneNames])
+    );
+
+    // Dynamically filter available phone models if a category is currently selected
+    let activePhoneModels = allPhoneNames;
+    if (filters.category) {
+        const selectedCat = categories.find(
+            (cat) => cat.slug === filters.category || cat.id === filters.category
+        );
+        if (selectedCat && Array.isArray(selectedCat.phoneModels) && selectedCat.phoneModels.length > 0) {
+            const catModelsSet = new Set(selectedCat.phoneModels);
+            const filteredModels = allPhoneNames.filter((model) => catModelsSet.has(model));
+            if (filteredModels.length > 0) {
+                activePhoneModels = filteredModels;
+            }
+        }
+    }
+
+    const phoneOptions = activePhoneModels.map((model) => ({
+        id: model,
+        label: model,
+    }));
+
+    const toggleCategory = (id) => {
+        onFilterChange({
+            ...filters,
+            category: filters.category === id ? '' : id,
+        });
     };
 
-    const toggleMaterial = (id) => {
-        const next = filters.materials.includes(id)
-            ? filters.materials.filter((m) => m !== id)
-            : [...filters.materials, id];
-        onFilterChange({ ...filters, materials: next });
+    const togglePhoneModel = (id) => {
+        onFilterChange({
+            ...filters,
+            phoneModel: filters.phoneModel === id ? '' : id,
+        });
+    };
+
+    const handlePriceChange = (newMax) => {
+        onFilterChange({
+            ...filters,
+            maxPrice: newMax,
+        });
+    };
+
+    const hasActiveFilters =
+        Boolean(filters.search) ||
+        Boolean(filters.category) ||
+        Boolean(filters.phoneModel) ||
+        (filters.maxPrice && filters.maxPrice < 4999);
+
+    const handleClearAll = () => {
+        onFilterChange({
+            search: '',
+            category: '',
+            phoneModel: '',
+            material: '',
+            color: '',
+            maxPrice: 4999,
+        });
     };
 
     return (
         <aside className={styles.sidebar}>
+            <div className={styles.headerRow}>
+                <h2 className={styles.filterTitle}>Filters</h2>
+                {hasActiveFilters && (
+                    <button type="button" onClick={handleClearAll} className={styles.clearButton}>
+                        Reset All
+                    </button>
+                )}
+            </div>
+
             <SearchFilterInput
                 value={filters.search}
                 onChange={(search) => onFilterChange({ ...filters, search })}
             />
 
-            <CheckboxFilterGroup
-                title="Device"
-                options={deviceFilterOptions}
-                selectedIds={filters.devices}
-                onToggle={toggleDevice}
-            />
-
-            <CheckboxFilterGroup
-                title="Material"
-                options={materialFilterOptions}
-                selectedIds={filters.materials}
-                onToggle={toggleMaterial}
-            />
-
             <PriceRangeFilter
-                min={priceFilterRange.min}
-                max={priceFilterRange.max}
-                value={filters.maxPrice}
-                onChange={(maxPrice) => onFilterChange({ ...filters, maxPrice })}
+                min={499}
+                max={4999}
+                value={filters.maxPrice || 4999}
+                onChange={handlePriceChange}
             />
 
-            <ColorSwatchFilter
-                colors={colorFilterOptions}
-                selectedId={filters.color}
-                onSelect={(color) => onFilterChange({ ...filters, color })}
+            <CheckboxFilterGroup
+                title="Device Model"
+                options={phoneOptions}
+                selectedIds={filters.phoneModel ? [filters.phoneModel] : []}
+                onToggle={togglePhoneModel}
+            />
+
+            <CheckboxFilterGroup
+                title="Category"
+                options={categoryOptions}
+                selectedIds={filters.category ? [filters.category] : []}
+                onToggle={toggleCategory}
             />
         </aside>
     );

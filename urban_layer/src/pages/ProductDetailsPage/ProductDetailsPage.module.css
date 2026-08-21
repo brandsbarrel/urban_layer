@@ -1,5 +1,8 @@
 .page {
-  padding-bottom: var(--spacing-unit-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding-bottom: var(--spacing-unit-xl, 64px);
   overflow-x: hidden;
 }
 
@@ -7,12 +10,33 @@
   max-width: 480px;
   margin: 96px auto;
   text-align: center;
-  padding: 0 var(--spacing-margin-mobile);
+  padding: 0 var(--spacing-margin-mobile, 16px);
+}
+
+.notFound h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: var(--color-primary, #111);
+}
+
+.notFound p {
+  color: #666;
+  font-size: 1rem;
 }
 
 .notFoundLink {
   display: inline-block;
-  margin-top: var(--spacing-unit-md);
-  color: var(--color-secondary);
-  text-decoration: underline;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: var(--color-primary, #111);
+  color: #ffffff;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.notFoundLink:hover {
+  opacity: 0.85;
 }
