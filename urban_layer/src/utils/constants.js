@@ -17,10 +17,7 @@ export const FOOTER_LINKS = {
     { label: 'Terms of Service', path: '/terms-conditions' },
     { label: 'Shipping & Returns', path: '/shipping-policy' },
     { label: 'Contact Us', path: '/contact' },
-<<<<<<< HEAD
-=======
     { label: 'Help Center', path: '/faq' },
     { label: 'Wholesale', path: '/wholesale' },
->>>>>>> e7a4a48a89aeb012fd7d5761a70c69d69784a8b7
   ],
 };
