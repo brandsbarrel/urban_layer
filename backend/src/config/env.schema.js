@@ -5,7 +5,7 @@ dotenv.config();
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  PORT: z.coerce.number().int().positive().default(4000),
+  PORT: z.coerce.number().int().positive().default(6002),
   APP_NAME: z.string().min(1).default("Urban Layers API"),
   API_BASE_PATH: z.string().min(1).default("/api"),
   MONGO_URI: z.string().min(1, "MONGO_URI is required."),
