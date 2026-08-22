@@ -2,13 +2,11 @@ import http from "node:http";
 import { app } from "./app.js";
 import { env, logger } from "./config/index.js";
 import { connectMongo, disconnectMongo } from "./database/mongo.js";
-import { connectRedis, disconnectRedis } from "./database/redis.js";
 
 const server = http.createServer(app);
 
 const startServer = async () => {
   await connectMongo();
-  await connectRedis();
 
   server.listen(env.PORT, () => {
     logger.info({ port: env.PORT }, "HTTP server listening.");
@@ -24,10 +22,7 @@ const shutdown = async (signal) => {
       process.exit(1);
     }
 
-    await Promise.allSettled([
-      disconnectMongo(),
-      disconnectRedis()
-    ]);
+    await disconnectMongo();
 
     process.exit(0);
   });

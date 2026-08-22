@@ -9,7 +9,6 @@ const envSchema = z.object({
   APP_NAME: z.string().min(1).default("Urban Layers API"),
   API_BASE_PATH: z.string().min(1).default("/api"),
   MONGO_URI: z.string().min(1, "MONGO_URI is required."),
-  REDIS_URL: z.string().min(1, "REDIS_URL is required."),
   ADMIN_JWT_ACCESS_SECRET: z.string().min(32),
   CUSTOMER_JWT_ACCESS_SECRET: z.string().min(32),
   FRONTEND_ORIGINS: z.string().min(1, "FRONTEND_ORIGINS is required."),
