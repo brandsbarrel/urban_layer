@@ -13,6 +13,7 @@ import { paymentRouter } from "./payment.routes.js";
 import { phoneModelRouter } from "./phone-model.routes.js";
 import { productRouter } from "./product.routes.js";
 import { storefrontCatalogRouter } from "./storefront-catalog.routes.js";
+import { wishlistRouter } from "./wishlist.routes.js";
 
 import { razorpayWebhookHandler } from "../controllers/payment.controller.js";
 
@@ -30,6 +31,7 @@ apiRouter.use("/customer/auth", customerAuthRouter);
 apiRouter.use("/customer/cart", cartRouter);
 apiRouter.use("/customer/orders", customerOrderRouter);
 apiRouter.use("/customer", customerProfileRouter);
+apiRouter.use("/customer/wishlist", wishlistRouter);
 apiRouter.use("/storefront/coupons", storefrontCouponRouter);
 apiRouter.use("/storefront/catalog", storefrontCatalogRouter);
 apiRouter.use("/storefront/payments", paymentRouter);

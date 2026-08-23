@@ -10,7 +10,14 @@ import ColorSwatchFilter from '../../../components/ColorSwatchFilter/ColorSwatch
 import QuantityStepper from '../../../components/QuantityStepper/QuantityStepper';
 
 import { addToCartAsync } from '../../../redux/slices/cartSlice';
-import { addItem as addToWishlist, removeItem as removeFromWishlist, selectWishlistItems } from '../../../redux/slices/wishlistSlice';
+import { 
+  addToWishlistAsync, 
+  removeFromWishlistAsync, 
+  checkWishlistStatusAsync,
+  selectWishlistItems,
+  selectWishlistStatus,
+  selectWishlistLoading
+} from '../../../redux/slices/wishlistSlice';
 
 import styles from './ProductOverviewSection.module.css';
 
@@ -19,7 +26,8 @@ function ProductOverviewSection({ product }) {
     const navigate = useNavigate();
 
     const wishlistItems = useSelector(selectWishlistItems);
-    const isWishlisted = wishlistItems.some((item) => item.id === product.id || item.id === `${product.id}-wl`);
+    const isWishlisted = wishlistItems.some((item) => item.id === product.id);
+    const loading = useSelector(selectWishlistLoading);
 
     const models = Array.isArray(product.models) ? product.models : [];
     const colors = Array.isArray(product.colors) ? product.colors : [];
@@ -63,34 +71,7 @@ function ProductOverviewSection({ product }) {
         navigate('/checkout');
     };
 
-    const handleToggleWishlist = () => {
-        if (isWishlisted) {
-            dispatch(removeFromWishlist(product.id));
-            dispatch(removeFromWishlist(`${product.id}-wl`));
-            showToast('Removed from Wishlist');
-        } else {
-            const modelLabel = selectedModelObj?.label || product.phoneModel?.name || '';
-            const colorLabel = selectedColorObj?.label || '';
-            const subtitleParts = [modelLabel, colorLabel].filter(Boolean);
-
-            dispatch(
-                addToWishlist({
-                    id: product.id,
-                    name: product.name,
-                    subtitle: subtitleParts.join(' • ') || product.sku || '',
-                    price: Number(product.price),
-                    originalPrice: product.originalPrice ? Number(product.originalPrice) : null,
-                    badge: product.collection || 'In Stock',
-                    rating: 5,
-                    reviewCount: 1,
-                    stockStatus: product.inStock ? 'in-stock' : 'out-of-stock',
-                    stockLabel: product.inStock ? 'In Stock' : 'Out of Stock',
-                    image: product.heroImage || product.featuredImage || '',
-                })
-            );
-            showToast('Added to Wishlist!');
-        }
-    };
+    const handleToggleWishlist = () => { if (loading) return; if (isWishlisted) { dispatch(removeFromWishlistAsync(product.id)); showToast('Removed from Wishlist'); } else { dispatch(addToWishlistAsync(product.id)); showToast('Added to Wishlist'); } };
 
     const discountPercentage = product.originalPrice && product.originalPrice > product.price
         ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)

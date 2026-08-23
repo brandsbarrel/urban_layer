@@ -1,93 +1,252 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { wishlistApi } from '../../api/wishlistApi';
 
-const HERITAGE_IMAGE =
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuB7nv_zGUWwo0sllZM21wqbb1NS_xywtcvk6YsfjFPfg-qLKEQJ2lEis2CjKWaDiQMjVufw9htnkIb_zXEZZf5GOOpGYT4vJyAK6q5bOOOevn1U7Omai9TFL7mDk0-QdHINfiOL7UD9RDkyj71cfEEG_YD31J872Kv8B3rFAlu_svCssF3l1XhHjgTp7H_L7A9U4OV_bh0qKl4ekIWb4DOQFbVfCCa3vt3amwqEDGoJnhTnwdpe1ixHcC6r6gp29Nq_DsvCMslJ0ZI';
+const isValidObjectId = (id) => typeof id === 'string' && /^[a-fA-F0-9]{24}$/.test(id);
 
-const initialState = {
-    items: [
-        {
-            id: 'heritage-leather-wl',
-            name: 'Heritage Leather',
-            subtitle: 'Italian Full-Grain Cognac',
-            price: 89,
-            originalPrice: null,
-            badge: 'New Arrival',
-            rating: 4.5,
-            reviewCount: 48,
-            stockStatus: 'in-stock',
-            stockLabel: 'In Stock',
-            image: HERITAGE_IMAGE,
-        },
-        {
-            id: 'carbon-stealth-wl',
-            name: 'Carbon Stealth',
-            subtitle: 'Military-Grade Carbon Fiber',
-            price: 120,
-            originalPrice: null,
-            badge: null,
-            rating: 5,
-            reviewCount: 12,
-            stockStatus: 'low-stock',
-            stockLabel: 'Only 2 Left',
-            image:
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuB9RMw-Cc4iASezo87mTsyTuzn3SxVGPiCTh5hiOiCZ9HiOgSev2QZKixUSETJxpLrfFNaxlWLOKK9s87Q36c9kF-mLgXsxLo4yY5AKB4Nf0ahikJtQSXvIXEs8gxH5CpHGRoqcDyN9Yuf5LA350em2ffisOT-f4XhM4vEVbM7dNCE0eLGhwYgFbEVeB6IlJQJ0mSmK-VdYakycaQSiE5fxJLK0IAfkuvDrISHE8PpUEu4FcwvhgXRHyK8_lRJObqQ4_CfHGJtagQc',
-        },
-        {
-            id: 'crystal-magsafe-wl',
-            name: 'Crystal MagSafe',
-            subtitle: 'UV-Resistant Clear Case',
-            price: 45,
-            originalPrice: 65,
-            badge: 'Sale',
-            rating: 4,
-            reviewCount: 156,
-            stockStatus: 'in-stock',
-            stockLabel: 'In Stock',
-            image:
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuCH2d18XgZO7Fg_LIFgSvdDxYPj22V3ugzBBEEq1pN84tvMJScvYKENbG05BDPnxpSCYdjcG4cS-m-PbIhHEq7UFrklZ7MisdgoKNJKpkssWSdVsvDu0V73GGOgETTUqPQggtzMEJxpxtAGZ9H3E47dckHf9ogzcYrbaCvzY-pwU0Ig0ePA3OPYj0Zxz4mouKl_1QWiPzt_szA-x6vz6gM25IjY6ngsdy9a54yhSRQA1u10HThREa4gN0wTlpKdSueUYMs6j0tH2IQ',
-        },
-        {
-            id: 'urban-magwallet-wl',
-            name: 'Urban MagWallet',
-            subtitle: 'RFID-Blocking Slim Leather',
-            price: 55,
-            originalPrice: null,
-            badge: null,
-            rating: 5,
-            reviewCount: 24,
-            stockStatus: 'in-stock',
-            stockLabel: 'In Stock',
-            image:
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuAvKim1s7TQ3_w-AdRrI4XDDSMDSqGeAFx2bk6hd_jCfjap2_r3Y5KVqZG0Pjbc0u7i_SJJ0Q7tqpSTZ1TOna7PVA1RJtr6N-OX_XZuPtTLq6Q62gaCuVO66RQM4vY-QsZBVqUHfLZnq33Zi_dazAKUexn7oFg82Ar0yhHVAJARBVloSq27VEehwjP_ygUf-gLhyiXgXhXTKLMao7DAPRsszEb8lDtnIueFsoI5qtO2eeDv0tzevtuNlOswt2RNcfA_cgQlYofzTfo',
-        },
-    ],
-};
-
-const wishlistSlice = createSlice({
-    name: 'wishlist',
-    initialState,
-    reducers: {
-        addItem(state, action) {
-            const exists = state.items.some((item) => item.id === action.payload.id);
-            if (!exists) state.items.push(action.payload);
-        },
-        removeItem(state, action) {
-            state.items = state.items.filter((item) => item.id !== action.payload);
-        },
-        removeItems(state, action) {
-            state.items = state.items.filter((item) => !action.payload.includes(item.id));
-        },
-        clearWishlist(state) {
-            state.items = [];
-        },
-    },
+const mapBackendWishlistItem = (product) => ({
+  id: product.id,
+  name: product.name,
+  subtitle: product.phoneModel ? `${product.phoneModel.brand} ${product.phoneModel.name}` : product.sku || 'Standard',
+  price: product.price,
+  originalPrice: product.salePrice !== product.basePrice ? product.basePrice : null,
+  badge: product.salePrice !== product.basePrice ? 'Sale' : null,
+  rating: 4.5,
+  reviewCount: 0,
+  stockStatus: product.inStock ? 'in-stock' : 'out-of-stock',
+  stockLabel: product.inStock ? 'In Stock' : 'Out of Stock',
+  image: product.featuredImage || (product.images?.[0] || ''),
+  inStock: product.inStock,
+  stock: product.stock
 });
 
-export const { addItem, removeItem, removeItems, clearWishlist } = wishlistSlice.actions;
+const initialState = {
+  items: [],
+  loading: false,
+  error: null,
+  lastFetched: null,
+  statusCache: {}
+};
+
+export const fetchWishlist = createAsyncThunk(
+  'wishlist/fetchWishlist',
+  async (_, { rejectWithValue, getState }) => {
+    const token = localStorage.getItem('customerAccessToken');
+    if (!token) {
+      const currentItems = getState().wishlist.items;
+      return { isApi: false, items: currentItems };
+    }
+
+    try {
+      const data = await wishlistApi.getWishlist();
+      const mappedItems = (data.items || []).map(mapBackendWishlistItem);
+      return { isApi: true, data: mappedItems, count: data.count };
+    } catch (error) {
+      const currentItems = getState().wishlist.items;
+      return { isApi: false, items: currentItems, error: error.response?.data?.message };
+    }
+  }
+);
+
+export const addToWishlistAsync = createAsyncThunk(
+  'wishlist/addToWishlistAsync',
+  async (productId, { rejectWithValue, getState }) => {
+    const token = localStorage.getItem('customerAccessToken');
+    const product = getState().wishlist.items.find(item => item.id === productId);
+
+    if (token && isValidObjectId(productId)) {
+      try {
+        const data = await wishlistApi.addItem(productId);
+        const mappedItems = (data.items || []).map(mapBackendWishlistItem);
+        return { isApi: true, data: mappedItems, productId };
+      } catch (error) {
+        if (product) {
+          return { isApi: false, item: product };
+        }
+        return rejectWithValue(error.response?.data?.message || 'Failed to add to wishlist');
+      }
+    }
+
+    if (product) {
+      return { isApi: false, item: product };
+    }
+    
+    return rejectWithValue('Product not found');
+  }
+);
+
+export const removeFromWishlistAsync = createAsyncThunk(
+  'wishlist/removeFromWishlistAsync',
+  async (productId, { rejectWithValue, getState }) => {
+    const token = localStorage.getItem('customerAccessToken');
+
+    if (token && isValidObjectId(productId)) {
+      try {
+        const data = await wishlistApi.removeItem(productId);
+        const mappedItems = (data.items || []).map(mapBackendWishlistItem);
+        return { isApi: true, data: mappedItems, productId };
+      } catch (error) {
+        return { isApi: false, productId };
+      }
+    }
+
+    return { isApi: false, productId };
+  }
+);
+
+export const checkWishlistStatusAsync = createAsyncThunk(
+  'wishlist/checkWishlistStatusAsync',
+  async (productId, { rejectWithValue }) => {
+    const token = localStorage.getItem('customerAccessToken');
+
+    if (token && isValidObjectId(productId)) {
+      try {
+        const data = await wishlistApi.checkStatus(productId);
+        return { productId, isWishlisted: data.isWishlisted };
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.message || 'Failed to check wishlist status');
+      }
+    }
+
+    return { productId, isWishlisted: false };
+  }
+);
+
+export const clearWishlistAsync = createAsyncThunk(
+  'wishlist/clearWishlistAsync',
+  async (_, { rejectWithValue }) => {
+    const token = localStorage.getItem('customerAccessToken');
+
+    if (token) {
+      try {
+        await wishlistApi.clearWishlist();
+        return { isApi: true };
+      } catch (error) {
+        return { isApi: false };
+      }
+    }
+
+    return { isApi: false };
+  }
+);
+
+const wishlistSlice = createSlice({
+  name: 'wishlist',
+  initialState,
+  reducers: {
+    addItem(state, action) {
+      const exists = state.items.some((item) => item.id === action.payload.id);
+      if (!exists) state.items.push(action.payload);
+      if (action.payload.id) state.statusCache[action.payload.id] = true;
+    },
+    removeItem(state, action) {
+      state.items = state.items.filter((item) => item.id !== action.payload);
+      if (action.payload) state.statusCache[action.payload] = false;
+    },
+    removeItems(state, action) {
+      state.items = state.items.filter((item) => !action.payload.includes(item.id));
+      action.payload.forEach(id => { state.statusCache[id] = false; });
+    },
+    clearWishlist(state) {
+      state.items = [];
+      state.statusCache = {};
+    },
+    setWishlistStatus(state, action) {
+      const { productId, isWishlisted } = action.payload;
+      state.statusCache[productId] = isWishlisted;
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchWishlist.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchWishlist.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload?.isApi && Array.isArray(action.payload.data)) {
+          state.items = action.payload.data;
+          action.payload.data.forEach(item => {
+            state.statusCache[item.id] = true;
+          });
+        } else if (action.payload?.items) {
+          state.items = action.payload.items;
+          action.payload.items.forEach(item => {
+            state.statusCache[item.id] = true;
+          });
+        }
+        state.lastFetched = Date.now();
+      })
+      .addCase(fetchWishlist.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(addToWishlistAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addToWishlistAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload?.isApi && Array.isArray(action.payload.data)) {
+          state.items = action.payload.data;
+          action.payload.data.forEach(item => {
+            state.statusCache[item.id] = true;
+          });
+        } else if (action.payload?.item) {
+          const newItem = action.payload.item;
+          const exists = state.items.some((item) => item.id === newItem.id);
+          if (!exists) state.items.push(newItem);
+          state.statusCache[newItem.id] = true;
+        }
+        if (action.payload?.productId) {
+          state.statusCache[action.payload.productId] = true;
+        }
+      })
+      .addCase(addToWishlistAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(removeFromWishlistAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeFromWishlistAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload?.isApi && Array.isArray(action.payload.data)) {
+          state.items = action.payload.data;
+          state.statusCache = {};
+          action.payload.data.forEach(item => {
+            state.statusCache[item.id] = true;
+          });
+        } else if (action.payload?.productId) {
+          state.items = state.items.filter((item) => item.id !== action.payload.productId);
+          state.statusCache[action.payload.productId] = false;
+        }
+      })
+      .addCase(removeFromWishlistAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(checkWishlistStatusAsync.fulfilled, (state, action) => {
+        if (action.payload?.productId) {
+          state.statusCache[action.payload.productId] = action.payload.isWishlisted;
+        }
+      })
+      .addCase(clearWishlistAsync.fulfilled, (state, action) => {
+        state.items = [];
+        state.statusCache = {};
+      });
+  },
+});
+
+export const { addItem, removeItem, removeItems, clearWishlist, setWishlistStatus } = wishlistSlice.actions;
 export const selectWishlistItems = (state) => state.wishlist.items;
 export const selectWishlistCount = (state) => state.wishlist.items.length;
 export const selectWishlistAvailableCount = (state) =>
-    state.wishlist.items.filter((item) => item.stockStatus === 'in-stock').length;
+  state.wishlist.items.filter((item) => item.inStock !== false && item.stockStatus !== 'out-of-stock').length;
 export const selectWishlistTotalValue = (state) =>
-    state.wishlist.items.reduce((total, item) => total + item.price, 0);
+  state.wishlist.items.reduce((total, item) => total + (item.price || 0), 0);
+export const selectWishlistLoading = (state) => state.wishlist.loading;
+export const selectWishlistError = (state) => state.wishlist.error;
+export const selectWishlistStatus = (state, productId) => state.wishlist.statusCache[productId] === true;
+
 export default wishlistSlice.reducer;

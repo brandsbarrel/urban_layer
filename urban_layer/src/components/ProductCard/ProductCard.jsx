@@ -1,14 +1,24 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaStar } from 'react-icons/fa';
+import { FaStar, FaHeart, FaRegHeart } from 'react-icons/fa';
 import { MdShoppingBag, MdVisibility, MdAddShoppingCart } from 'react-icons/md';
 import { addToCartAsync } from '../../redux/slices/cartSlice';
+import { 
+  addToWishlistAsync, 
+  removeFromWishlistAsync,
+  selectWishlistItems,
+  selectWishlistLoading
+} from '../../redux/slices/wishlistSlice';
 import styles from './ProductCard.module.css';
 
 function ProductCard({ product, variant = 'compact', onQuickView, badgePosition = 'left' }) {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const wishlistItems = useSelector(selectWishlistItems);
+  const loading = useSelector(selectWishlistLoading);
+  const isWishlisted = wishlistItems.some((item) => item.id === (product.id || product._id || product.slug));
+  
   const productImage = product.featuredImage || product.image || product.images?.[0] || '';
   const productPrice = Number(product.price || 0);
   const originalPrice =
@@ -19,6 +29,17 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
       ? (rawCompatibility.name || rawCompatibility.title || `${rawCompatibility.brand || ''} ${rawCompatibility.name || ''}`.trim())
       : (rawCompatibility || '');
   const productPath = `/product/${product.slug || product.id || product._id}`;
+
+  const handleToggleWishlist = (e) => {
+    e.stopPropagation();
+    if (loading) return;
+    
+    if (isWishlisted) {
+      dispatch(removeFromWishlistAsync(product.id || product._id || product.slug));
+    } else {
+      dispatch(addToWishlistAsync(product.id || product._id || product.slug));
+    }
+  };
 
   const handleAddToCart = () => {
     const id = product.id || product._id;
@@ -58,6 +79,14 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
           >
             <MdAddShoppingCart size={20} />
           </button>
+          <button
+            className={styles.cornerAddButton}
+            onClick={handleToggleWishlist}
+            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            style={{ top: 'auto', bottom: '8px' }}
+          >
+            {isWishlisted ? <FaHeart size={20} color="#e53e3e" /> : <FaRegHeart size={20} />}
+          </button>
         </div>
         <Link to={productPath} className={styles.nameCornerAdd}>
           {product.name}
@@ -90,6 +119,13 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
               aria-label="Add to cart"
             >
               <MdShoppingBag size={20} />
+            </button>
+            <button
+              className={styles.iconActionButton}
+              onClick={handleToggleWishlist}
+              aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              {isWishlisted ? <FaHeart size={20} color="#e53e3e" /> : <FaRegHeart size={20} />}
             </button>
             <button
               className={styles.iconActionButton}
@@ -191,6 +227,13 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
               <MdShoppingBag size={18} />
               <span>Add to Cart</span>
             </button>
+            <button
+              className={styles.quickViewButton}
+              onClick={handleToggleWishlist}
+              aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              {isWishlisted ? <FaHeart size={20} color="#e53e3e" /> : <FaRegHeart size={20} />}
+            </button>
             <button className={styles.quickViewButton} onClick={handleQuickView} aria-label="Quick view">
               <MdVisibility size={20} />
             </button>
@@ -199,6 +242,14 @@ function ProductCard({ product, variant = 'compact', onQuickView, badgePosition 
           <div className={styles.overlay}>
             <button className={styles.quickAddButton} onClick={handleAddToCart}>
               Quick Add
+            </button>
+            <button
+              className={styles.quickAddButton}
+              onClick={handleToggleWishlist}
+              aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+              style={{ marginLeft: '8px', background: 'rgba(255,255,255,0.9)' }}
+            >
+              {isWishlisted ? <FaHeart size={18} color="#e53e3e" /> : <FaRegHeart size={18} />}
             </button>
           </div>
         )}
