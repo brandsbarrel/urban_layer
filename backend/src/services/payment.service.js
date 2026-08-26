@@ -158,13 +158,21 @@ const confirmOnlinePaymentSuccess = async ({
   }
 
   // 3. Update order status to Confirmed and paymentStatus to Paid
-  const existingTimeline = (freshOrder.timeline || []).map((entry) => ({
-    ...(entry.toObject ? entry.toObject() : entry),
-    active: false
-  }));
+  const existingTimeline = (freshOrder.timeline || []).map((entry) => {
+    const raw = entry.toObject ? entry.toObject() : entry;
+    const entryTime = raw.createdAt || raw.timestamp || freshOrder.createdAt || new Date();
+    return {
+      ...raw,
+      createdAt: entryTime,
+      updatedAt: raw.updatedAt || entryTime,
+      timestamp: raw.timestamp || entryTime,
+      active: false
+    };
+  });
 
   const carrier = freshOrder.shippingMethod === "express" ? "Express Courier (Shiprocket)" : "Standard Surface (Shiprocket)";
   const shipmentId = freshOrder.shipping?.shiprocketShipmentId || `SR-${freshOrder.orderNumber}`;
+  const now = new Date();
 
   const updatedOrder = await updateAdminOrderById(freshOrder.id, {
     status: "Confirmed",
@@ -197,7 +205,10 @@ const confirmOnlinePaymentSuccess = async ({
         done: true,
         active: false,
         source: "payment",
-        actor: "system"
+        actor: "system",
+        createdAt: now,
+        updatedAt: now,
+        timestamp: now
       },
       {
         title: "Order Confirmed",
@@ -205,7 +216,10 @@ const confirmOnlinePaymentSuccess = async ({
         done: true,
         active: true,
         source: "order",
-        actor: "system"
+        actor: "system",
+        createdAt: now,
+        updatedAt: now,
+        timestamp: now
       }
     ]
   });
@@ -314,18 +328,32 @@ const verifyCheckoutPayment = async ({ razorpay_order_id, razorpay_payment_id, r
     .digest("hex");
 
   if (expectedSignature !== razorpay_signature) {
+    const failureTime = new Date();
     // Record payment failure on order
     await updateAdminOrderById(order.id, {
       paymentStatus: "Failed",
       timeline: [
-        ...(order.timeline || []).map((e) => (e.toObject ? e.toObject() : e)),
+        ...(order.timeline || []).map((e) => {
+          const raw = e.toObject ? e.toObject() : e;
+          const eDate = raw.createdAt || raw.timestamp || order.createdAt || new Date();
+          return {
+            ...raw,
+            active: false,
+            createdAt: eDate,
+            updatedAt: raw.updatedAt || eDate,
+            timestamp: raw.timestamp || eDate
+          };
+        }),
         {
           title: "Payment Failed",
           note: "Razorpay signature verification failed.",
           done: true,
           active: false,
           source: "payment",
-          actor: "system"
+          actor: "system",
+          createdAt: failureTime,
+          updatedAt: failureTime,
+          timestamp: failureTime
         }
       ]
     });
@@ -399,17 +427,31 @@ const handleRazorpayWebhook = async ({ rawBody, signature, eventData }) => {
     if (razorpayOrderId) {
       const order = await findAdminOrderByGatewayOrderId(razorpayOrderId);
       if (order && order.status === "Pending") {
+        const failureTime = new Date();
         await updateAdminOrderById(order.id, {
           paymentStatus: "Failed",
           timeline: [
-            ...(order.timeline || []).map((e) => (e.toObject ? e.toObject() : e)),
+            ...(order.timeline || []).map((e) => {
+              const raw = e.toObject ? e.toObject() : e;
+              const eDate = raw.createdAt || raw.timestamp || order.createdAt || new Date();
+              return {
+                ...raw,
+                active: false,
+                createdAt: eDate,
+                updatedAt: raw.updatedAt || eDate,
+                timestamp: raw.timestamp || eDate
+              };
+            }),
             {
               title: "Payment Failed",
               note: `Payment failed via webhook (${paymentEntity.error_description || paymentEntity.error_code || "Unknown error"}).`,
               done: true,
               active: false,
               source: "payment",
-              actor: "system"
+              actor: "system",
+              createdAt: failureTime,
+              updatedAt: failureTime,
+              timestamp: failureTime
             }
           ]
         });

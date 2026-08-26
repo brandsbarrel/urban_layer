@@ -28,17 +28,22 @@ const mapOrderProducts = (items) => {
 };
 
 const mapTimeline = (timeline = []) => {
-  return timeline.map((entry) => ({
-    id: entry._id?.toString?.() || `${entry.title}-${entry.createdAt}`,
-    title: entry.title,
-    date: formatOrderDate(entry.createdAt || new Date()),
-    note: entry.note,
-    done: entry.done,
-    active: entry.active,
-    source: entry.source || "order",
-    actor: entry.actor || "system",
-    metadata: entry.metadata || {}
-  }));
+  return timeline.map((entry) => {
+    const eventTime = entry.createdAt || entry.timestamp || entry.updatedAt || new Date();
+    return {
+      id: entry._id?.toString?.() || `${entry.title}-${eventTime}`,
+      title: entry.title,
+      date: formatOrderDate(eventTime),
+      createdAt: eventTime,
+      timestamp: eventTime,
+      note: entry.note,
+      done: entry.done !== undefined ? entry.done : true,
+      active: entry.active || false,
+      source: entry.source || "order",
+      actor: entry.actor || "system",
+      metadata: entry.metadata || {}
+    };
+  });
 };
 
 const mapOrderToCustomerItem = (order) => {

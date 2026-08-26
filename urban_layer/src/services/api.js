@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:4000/api",
-  // baseURL: "http://187-127-135-158.traefik.me/api",
+  baseURL: "https://api.urbanlayersco.com/api",
+  // baseURL: "http://localhost:4000/api",
   headers: {
     "Content-Type": "application/json",
   },

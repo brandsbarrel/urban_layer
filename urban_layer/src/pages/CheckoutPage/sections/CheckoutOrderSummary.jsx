@@ -120,7 +120,18 @@ function CheckoutOrderSummary({ selectedMethod, paymentMethod = 'COD', contactIn
             }
         } catch (err) {
             console.error('Checkout/Payment error:', err);
-            setLocalError(err?.response?.data?.message || err.message || 'Checkout failed. Please try again.');
+            const errorMessage = err?.response?.data?.message || err.message || 'Checkout failed. Please try again.';
+            setLocalError(errorMessage);
+            
+            // Redirect to order failed page with order info if available
+            if (err?.response?.data?.orderId) {
+                navigate('/order-failed', { 
+                    state: { 
+                        order: err.response.data,
+                        error: errorMessage
+                    } 
+                });
+            }
         } finally {
             setIsProcessingPayment(false);
         }

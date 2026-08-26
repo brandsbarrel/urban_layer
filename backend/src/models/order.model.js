@@ -102,10 +102,22 @@ const timelineEntrySchema = new mongoose.Schema(
     metadata: {
       type: mongoose.Schema.Types.Mixed,
       default: {}
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now
     }
   },
   {
-    timestamps: true
+    timestamps: false
   }
 );
 

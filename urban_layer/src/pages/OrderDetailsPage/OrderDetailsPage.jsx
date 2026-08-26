@@ -151,17 +151,28 @@ function OrderDetailsPage() {
                 <MdTimeline size={20} /> Order Activity & Timeline
               </h2>
               <div className={styles.timeline}>
-                {order.timeline.map((entry, idx) => (
-                  <div
-                    key={entry.id || idx}
-                    className={`${styles.timelineItem} ${entry.done ? styles.timelineDone : ''} ${entry.active ? styles.timelineActive : ''}`}
-                  >
-                    <div className={styles.timelineDot} />
-                    <span className={styles.timelineTitle}>{entry.title}</span>
-                    <span className={styles.timelineDate}>{entry.date}</span>
-                    {entry.note && <p className={styles.timelineNote}>{entry.note}</p>}
-                  </div>
-                ))}
+                {order.timeline.map((entry, idx) => {
+                  const displayDate = entry.date || (entry.createdAt || entry.timestamp
+                    ? new Date(entry.createdAt || entry.timestamp).toLocaleString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true
+                      })
+                    : "");
+                  return (
+                    <div
+                      key={entry.id || idx}
+                      className={`${styles.timelineItem} ${entry.done ? styles.timelineDone : ''} ${entry.active ? styles.timelineActive : ''}`}
+                    >
+                      <div className={styles.timelineDot} />
+                      <span className={styles.timelineTitle}>{entry.title}</span>
+                      <span className={styles.timelineDate}>{displayDate}</span>
+                      {entry.note && <p className={styles.timelineNote}>{entry.note}</p>}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

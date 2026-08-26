@@ -31,17 +31,22 @@ const mapOrderProducts = (items) => {
 };
 
 const mapTimeline = (timeline = []) => {
-  return timeline.map((entry) => ({
-    id: entry._id?.toString?.() || `${entry.title}-${entry.createdAt}`,
-    title: entry.title,
-    date: formatOrderDate(entry.createdAt || new Date()),
-    note: entry.note,
-    done: entry.done,
-    active: entry.active,
-    source: entry.source || "order",
-    actor: entry.actor || "system",
-    metadata: entry.metadata || {}
-  }));
+  return timeline.map((entry) => {
+    const eventTime = entry.createdAt || entry.timestamp || entry.updatedAt || new Date();
+    return {
+      id: entry._id?.toString?.() || `${entry.title}-${eventTime}`,
+      title: entry.title,
+      date: formatOrderDate(eventTime),
+      createdAt: eventTime,
+      timestamp: eventTime,
+      note: entry.note,
+      done: entry.done !== undefined ? entry.done : true,
+      active: entry.active || false,
+      source: entry.source || "order",
+      actor: entry.actor || "system",
+      metadata: entry.metadata || {}
+    };
+  });
 };
 
 const mapOrderToAdminItem = (order) => {
@@ -147,8 +152,34 @@ const getAdminOrderDetails = async (id) => {
 };
 
 const appendTimelineEntry = (order, { title, note = "", source = "order", actor = "system", actorId = null, actorModel = null, metadata = {} }) => {
-  const entry = createTimelineEntry({ title, note, source, actor, actorId, actorModel, metadata });
-  return [...(order.timeline || []), entry];
+  const existingTimeline = (order.timeline || []).map((entry) => {
+    const raw = entry.toObject ? entry.toObject() : entry;
+    const entryTime = raw.createdAt || raw.timestamp || (order.createdAt ? new Date(order.createdAt) : new Date());
+    return {
+      ...raw,
+      createdAt: entryTime,
+      updatedAt: raw.updatedAt || entryTime,
+      timestamp: raw.timestamp || entryTime,
+      active: false
+    };
+  });
+
+  const now = new Date();
+  const entry = createTimelineEntry({
+    title,
+    note,
+    source,
+    actor,
+    actorId,
+    actorModel,
+    metadata,
+    createdAt: now,
+    updatedAt: now,
+    timestamp: now
+  });
+  entry.active = true;
+
+  return [...existingTimeline, entry];
 };
 
 const transitionOrderStatus = async ({ id, nextStatus, note, shipping, actor = "admin", actorId = null }) => {

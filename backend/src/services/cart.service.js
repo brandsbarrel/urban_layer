@@ -280,6 +280,7 @@ const checkoutCart = async (customerId, payload) => {
     const initialStatus = isCOD ? "Confirmed" : "Pending";
     const initialPaymentStatus = "Pending";
 
+    const now = new Date();
     const timeline = isCOD
       ? [
           {
@@ -288,7 +289,10 @@ const checkoutCart = async (customerId, payload) => {
             done: true,
             active: false,
             source: "order",
-            actor: "customer"
+            actor: "customer",
+            createdAt: now,
+            updatedAt: now,
+            timestamp: now
           },
           {
             title: "Order Confirmed",
@@ -296,7 +300,10 @@ const checkoutCart = async (customerId, payload) => {
             done: true,
             active: true,
             source: "order",
-            actor: "system"
+            actor: "system",
+            createdAt: now,
+            updatedAt: now,
+            timestamp: now
           }
         ]
       : [
@@ -306,7 +313,10 @@ const checkoutCart = async (customerId, payload) => {
             done: true,
             active: true,
             source: "order",
-            actor: "customer"
+            actor: "customer",
+            createdAt: now,
+            updatedAt: now,
+            timestamp: now
           }
         ];
 

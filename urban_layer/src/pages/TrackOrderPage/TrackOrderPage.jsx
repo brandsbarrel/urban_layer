@@ -169,7 +169,7 @@ function TrackOrderPage() {
                       <p className={styles.timelineDescription}>{step.description}</p>
                       {timelineEntry && (
                         <span className={styles.timelineDate}>
-                          {timelineEntry.timestamp || timelineEntry.date}
+                          {timelineEntry.date || (timelineEntry.createdAt || timelineEntry.timestamp ? new Date(timelineEntry.createdAt || timelineEntry.timestamp).toLocaleString("en-US", { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: true }) : "")}
                         </span>
                       )}
                       {step.key === 'confirmed' && order.placedAt && (
@@ -236,7 +236,7 @@ function TrackOrderPage() {
                     <div className={styles.historyContent}>
                       <p className={styles.historyTitle}>{entry.title || entry.status}</p>
                       <p className={styles.historyDate}>
-                        {entry.timestamp || entry.date || entry.createdAt}
+                        {entry.date || (entry.createdAt || entry.timestamp ? new Date(entry.createdAt || entry.timestamp).toLocaleString("en-US", { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: true }) : "")}
                       </p>
                       {entry.note && <p className={styles.historyNote}>{entry.note}</p>}
                     </div>

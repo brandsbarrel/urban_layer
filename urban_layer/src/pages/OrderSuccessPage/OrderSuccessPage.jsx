@@ -20,8 +20,8 @@ function OrderSuccessPage() {
     const dispatch = useDispatch();
     const orders = useSelector(selectOrders);
 
-    // Find order in state first
-    const orderInState = orders.find(o => o.id === urlOrderId || o.orderDbId === urlOrderId);
+    // Find order in state first (Redux store has full order data after fetchOrders)
+    const orderInState = orders.find(o => o.id === urlOrderId || o.orderDbId === urlOrderId || o.orderNumber === urlOrderId);
     
     // If not in state, fetch from API
     useEffect(() => {
@@ -30,7 +30,8 @@ function OrderSuccessPage() {
         }
     }, [dispatch, urlOrderId, orderInState, navOrder]);
 
-    const order = navOrder || orderInState || orders.find(o => o.id === urlOrderId);
+    // Prioritize Redux store (full order) over navOrder (minimal verification result)
+    const order = orderInState || orders.find(o => o.id === urlOrderId || o.orderDbId === urlOrderId || o.orderNumber === urlOrderId) || navOrder;
 
     if (!order) {
         return (

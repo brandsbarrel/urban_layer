@@ -11,6 +11,7 @@ import SearchResultsPage from '../pages/SearchResultsPage/SearchResultsPage';
 import WishlistPage from '../pages/WishlistPage/WishlistPage';
 import CartPage from '../pages/CartPage/CartPage';
 import OrderSuccessPage from '../pages/OrderSuccessPage/OrderSuccessPage';
+import OrderFailedPage from '../pages/OrderFailedPage/OrderFailedPage';
 import AccountPage from '../pages/AccountPage/AccountPage';
 import OrdersPage from '../pages/OrdersPage/OrdersPage';
 import OrderDetailsPage from '../pages/OrderDetailsPage/OrderDetailsPage';
@@ -40,6 +41,7 @@ function AppRoutes() {
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/order-success/:orderId?" element={<OrderSuccessPage />} />
+        <Route path="/order-failed/:orderId?" element={<OrderFailedPage />} />
         <Route path="/track-order/:orderId" element={<TrackOrderPage />} />
 
         <Route element={<AccountLayout />}>

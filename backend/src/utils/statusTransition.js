@@ -97,8 +97,12 @@ export function createTimelineEntry({
   actor = "system",
   actorId = null,
   actorModel = null,
-  metadata = {}
+  metadata = {},
+  createdAt = null,
+  updatedAt = null,
+  timestamp = null
 }) {
+  const eventTime = timestamp || createdAt || new Date();
   return {
     title,
     note,
@@ -108,7 +112,10 @@ export function createTimelineEntry({
     actor,
     actorId,
     actorModel,
-    metadata
+    metadata,
+    createdAt: createdAt || eventTime,
+    updatedAt: updatedAt || eventTime,
+    timestamp: timestamp || eventTime
   };
 }
 
