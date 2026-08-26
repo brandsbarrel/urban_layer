@@ -1,3 +1,33 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-on-surface-variant);
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-outline-variant);
+  padding: var(--spacing-unit-sm) 28px var(--spacing-unit-sm) 0;
+  composes: text-body-md from global;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-bottom-color: var(--color-primary);
+}
+
 .iconLeft {
   position: absolute;
   left: 0;

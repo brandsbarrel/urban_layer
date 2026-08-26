@@ -1,0 +1,79 @@
+.banner {
+  position: relative;
+  min-height: 430px;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center right;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.76), rgba(0, 0, 0, 0.34) 55%, rgba(0, 0, 0, 0.08)),
+    linear-gradient(to top, rgba(0, 0, 0, 0.25), transparent 45%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: var(--spacing-container-max);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--spacing-unit-xl) var(--spacing-margin-mobile);
+  color: #ffffff;
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding-left: var(--spacing-margin-desktop);
+    padding-right: var(--spacing-margin-desktop);
+  }
+}
+
+.eyebrow {
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-secondary-fixed);
+}
+
+.heading {
+  composes: text-headline-md from global;
+  max-width: 580px;
+  margin: 12px 0 var(--spacing-unit-md);
+}
+
+.copy {
+  composes: text-body-md from global;
+  max-width: 520px;
+  color: rgba(255, 255, 255, 0.86);
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: var(--radius-lg);
+  background: #ffffff;
+  color: var(--color-primary);
+  composes: text-label-md from global;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .banner {
+    min-height: 500px;
+    background-position: 66% center;
+  }
+
+  .button {
+    width: 100%;
+  }
+}

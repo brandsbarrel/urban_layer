@@ -11,3 +11,14 @@
   justify-content: center;
   gap: 4px;
 }
+
+.label {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+}
+
+.value {
+  composes: text-title-lg from global;
+  color: var(--color-on-background);
+}

@@ -4,9 +4,6 @@ import { useDispatch } from 'react-redux';
 import {
     MdDashboard,
     MdInventory2,
-    MdFavoriteBorder,
-    MdLocationOn,
-    MdStars,
     MdSettings,
     MdLogout,
     MdMenu,
@@ -18,9 +15,8 @@ import styles from './AccountSidebar.module.css';
 const NAV_ITEMS = [
     { icon: MdDashboard, label: 'Dashboard', path: '/account' },
     { icon: MdInventory2, label: 'Orders', path: '/account/orders' },
-    { icon: MdFavoriteBorder, label: 'Wishlist', path: '/wishlist' },
-    { icon: MdLocationOn, label: 'Addresses', path: '/account/addresses' },
-    { icon: MdStars, label: 'Rewards', path: '/account/rewards' },
+    // { icon: MdLocationOn, label: 'Addresses', path: '/account/addresses' },
+    // { icon: MdStars, label: 'Rewards', path: '/account/rewards' },
     { icon: MdSettings, label: 'Settings', path: '/account/settings' },
 ];
 
@@ -74,7 +70,6 @@ function AccountSidebar({ user }) {
                         <Link
                             key={item.path}
                             to={item.path}
-                            onClick={closeDrawer}
                             className={
                                 location.pathname === item.path
                                     ? `${styles.navLink} ${styles.navLinkActive}`

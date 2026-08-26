@@ -1,3 +1,210 @@
+.card,
+.cardDetailed,
+.cardReveal,
+.cardIconOverlay {
+  min-width: 0;
+  height: 100%;
+}
+
+.card,
+.cardDetailed {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid rgba(207, 196, 197, 0.45);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.card:hover,
+.cardDetailed:hover {
+  transform: translateY(-3px);
+  border-color: rgba(115, 92, 0, 0.25);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.08);
+}
+
+.imageWrapper,
+.imageWrapperDetailed {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background-color: var(--color-surface-container-low);
+}
+
+.imageWrapperDetailed {
+  aspect-ratio: 1 / 1;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.45s ease;
+}
+
+.card:hover .image,
+.cardDetailed:hover .image {
+  transform: scale(1.04);
+}
+
+.badgeDark,
+.badgeGold {
+  position: absolute;
+  top: var(--spacing-unit-md);
+  left: var(--spacing-unit-md);
+  z-index: 10;
+  composes: text-label-sm from global;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.badgeDark {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.badgeGold {
+  background-color: var(--color-secondary-fixed);
+  color: var(--color-on-secondary-fixed);
+}
+
+.overlay,
+.overlayDetailed {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-unit-sm);
+  padding: var(--spacing-unit-md);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.imageWrapper:hover .overlay,
+.imageWrapperDetailed:hover .overlayDetailed,
+.card:focus-within .overlay,
+.cardDetailed:focus-within .overlayDetailed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quickAddButton,
+.addToCartButton,
+.quickViewButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-unit-sm);
+  min-height: 42px;
+  border-radius: var(--radius-lg);
+  font-weight: 700;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.quickAddButton {
+  background-color: rgba(255, 255, 255, 0.94);
+  color: var(--color-primary);
+  padding: 10px 18px;
+}
+
+.addToCartButton {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: 10px 18px;
+}
+
+.quickViewButton {
+  width: 42px;
+  flex: 0 0 42px;
+  background-color: rgba(255, 255, 255, 0.94);
+  color: var(--color-primary);
+}
+
+.quickAddButton:hover,
+.addToCartButton:hover,
+.quickViewButton:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+  transform: translateY(-1px);
+}
+
+.info,
+.infoDetailed,
+.infoIconOverlay {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: var(--spacing-unit-md);
+}
+
+.infoDetailed {
+  padding: var(--spacing-unit-lg);
+}
+
+.titleRow,
+.titleRowDetailed {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-unit-sm);
+}
+
+.name,
+.nameReveal,
+.nameIconOverlay {
+  composes: text-title-lg from global;
+  color: var(--color-on-background);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.compatibility {
+  composes: text-label-sm from global;
+  color: var(--color-on-surface-variant);
+  min-height: 18px;
+}
+
+.priceRow,
+.priceRowDetailed {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--spacing-unit-sm);
+  margin-top: auto;
+}
+
+.price,
+.priceIconOverlay {
+  composes: text-title-lg from global;
+  color: var(--color-secondary);
+  white-space: nowrap;
+}
+
+.originalPrice {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+  text-decoration: line-through;
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  color: var(--color-secondary);
+  composes: text-label-sm from global;
+}
+
 .cardReveal {
   display: flex;
   flex-direction: column;
@@ -191,7 +398,7 @@
 }
 
 .cardCornerAdd {
-  min-width: 280px;
+  min-width: min(280px, 82vw);
   flex-shrink: 0;
 }
 
@@ -251,4 +458,76 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 10px;
+}
+
+@media (hover: none) {
+  .overlay,
+  .overlayDetailed,
+  .cornerAddButton,
+  .iconOverlayActions,
+  .revealAddButton {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .card,
+  .cardDetailed,
+  .cardReveal,
+  .cardIconOverlay {
+    border-radius: var(--radius-lg);
+  }
+
+  .imageWrapper,
+  .imageWrapperDetailed,
+  .imageWrapperReveal {
+    aspect-ratio: 1 / 1;
+  }
+
+  .info,
+  .infoDetailed,
+  .infoIconOverlay {
+    padding: 10px;
+  }
+
+  .titleRow,
+  .titleRowDetailed,
+  .titleRowIconOverlay {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .overlay,
+  .overlayDetailed {
+    position: static;
+    background: var(--color-surface-container-low);
+    opacity: 1;
+    transform: none;
+  }
+
+  .quickAddButton,
+  .addToCartButton {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .name,
+  .nameReveal,
+  .nameIconOverlay,
+  .price,
+  .priceIconOverlay {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .compatibility,
+  .originalPrice,
+  .reviewCount {
+    font-size: 11px;
+    line-height: 16px;
+  }
 }

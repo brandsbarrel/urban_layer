@@ -11,18 +11,24 @@
 .card {
   position: relative;
   display: block;
+  min-height: 132px;
   padding: var(--spacing-unit-lg);
-  border-radius: var(--radius-xl);
-  border: 1px solid rgba(207, 196, 197, 0.3);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(207, 196, 197, 0.45);
   background-color: #ffffff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  border-color: rgba(115, 92, 0, 0.55);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.06);
 }
 
 .cardSelected {
   border-color: var(--color-secondary);
-  box-shadow: 0 0 0 1px var(--color-secondary);
+  box-shadow: 0 0 0 2px rgba(115, 92, 0, 0.14), 0 18px 36px rgba(0, 0, 0, 0.06);
 }
 
 .header {

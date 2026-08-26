@@ -20,10 +20,11 @@ import LoginPage from '../pages/LoginPage/LoginPage';
 import RegisterPage from '../pages/RegisterPage/RegisterPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage/ForgotPasswordPage';
 import CheckoutPage from '../pages/CheckoutPage/CheckoutPage';
+import SettingsPage from '../pages/SettingsPage/SettingsPage';
+import LegalPage from '../pages/LegalPage/LegalPage';
 // import TrackOrderPage from '../pages/TrackOrderPage/TrackOrderPage';
 // import OrderDetailPage from '../pages/OrderDetailPage/OrderDetailPage';
 // import AddressesPage from '../pages/AddressesPage/AddressesPage';
-// import SettingsPage from '../pages/SettingsPage/SettingsPage';
 // import ContactPage from '../pages/ContactPage/ContactPage';
 // import FAQPage from '../pages/FAQPage/FAQPage';
 // import JournalPage from '../pages/JournalPage/JournalPage';
@@ -43,11 +44,14 @@ function AppRoutes() {
         <Route path="/order-success/:orderId?" element={<OrderSuccessPage />} />
         <Route path="/order-failed/:orderId?" element={<OrderFailedPage />} />
         <Route path="/track-order/:orderId" element={<TrackOrderPage />} />
+        <Route path="/privacy-policy" element={<LegalPage type="privacy" />} />
+        <Route path="/terms-conditions" element={<LegalPage type="terms" />} />
 
         <Route element={<AccountLayout />}>
           <Route path="/account" element={<AccountPage />} />
           <Route path="/account/orders" element={<OrdersPage />} />
           <Route path="/account/orders/:orderId" element={<OrderDetailsPage />} />
+          <Route path="/account/settings" element={<SettingsPage />} />
         </Route>
       </Route>
 

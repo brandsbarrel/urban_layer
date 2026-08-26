@@ -1,13 +1,13 @@
 .section {
   max-width: var(--spacing-container-max);
   margin: 0 auto;
-  padding: var(--spacing-unit-xl) var(--spacing-margin-mobile);
+  padding: var(--spacing-unit-lg) var(--spacing-margin-mobile);
   overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .section {
-    padding: var(--spacing-unit-xl) var(--spacing-margin-desktop);
+    padding: var(--spacing-unit-lg) var(--spacing-margin-desktop) var(--spacing-unit-xl);
   }
 }
 
@@ -15,7 +15,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: var(--spacing-unit-lg);
+  margin-bottom: var(--spacing-unit-md);
 }
 
 .eyebrow {
@@ -56,7 +56,7 @@
 
 .scrollRow {
   display: flex;
-  gap: var(--spacing-gutter);
+  gap: var(--spacing-unit-md);
   overflow-x: auto;
   padding-bottom: var(--spacing-unit-lg);
   scroll-snap-type: x proximity;

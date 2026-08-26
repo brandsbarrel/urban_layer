@@ -1,3 +1,116 @@
+.wrapper,
+.compactWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+}
+
+.wrapper {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid rgba(207, 196, 197, 0.45);
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.compactWrapper {
+  width: 100%;
+}
+
+.title {
+  composes: text-headline-md from global;
+  color: var(--color-on-background);
+}
+
+.subtitle,
+.privacy {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}
+
+.privacy {
+  composes: text-label-sm from global;
+}
+
+.form,
+.compactForm {
+  display: flex;
+  width: 100%;
+  gap: var(--spacing-unit-sm);
+}
+
+.form {
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.input,
+.compactInput {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  padding: 12px 14px;
+  composes: text-body-md from global;
+  outline: none;
+}
+
+.input:focus,
+.compactInput:focus {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(115, 92, 0, 0.12);
+}
+
+.button,
+.compactButton {
+  flex: 0 0 auto;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-secondary-fixed);
+  color: var(--color-on-secondary-fixed);
+  padding: 12px 18px;
+  composes: text-label-md from global;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.button:hover,
+.compactButton:hover {
+  filter: brightness(0.96);
+}
+
+.button:disabled,
+.compactButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.successMessage,
+.compactSuccess {
+  composes: text-body-md from global;
+  color: var(--color-secondary-fixed);
+}
+
+@media (max-width: 520px) {
+  .form,
+  .compactForm,
+  .editorialForm,
+  .darkFormSplit {
+    flex-direction: column;
+  }
+
+  .button,
+  .compactButton,
+  .editorialButton,
+  .darkButton {
+    width: 100%;
+  }
+}
+
 .bannerWrapper {
   background-color: var(--color-primary-container);
   padding: var(--spacing-unit-lg);

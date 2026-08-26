@@ -32,9 +32,20 @@
   gap: var(--spacing-unit-sm);
 }
 
-.logoImage {
-  height: 32px;
-  width: auto;
+.logoMark {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .brandName {

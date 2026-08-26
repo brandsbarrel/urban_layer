@@ -292,6 +292,129 @@
 
 .backButtonMuted:hover {
     background: var(--color-surface-container-high);
+}
+
+.mainColumn,
+.sidebarColumn {
+    min-width: 0;
+}
+
+.trackingInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.trackingLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    font-weight: 700;
+}
+
+.historyList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.historyItem {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--color-surface-container-low);
+}
+
+.historyIcon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.historyContent {
+    min-width: 0;
+}
+
+.historyTitle,
+.historyDate,
+.historyNote {
+    margin: 0;
+}
+
+.historyTitle {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-on-surface);
+}
+
+.historyDate {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--color-on-surface-variant);
+}
+
+.historyNote {
+    margin-top: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-on-surface-variant);
+}
+
+.noTrackingCard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 16px;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+}
+
+@media (max-width: 640px) {
+    .content {
+        padding: 20px 14px;
+    }
+
+    .headerCard,
+    .card,
+    .noTrackingCard {
+        border-radius: 12px;
+        padding: 16px;
+    }
+
+    .entryHeader,
+    .trackingRow,
+    .summaryRow,
+    .summaryTotalRow,
+    .itemRow {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .timelineWrapper {
+        padding-left: 28px;
+    }
+
+    .noTrackingCard {
+        text-align: center;
+        flex-direction: column;
+    }
+}
 /* Detailed Timeline */
 .detailedTimeline {
     display: flex;
@@ -614,5 +737,4 @@
 
 .continueShoppingButton:hover {
     background: var(--color-surface-container-high);
-}
 }

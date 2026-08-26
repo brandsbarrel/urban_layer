@@ -4,6 +4,7 @@ import CollectionsSection from './sections/CollectionsSection';
 import BestSellersSection from './sections/BestSellersSection';
 import WhyChooseSection from './sections/WhyChooseSection';
 import LifestyleBanner from './sections/LifestyleBanner';
+import FeatureBannerSection from './sections/FeatureBannerSection';
 import styles from './HomePage.module.css';
 
 function HomePage() {
@@ -13,6 +14,7 @@ function HomePage() {
             <ShopByDeviceSection />
             <CollectionsSection />
             <BestSellersSection />
+            <FeatureBannerSection />
             <WhyChooseSection />
             <LifestyleBanner />
         </div>

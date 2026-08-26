@@ -1,20 +1,20 @@
 .hero {
   position: relative;
-  height: 90vh;
-  min-height: 600px;
+  height: calc(100vh - var(--announcement-bar-height));
+  min-height: 560px;
   overflow: hidden;
   display: flex;
   align-items: center;
   background-color: var(--color-tertiary);
-  margin-top: calc(var(--announcement-bar-height) + 88px);
+  margin-top: 0;
 }
 
 .bgLayer {
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
-  opacity: 0.8;
+  background-position: center right;
+  opacity: 0.95;
 }
 
 .gradient {
@@ -28,14 +28,24 @@
   z-index: 10;
   max-width: var(--spacing-container-max);
   margin: 0 auto;
-  padding: 0 var(--spacing-margin-mobile);
+  padding: calc(var(--spacing-unit-xl) + 56px) var(--spacing-margin-mobile) var(--spacing-unit-xl);
   width: 100%;
   color: var(--color-surface);
 }
 
 @media (min-width: 768px) {
   .content {
-    padding: 0 var(--spacing-margin-desktop);
+    padding: calc(var(--spacing-unit-xl) + 56px) var(--spacing-margin-desktop) var(--spacing-unit-xl);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero {
+    min-height: 640px;
+  }
+
+  .bgLayer {
+    background-position: 68% center;
   }
 }
 

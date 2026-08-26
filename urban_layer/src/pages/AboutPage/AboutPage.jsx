@@ -8,6 +8,7 @@ import TimelineSection from './sections/TimelineSection';
 import CraftsmanshipSection from './sections/CraftsmanshipSection';
 import AchievementsSection from './sections/AchievementsSection';
 import TestimonialsSection from './sections/TestimonialsSection';
+import AboutClosingBanner from './sections/AboutClosingBanner';
 import { galleryImages } from '../../services/aboutPageData';
 import styles from './AboutPage.module.css';
 
@@ -28,6 +29,7 @@ function AboutPage() {
       <div className={styles.newsletterSection}>
         <NewsletterSignup />
       </div>
+      <AboutClosingBanner />
     </div>
   );
 }

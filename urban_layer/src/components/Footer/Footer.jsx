@@ -4,16 +4,13 @@ import NewsletterSignup from '../NewsletterSignup/NewsletterSignup';
 import { FOOTER_LINKS } from '../../utils/constants';
 import styles from './Footer.module.css';
 
-const LOGO_IMAGE =
-  'https://lh3.googleusercontent.com/aida/AP1WRLuM8MJ3KmurenQcOLHRpiykXhdIlUWmGH2uIzgwngzBiE_pmX-vaLFNFgPrYhPkk_7GphrkrQcKij7hhHljKNqd5adJpgSv3HSQHWhH6IdyWyO3EdW8OyXnaLS2XamQr3NbqnULxKlan16wXIxek9BaWePbDfIYO2jOI9sWCGivl3t2U8QwE888AaxW5tHq1m9rzHH3d9Rx6jR-flBS-9R88oLeKr2CscYlmsr2IEv0lcHrlxyN4FhH7w';
-
 function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.grid}>
         <div className={styles.brandColumn}>
           <Link to="/" className={styles.brand}>
-            <img src={LOGO_IMAGE} alt="Urban Layers Co." className={styles.logoImage} />
+            <span className={styles.logoMark} aria-label="UL logo">UL</span>
             <span className={styles.brandName}>Urban Layers Co.</span>
           </Link>
           <p className={styles.tagline}>

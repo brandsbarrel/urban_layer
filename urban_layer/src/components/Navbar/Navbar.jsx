@@ -15,9 +15,6 @@ import { selectWishlistCount } from '../../redux/slices/wishlistSlice';
 import { selectAuth } from '../../redux/slices/authSlice';
 import styles from './Navbar.module.css';
 
-const LOGO_IMAGE =
-  'https://lh3.googleusercontent.com/aida/AP1WRLuM8MJ3KmurenQcOLHRpiykXhdIlUWmGH2uIzgwngzBiE_pmX-vaLFNFgPrYhPkk_7GphrkrQcKij7hhHljKNqd5adJpgSv3HSQHWhH6IdyWyO3EdW8OyXnaLS2XamQr3NbqnULxKlan16wXIxek9BaWePbDfIYO2jOI9sWCGivl3t2U8QwE888AaxW5tHq1m9rzHH3d9Rx6jR-flBS-9R88oLeKr2CscYlmsr2IEv0lcHrlxyN4FhH7w';
-
 function Navbar() {
   const location = useLocation();
   const cartCount = useSelector(selectCartCount);
@@ -38,7 +35,7 @@ function Navbar() {
     <header className={`${styles.navbar} ${isScrolled ? styles.navbarScrolled : ''}`}>
       <div className={styles.inner}>
         <Link to="/" className={styles.brand} onClick={closeMenu}>
-          <img src={LOGO_IMAGE} alt="Urban Layers Co. Logo" className={styles.logoImage} />
+          <span className={styles.logoMark} aria-label="UL logo">UL</span>
           <h1 className={styles.brandName}>Urban Layers Co.</h1>
         </Link>
 

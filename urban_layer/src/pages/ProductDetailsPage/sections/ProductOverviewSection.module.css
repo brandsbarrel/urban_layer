@@ -21,6 +21,10 @@
   }
 }
 
+.galleryColumn {
+  min-width: 0;
+}
+
 .toast {
   position: fixed;
   bottom: 24px;
@@ -226,6 +230,30 @@
   align-items: center;
   gap: 12px;
   padding-top: 8px;
+}
+
+@media (max-width: 640px) {
+  .section {
+    gap: 24px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+    line-height: 2.1rem;
+  }
+
+  .priceRow,
+  .quantitySection,
+  .actions,
+  .guaranteeBox {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .wishlistButton {
+    flex-basis: 52px;
+    width: 100%;
+  }
 }
 
 .addToCartButton {

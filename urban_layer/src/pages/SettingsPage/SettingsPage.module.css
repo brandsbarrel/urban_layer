@@ -1,0 +1,179 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-lg);
+  padding-bottom: var(--spacing-unit-xl);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-unit-md);
+  padding: var(--spacing-unit-lg);
+  border: 1px solid rgba(207, 196, 197, 0.35);
+  border-radius: var(--radius-lg);
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.05);
+}
+
+.kicker {
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-secondary);
+}
+
+.title {
+  composes: text-headline-md from global;
+  color: var(--color-primary);
+  margin-top: 6px;
+}
+
+.savedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius-full);
+  background: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+  composes: text-label-sm from global;
+  font-weight: 700;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-lg);
+}
+
+.panel {
+  padding: var(--spacing-unit-lg);
+  border: 1px solid rgba(207, 196, 197, 0.35);
+  border-radius: var(--radius-lg);
+  background: #ffffff;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.04);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-unit-lg);
+}
+
+.panelTitle {
+  composes: text-title-lg from global;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  composes: text-label-sm from global;
+  color: var(--color-outline);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid rgba(207, 196, 197, 0.6);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-low);
+  color: var(--color-on-surface);
+  padding: 14px 16px;
+  composes: text-body-md from global;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(115, 92, 0, 0.14);
+}
+
+.preferenceList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 768px) {
+  .preferenceList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.preference {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 14px;
+  border: 1px solid rgba(207, 196, 197, 0.5);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-container-lowest);
+  composes: text-label-md from global;
+}
+
+.preference input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-secondary);
+}
+
+.saveButton {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  composes: text-label-md from global;
+  font-weight: 700;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.saveButton:hover {
+  background: var(--color-primary-hover);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saveButton:active {
+  transform: translateY(1px);
+}
+
+.errorMessage {
+  padding: 12px 14px;
+  border: 1px solid rgba(186, 26, 26, 0.2);
+  border-radius: var(--radius-lg);
+  background: rgba(186, 26, 26, 0.08);
+  color: var(--color-error);
+  composes: text-body-md from global;
+}

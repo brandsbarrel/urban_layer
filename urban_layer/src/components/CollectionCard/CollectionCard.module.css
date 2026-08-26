@@ -73,8 +73,8 @@
 
 .cardCompact {
   position: relative;
-  height: 384px;
-  border-radius: var(--radius-xl);
+  min-height: 320px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   background-size: cover;
   background-position: center;
@@ -117,4 +117,33 @@
 
 .ctaArrow:hover .ctaArrowIcon {
   transform: translateX(8px);
+}
+
+@media (max-width: 640px) {
+  .cardCompact {
+    min-height: 250px;
+  }
+
+  .content {
+    left: var(--spacing-unit-md);
+    right: var(--spacing-unit-md);
+    bottom: var(--spacing-unit-md);
+    gap: var(--spacing-unit-sm);
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .description {
+    display: none;
+  }
+
+  .ctaGold,
+  .ctaLight {
+    padding: 8px 12px;
+    font-size: 11px;
+    line-height: 16px;
+  }
 }

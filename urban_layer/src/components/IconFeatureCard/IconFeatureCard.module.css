@@ -1,3 +1,37 @@
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-unit-md);
+  padding: var(--spacing-unit-lg);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid rgba(207, 196, 197, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-secondary-fixed);
+  color: var(--color-on-secondary-fixed);
+}
+
+.title {
+  composes: text-title-lg from global;
+  color: var(--color-on-background);
+}
+
+.description {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+}
+
 .cardDark {
   padding: var(--spacing-unit-lg);
   border-radius: 1rem;
