@@ -6,7 +6,7 @@ const initialState = {
     name: 'Aniket',
     fullName: 'Aniket Sharma',
     email: 'aniket.s@urbanlayers.co',
-    phone: '+91 98765 43210',
+    phone: '+919876543210',
     currency: 'INR',
     language: 'EN',
     memberSince: 'Jan 2024',
@@ -41,7 +41,7 @@ const authSlice = createSlice({
     loginSuccess(state, action) {
       state.status = 'succeeded';
       state.isAuthenticated = true;
-      state.user = { ...state.user, ...action.payload, isGuest: false };
+      state.user = { ...action.payload, isGuest: false };
     },
     loginFailure(state, action) {
       state.status = 'failed';
@@ -54,7 +54,7 @@ const authSlice = createSlice({
     registerSuccess(state, action) {
       state.status = 'succeeded';
       state.isAuthenticated = true;
-      state.user = { ...state.user, ...action.payload, isGuest: false };
+      state.user = { ...action.payload, isGuest: false };
     },
     registerFailure(state, action) {
       state.status = 'failed';

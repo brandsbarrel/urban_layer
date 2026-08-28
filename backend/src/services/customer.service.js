@@ -5,8 +5,10 @@ import {
   updateCustomerById
 } from "../repositories/customer.repository.js";
 import { countCustomers, deleteCustomerById, findCustomers, findCustomerByEmail } from "../repositories/customer-admin.repository.js";
-import { ConflictError, NotFoundError } from "../shared/app-error.js";
+import { BusinessRuleError, ConflictError, NotFoundError } from "../shared/app-error.js";
 import { buildPaginationMeta } from "../utils/pagination.js";
+
+const MAX_CUSTOMER_ADDRESSES = 3;
 
 const formatCurrency = (amountMinor) => {
   return amountMinor / 100;
@@ -282,6 +284,10 @@ const addCustomerAddress = async (customerId, payload) => {
     throw new NotFoundError("Customer not found.");
   }
 
+  if ((customer.addresses?.length || 0) >= MAX_CUSTOMER_ADDRESSES) {
+    throw new BusinessRuleError({ message: `You can save a maximum of ${MAX_CUSTOMER_ADDRESSES} addresses.` });
+  }
+
   const addresses = payload.isDefault
     ? customer.addresses.map((address) => ({ ...address.toObject(), isDefault: false }))
     : customer.addresses.map((address) => address.toObject());
@@ -321,6 +327,29 @@ const updateCustomerAddress = async (customerId, addressIndex, payload) => {
   return updated.addresses;
 };
 
+const deleteCustomerAddress = async (customerId, addressIndex) => {
+  const customer = await findCustomerById(customerId);
+
+  if (!customer) {
+    throw new NotFoundError("Customer not found.");
+  }
+
+  if (!customer.addresses[addressIndex]) {
+    throw new NotFoundError("Address not found.");
+  }
+
+  const addresses = customer.addresses
+    .filter((_, index) => index !== addressIndex)
+    .map((address) => address.toObject());
+
+  if (addresses.length > 0 && !addresses.some((address) => address.isDefault)) {
+    addresses[0].isDefault = true;
+  }
+
+  const updated = await updateCustomerById(customerId, { addresses });
+  return updated.addresses;
+};
+
 export {
   listAdminCustomers,
   getAdminCustomerDetails,
@@ -331,5 +360,6 @@ export {
   getCustomerProfile,
   updateCustomerProfile,
   addCustomerAddress,
-  updateCustomerAddress
+  updateCustomerAddress,
+  deleteCustomerAddress
 };

@@ -515,6 +515,15 @@
     line-height: 16px;
   }
 
+  .quickViewButton {
+    min-height: 38px;
+  }
+
+  .overlayDetailed {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
   .name,
   .nameReveal,
   .nameIconOverlay,

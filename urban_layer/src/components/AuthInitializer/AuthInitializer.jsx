@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loginSuccess, logout } from "../../redux/slices/authSlice";
 import { fetchCart } from "../../redux/slices/cartSlice";
+import { fetchAddresses } from "../../redux/slices/addressesSlice";
 import { getProfile } from "../../services/authService";
 
 function AuthInitializer({ children }) {
@@ -18,6 +19,7 @@ function AuthInitializer({ children }) {
 
         dispatch(loginSuccess(profile));
         dispatch(fetchCart());
+        dispatch(fetchAddresses());
       } catch (error) {
         localStorage.removeItem("customerAccessToken");
         dispatch(logout());

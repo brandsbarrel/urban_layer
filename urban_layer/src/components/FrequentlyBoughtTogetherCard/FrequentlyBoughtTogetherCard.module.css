@@ -1,12 +1,13 @@
 .card {
   background-color: var(--color-surface-container-low);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-gutter);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-gutter);
   text-align: center;
+  min-width: 0;
 }
 
 @media (min-width: 768px) {
@@ -42,15 +43,18 @@
 
 .textBlock {
   flex: 1;
+  min-width: 0;
 }
 
 .title {
   composes: text-title-lg from global;
+  overflow-wrap: anywhere;
 }
 
 .description {
   composes: text-body-md from global;
   color: var(--color-on-surface-variant);
+  overflow-wrap: anywhere;
 }
 
 .priceBlock {
@@ -88,6 +92,7 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   transition: filter 0.2s ease, transform 0.2s ease;
+  text-align: center;
 }
 
 .ctaButton:hover {
@@ -96,4 +101,28 @@
 
 .ctaButton:active {
   transform: scale(0.95);
+}
+
+@media (max-width: 520px) {
+  .card {
+    padding: var(--spacing-unit-md);
+  }
+
+  .imageTile {
+    height: 82px;
+    width: 82px;
+  }
+
+  .imageTile:not(:first-child) {
+    margin-left: -24px;
+  }
+
+  .price {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .ctaButton {
+    width: 100%;
+  }
 }

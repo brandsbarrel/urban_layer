@@ -1,5 +1,6 @@
 .grid {
   grid-column: span 12 / span 12;
+  min-width: 0;
 }
 
 @media (min-width: 768px) {
@@ -13,6 +14,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-unit-lg);
+  gap: var(--spacing-unit-md);
 }
 
 .resultsText {
@@ -38,7 +40,7 @@
   gap: var(--spacing-gutter);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .productsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -55,4 +57,96 @@
   color: var(--color-on-surface-variant);
   text-align: center;
   padding: var(--spacing-unit-xl) 0;
+}
+
+.headerSkeletonText {
+  flex: 1;
+  max-width: 260px;
+  width: 100%;
+}
+
+.productSkeletonCard {
+  background: #ffffff;
+  border: 1px solid rgba(207, 196, 197, 0.45);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.skeletonImage,
+.skeletonLine {
+  animation: productPulse 1.25s ease-in-out infinite;
+  background: linear-gradient(90deg, var(--color-surface-container) 25%, var(--color-surface-container-low) 50%, var(--color-surface-container) 75%);
+  background-size: 200% 100%;
+  display: block;
+}
+
+.skeletonImage {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+
+.skeletonBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: var(--spacing-unit-lg);
+}
+
+.skeletonLine {
+  border-radius: var(--radius-sm);
+  height: 16px;
+  width: 100%;
+}
+
+.skeletonResult {
+  width: min(220px, 80%);
+}
+
+.skeletonSort {
+  height: 36px;
+  width: 160px;
+}
+
+.skeletonMedium {
+  width: 72%;
+}
+
+.skeletonShort {
+  width: 45%;
+}
+
+@media (max-width: 767px) {
+  .header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sortSelect {
+    border: 1px solid var(--color-outline-variant);
+    border-radius: var(--radius-lg);
+    min-height: 44px;
+    padding: 0 var(--spacing-unit-sm);
+    width: 100%;
+  }
+
+  .skeletonSort,
+  .headerSkeletonText {
+    max-width: none;
+    width: 100%;
+  }
+
+  .skeletonBody {
+    padding: var(--spacing-unit-md);
+  }
+}
+
+@keyframes productPulse {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }

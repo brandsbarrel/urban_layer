@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addCustomerAddressHandler,
+  deleteCustomerAddressHandler,
   getCustomerProfileHandler,
   updateCustomerAddressHandler,
   updateCustomerProfileHandler
@@ -23,5 +24,6 @@ customerProfileRouter.get("/profile", getCustomerProfileHandler);
 customerProfileRouter.patch("/profile", validate(customerProfileUpdateSchema), updateCustomerProfileHandler);
 customerProfileRouter.post("/addresses", validate(customerAddressCreateSchema), addCustomerAddressHandler);
 customerProfileRouter.patch("/addresses/:index", validate(customerAddressUpdateSchema), updateCustomerAddressHandler);
+customerProfileRouter.delete("/addresses/:index", deleteCustomerAddressHandler);
 
 export { customerProfileRouter };

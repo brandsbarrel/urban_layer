@@ -16,12 +16,37 @@ function CartPage() {
         dispatch(fetchCart());
     }, [dispatch]);
 
-    if (loading && items.length === 0) {
-        return (
-            <div className={styles.page}>
-                <div className={styles.loading}>Loading cart...</div>
+    const renderSkeleton = () => (
+        <div className={styles.page}>
+            <header className={styles.header}>
+                <span className={`${styles.skeletonLine} ${styles.skeletonTitle}`} />
+                <span className={`${styles.skeletonLine} ${styles.skeletonSubtitle}`} />
+            </header>
+            <div className={styles.grid}>
+                <div className={styles.skeletonItems}>
+                    {[0, 1, 2].map((item) => (
+                        <div className={styles.skeletonCartCard} key={item}>
+                            <span className={styles.skeletonImage} />
+                            <div className={styles.skeletonContent}>
+                                <span className={styles.skeletonLine} />
+                                <span className={`${styles.skeletonLine} ${styles.skeletonSubtitle}`} />
+                                <span className={`${styles.skeletonLine} ${styles.skeletonActions}`} />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className={styles.skeletonSummary}>
+                    <span className={`${styles.skeletonLine} ${styles.skeletonTitle}`} />
+                    <span className={styles.skeletonLine} />
+                    <span className={styles.skeletonLine} />
+                    <span className={`${styles.skeletonLine} ${styles.skeletonActions}`} />
+                </div>
             </div>
-        );
+        </div>
+    );
+
+    if (loading && items.length === 0) {
+        return renderSkeleton();
     }
 
     if (error && items.length === 0) {

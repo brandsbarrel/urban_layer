@@ -8,6 +8,7 @@ import {
     MdLogout,
     MdMenu,
     MdClose,
+    MdLocationOn
 } from 'react-icons/md';
 import { logout } from '../../redux/slices/authSlice';
 import styles from './AccountSidebar.module.css';
@@ -15,7 +16,7 @@ import styles from './AccountSidebar.module.css';
 const NAV_ITEMS = [
     { icon: MdDashboard, label: 'Dashboard', path: '/account' },
     { icon: MdInventory2, label: 'Orders', path: '/account/orders' },
-    // { icon: MdLocationOn, label: 'Addresses', path: '/account/addresses' },
+    { icon: MdLocationOn, label: 'Addresses', path: '/account/addresses' },
     // { icon: MdStars, label: 'Rewards', path: '/account/rewards' },
     { icon: MdSettings, label: 'Settings', path: '/account/settings' },
 ];
