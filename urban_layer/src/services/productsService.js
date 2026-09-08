@@ -41,21 +41,10 @@ export const getProducts = async ({
                 },
             };
         }
-    } catch {
-        // Fallback to local catalog when API is offline or fails
+        throw new Error("Failed to load products.");
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to load products.");
     }
-
-    return getLocalProducts({
-        page,
-        perPage,
-        search,
-        category,
-        phoneModel,
-        material,
-        color,
-        maxPrice,
-        sortBy,
-    });
 };
 
 export const getCategories = async () => {
@@ -84,7 +73,7 @@ export const getPhoneModels = async () => {
     return [];
 };
 
-// Full local mock catalog for rich experience
+// Legacy static catalog used only by non-API sections.
 export const ALL_LOCAL_PRODUCTS = [
     {
         id: "carbon-stealth-01",

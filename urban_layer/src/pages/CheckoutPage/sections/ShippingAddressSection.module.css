@@ -12,30 +12,8 @@
   border: 1px solid rgba(207, 196, 197, 0.35);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-unit-lg);
-}
-
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.fullWidth {
-  grid-column: 1 / -1;
-}
-
-.stateZipRow {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-unit-md);
-}
-
-@media (min-width: 640px) {
-  .stateZipRow {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (max-width: 520px) {
+  .card {
+    padding: var(--spacing-unit-md);
   }
 }

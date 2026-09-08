@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-gutter);
+  min-width: 0;
 }
 
 @media (min-width: 1024px) {
@@ -17,9 +18,10 @@
 .summaryCard {
   background-color: var(--color-surface-container-lowest);
   padding: var(--spacing-gutter);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-lg);
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(207, 196, 197, 0.1);
+  min-width: 0;
 }
 
 .heading {
@@ -92,4 +94,21 @@
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+@media (max-width: 520px) {
+  .summaryCard {
+    padding: var(--spacing-unit-md);
+  }
+
+  .checkoutButton,
+  .continueButton {
+    letter-spacing: 0.08em;
+    padding-left: var(--spacing-unit-sm);
+    padding-right: var(--spacing-unit-sm);
+  }
+
+  .trustRow {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { MdClose, MdTune } from 'react-icons/md';
 import NewsletterSignup from '../../components/NewsletterSignup/NewsletterSignup';
 import SearchHeroSection from './sections/SearchHeroSection';
 import SearchFiltersSidebar from './sections/SearchFiltersSidebar';
@@ -24,6 +25,7 @@ function SearchResultsPage() {
     const [filters, setFilters] = useState(DEFAULT_FILTERS);
     const [sortBy, setSortBy] = useState('newest');
     const [currentPage, setCurrentPage] = useState(1);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     const handleSearch = (query) => {
         setQueryInput(query);
@@ -69,17 +71,42 @@ function SearchResultsPage() {
     );
 
     const heading = activeQuery ? `Results for "${activeQuery}"` : 'All Accessories';
+    const activeFilterCount =
+        filters.brands.length +
+        filters.materials.length +
+        filters.features.length +
+        (filters.maxPrice < searchPriceRange.max ? 1 : 0);
 
     return (
         <div className={styles.page}>
             <SearchHeroSection query={queryInput} onQueryChange={setQueryInput} onSearch={handleSearch} />
 
+            <div className={styles.mobileFilterBar}>
+                <button type="button" className={styles.filterToggle} onClick={() => setIsFilterOpen(true)}>
+                    <MdTune size={20} />
+                    <span>Filters</span>
+                    {activeFilterCount > 0 && <strong>{activeFilterCount}</strong>}
+                </button>
+            </div>
+
             <section className={styles.resultsSection}>
-                <SearchFiltersSidebar
-                    filters={filters}
-                    onFilterChange={handleFilterChange}
-                    onClearAll={handleClearAll}
-                />
+                <div className={`${styles.filterPanel} ${isFilterOpen ? styles.filterPanelOpen : ''}`}>
+                    <div className={styles.filterPanelHeader}>
+                        <h2 className={styles.filterPanelTitle}>Filters</h2>
+                        <button type="button" onClick={() => setIsFilterOpen(false)} aria-label="Close filters">
+                            <MdClose size={22} />
+                        </button>
+                    </div>
+                    <SearchFiltersSidebar
+                        filters={filters}
+                        onFilterChange={handleFilterChange}
+                        onClearAll={handleClearAll}
+                    />
+                    <button type="button" className={styles.applyFiltersButton} onClick={() => setIsFilterOpen(false)}>
+                        Apply Filters
+                    </button>
+                </div>
+                {isFilterOpen && <button type="button" className={styles.filterBackdrop} onClick={() => setIsFilterOpen(false)} aria-label="Close filters" />}
                 <SearchResultsGrid
                     heading={heading}
                     products={paginatedProducts}

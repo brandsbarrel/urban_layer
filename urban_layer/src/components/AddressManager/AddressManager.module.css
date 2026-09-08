@@ -1,0 +1,319 @@
+.manager {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-unit-md);
+  flex-wrap: wrap;
+}
+
+.heading {
+  composes: text-headline-sm from global;
+  color: var(--color-primary);
+}
+
+.addButton,
+.primaryButton,
+.secondaryButton {
+  composes: text-label-md from global;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius-lg);
+  padding: 12px 20px;
+  min-height: 44px;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.addButton,
+.primaryButton {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.secondaryButton {
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-on-background);
+}
+
+.addButton:hover,
+.primaryButton:hover {
+  background: var(--color-primary-hover);
+}
+
+.secondaryButton:hover {
+  background: var(--color-surface-container);
+}
+
+.addButton:active,
+.primaryButton:active,
+.secondaryButton:active {
+  transform: translateY(1px);
+}
+
+.list,
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 760px) {
+  .list,
+  .skeletonGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1180px) {
+  .list,
+  .skeletonGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.card,
+.form,
+.emptyState,
+.skeletonCard {
+  background: #ffffff;
+  border: 1px solid rgba(207, 196, 197, 0.35);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.05);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+  min-width: 0;
+  padding: var(--spacing-unit-md);
+}
+
+.cardSelected {
+  border-color: var(--color-primary);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.08);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-unit-sm);
+}
+
+.cardTitle,
+.selectButton,
+.textButton,
+.dangerButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardTitle {
+  min-width: 0;
+  color: var(--color-primary);
+}
+
+.cardHeading {
+  composes: text-title-md from global;
+  overflow-wrap: anywhere;
+}
+
+.selectButton {
+  composes: text-label-sm from global;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.addressBody {
+  composes: text-body-md from global;
+  color: var(--color-on-surface-variant);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-wrap: anywhere;
+}
+
+.name {
+  color: var(--color-on-background);
+  font-weight: 700;
+}
+
+.cardActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-unit-sm);
+  margin-top: auto;
+}
+
+.textButton,
+.dangerButton {
+  composes: text-label-sm from global;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  padding: 9px 12px;
+}
+
+.dangerButton {
+  color: var(--color-error);
+}
+
+.form {
+  padding: var(--spacing-unit-lg);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-unit-md);
+}
+
+@media (min-width: 700px) {
+  .formGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.label {
+  composes: text-label-sm from global;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-outline);
+}
+
+.input {
+  composes: text-body-md from global;
+  background-color: var(--color-surface-container-low);
+  border: none;
+  border-radius: var(--radius-lg);
+  color: var(--color-on-surface);
+  min-width: 0;
+  outline: none;
+  padding: var(--spacing-unit-md);
+  width: 100%;
+}
+
+.input:focus {
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.errorText,
+.message,
+.limitMessage {
+  composes: text-body-sm from global;
+}
+
+.errorText,
+.message {
+  color: var(--color-error);
+}
+
+.limitMessage {
+  color: var(--color-on-surface-variant);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--spacing-unit-sm);
+  margin-top: var(--spacing-unit-lg);
+}
+
+.emptyState {
+  align-items: center;
+  color: var(--color-on-surface-variant);
+  composes: text-body-lg from global;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-md);
+  justify-content: center;
+  min-height: 220px;
+  padding: var(--spacing-unit-xl) var(--spacing-unit-md);
+  text-align: center;
+}
+
+.bottomAddButton {
+  align-self: flex-start;
+}
+
+.skeletonCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: var(--spacing-unit-md);
+}
+
+.skeletonLine {
+  animation: pulse 1.25s ease-in-out infinite;
+  background: linear-gradient(90deg, var(--color-surface-container) 25%, var(--color-surface-container-low) 50%, var(--color-surface-container) 75%);
+  background-size: 200% 100%;
+  border-radius: var(--radius-sm);
+  display: block;
+  height: 16px;
+  width: 100%;
+}
+
+.skeletonShort {
+  width: 40%;
+}
+
+.skeletonMedium {
+  width: 70%;
+}
+
+@media (max-width: 520px) {
+  .header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .addButton,
+  .bottomAddButton,
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+  }
+
+  .form {
+    padding: var(--spacing-unit-md);
+  }
+
+  .formActions {
+    flex-direction: column-reverse;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}

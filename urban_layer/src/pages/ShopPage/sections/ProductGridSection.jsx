@@ -24,16 +24,21 @@ function ProductGridSection({
         return (
             <div id="product-grid" className={styles.grid}>
                 <div className={styles.header}>
-                    <p className={styles.resultsText}>Loading catalog...</p>
+                    <div className={styles.headerSkeletonText}>
+                        <span className={`${styles.skeletonLine} ${styles.skeletonResult}`} />
+                    </div>
+                    <span className={`${styles.skeletonLine} ${styles.skeletonSort}`} />
                 </div>
                 <div className={styles.productsGrid}>
                     {Array.from({ length: 6 }).map((_, index) => (
-                        <div key={index} style={{
-                            height: '340px',
-                            background: 'var(--color-surface-hover, #f3f3f3)',
-                            borderRadius: '12px',
-                            animation: 'pulse 1.5s infinite ease-in-out'
-                        }} />
+                        <div key={index} className={styles.productSkeletonCard}>
+                            <span className={styles.skeletonImage} />
+                            <div className={styles.skeletonBody}>
+                                <span className={styles.skeletonLine} />
+                                <span className={`${styles.skeletonLine} ${styles.skeletonMedium}`} />
+                                <span className={`${styles.skeletonLine} ${styles.skeletonShort}`} />
+                            </div>
+                        </div>
                     ))}
                 </div>
             </div>

@@ -15,6 +15,7 @@ import OrderFailedPage from '../pages/OrderFailedPage/OrderFailedPage';
 import AccountPage from '../pages/AccountPage/AccountPage';
 import OrdersPage from '../pages/OrdersPage/OrdersPage';
 import OrderDetailsPage from '../pages/OrderDetailsPage/OrderDetailsPage';
+import AddressesPage from '../pages/AddressesPage/AddressesPage';
 import TrackOrderPage from '../pages/TrackOrderPage/TrackOrderPage';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import RegisterPage from '../pages/RegisterPage/RegisterPage';
@@ -51,6 +52,7 @@ function AppRoutes() {
           <Route path="/account" element={<AccountPage />} />
           <Route path="/account/orders" element={<OrdersPage />} />
           <Route path="/account/orders/:orderId" element={<OrderDetailsPage />} />
+          <Route path="/account/addresses" element={<AddressesPage />} />
           <Route path="/account/settings" element={<SettingsPage />} />
         </Route>
       </Route>

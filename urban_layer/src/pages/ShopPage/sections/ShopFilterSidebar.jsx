@@ -3,27 +3,36 @@ import CheckboxFilterGroup from '../../../components/CheckboxFilterGroup/Checkbo
 import PriceRangeFilter from '../../../components/PriceRangeFilter/PriceRangeFilter';
 import styles from './ShopFilterSidebar.module.css';
 
-const DEFAULT_DEVICES = [
-    { id: 'iPhone 15 Pro Max', label: 'iPhone 15 Pro Max' },
-    { id: 'iPhone 15 Pro', label: 'iPhone 15 Pro' },
-    { id: 'Samsung S24 Ultra', label: 'Samsung S24 Ultra' },
-];
+function FilterSkeleton() {
+    return (
+        <div className={styles.skeletonBlock} aria-label="Loading filters">
+            <span className={styles.skeletonInput} />
+            {[0, 1, 2].map((group) => (
+                <div className={styles.skeletonGroup} key={group}>
+                    <span className={styles.skeletonTitle} />
+                    <span className={styles.skeletonOption} />
+                    <span className={styles.skeletonOption} />
+                    <span className={styles.skeletonOptionShort} />
+                </div>
+            ))}
+        </div>
+    );
+}
 
-function ShopFilterSidebar({ filters, categories = [], phoneModels = [], onFilterChange }) {
+function ShopFilterSidebar({ filters, categories = [], phoneModels = [], loading = false, onFilterChange }) {
     const categoryOptions = categories.map((category) => ({
         id: category.slug || category.id,
         label: category.name,
     }));
 
-    // Collect all unique phone models dynamically from API models, category models, and defaults
+    // Collect all unique phone models dynamically from API models and category models.
     const apiPhoneNames = (phoneModels || []).map((pm) =>
         typeof pm === 'string' ? pm : pm.name || pm.label || pm.id
     );
     const categoryPhoneNames = categories.flatMap((cat) => cat.phoneModels || []);
-    const defaultPhoneNames = DEFAULT_DEVICES.map((d) => d.label);
 
     const allPhoneNames = Array.from(
-        new Set([...apiPhoneNames, ...categoryPhoneNames, ...defaultPhoneNames])
+        new Set([...apiPhoneNames, ...categoryPhoneNames])
     );
 
     // Dynamically filter available phone models if a category is currently selected
@@ -100,6 +109,10 @@ function ShopFilterSidebar({ filters, categories = [], phoneModels = [], onFilte
                 onChange={(search) => onFilterChange({ ...filters, search })}
             />
 
+            {loading ? (
+                <FilterSkeleton />
+            ) : (
+                <>
             <PriceRangeFilter
                 min={499}
                 max={4999}
@@ -120,6 +133,8 @@ function ShopFilterSidebar({ filters, categories = [], phoneModels = [], onFilte
                 selectedIds={filters.category ? [filters.category] : []}
                 onToggle={toggleCategory}
             />
+                </>
+            )}
         </aside>
     );
 }

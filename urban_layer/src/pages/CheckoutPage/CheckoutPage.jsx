@@ -10,22 +10,17 @@ import PaymentMethodSection from './sections/PaymentMethodSection';
 import CheckoutOrderSummary from './sections/CheckoutOrderSummary';
 import { selectAuth } from '../../redux/slices/authSlice';
 import { fetchCart } from '../../redux/slices/cartSlice';
+import { selectSelectedCheckoutAddress } from '../../redux/slices/addressesSlice';
 import styles from './CheckoutPage.module.css';
 
 function CheckoutPage() {
     const dispatch = useDispatch();
     const { user } = useSelector(selectAuth);
+    const selectedAddress = useSelector(selectSelectedCheckoutAddress);
 
     const [contactInfo, setContactInfo] = useState({
         email: user?.email || '',
         phone: user?.phone || '',
-    });
-    const [address, setAddress] = useState({
-        fullName: user?.name || '',
-        street: user?.address?.line1 || '',
-        city: user?.address?.city || '',
-        state: user?.address?.state || '',
-        pinCode: user?.address?.postalCode || '',
     });
     const [deliveryMethod, setDeliveryMethod] = useState('standard');
     const [paymentMethod, setPaymentMethod] = useState('COD');
@@ -36,13 +31,6 @@ function CheckoutPage() {
             setContactInfo(prev => ({
                 email: prev.email || user.email || '',
                 phone: prev.phone || user.phone || '',
-            }));
-            setAddress(prev => ({
-                fullName: prev.fullName || user.name || '',
-                street: prev.street || user.addresses?.[0]?.line1 || '',
-                city: prev.city || user.addresses?.[0]?.city || '',
-                state: prev.state || user.addresses?.[0]?.state || '',
-                pinCode: prev.pinCode || user.addresses?.[0]?.postalCode || '',
             }));
         }
     }, [dispatch, user]);
@@ -64,7 +52,7 @@ function CheckoutPage() {
                 <div className={styles.grid}>
                     <div className={styles.formColumn}>
                         <ContactInfoSection contactInfo={contactInfo} onChange={setContactInfo} />
-                        <ShippingAddressSection address={address} onChange={setAddress} />
+                        <ShippingAddressSection />
                         <DeliveryMethodSection selectedMethod={deliveryMethod} onSelect={setDeliveryMethod} />
                         <PaymentMethodSection selectedMethod={paymentMethod} onSelect={setPaymentMethod} />
                     </div>
@@ -73,7 +61,7 @@ function CheckoutPage() {
                         selectedMethod={deliveryMethod}
                         paymentMethod={paymentMethod}
                         contactInfo={contactInfo}
-                        address={address}
+                        address={selectedAddress}
                     />
                 </div>
             </main>

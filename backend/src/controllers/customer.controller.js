@@ -4,6 +4,7 @@ import {
   bulkDeactivateAdminCustomers,
   deactivateAdminCustomer,
   deleteAdminCustomer,
+  deleteCustomerAddress,
   getAdminCustomerDetails,
   getCustomerProfile,
   listAdminCustomers,
@@ -149,6 +150,19 @@ const updateCustomerAddressHandler = async (req, res, next) => {
   }
 };
 
+const deleteCustomerAddressHandler = async (req, res, next) => {
+  try {
+    const addresses = await deleteCustomerAddress(req.user.id, Number(req.params.index));
+    return sendSuccess({
+      res,
+      message: "Address deleted successfully.",
+      data: { items: addresses }
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export {
   getAdminCustomers,
   getAdminCustomerById,
@@ -159,5 +173,6 @@ export {
   getCustomerProfileHandler,
   updateCustomerProfileHandler,
   addCustomerAddressHandler,
-  updateCustomerAddressHandler
+  updateCustomerAddressHandler,
+  deleteCustomerAddressHandler
 };
