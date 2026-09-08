@@ -1,27 +1,38 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   NEXT_STATUS,
   ACTION_LABEL,
   advanceStatus,
-  openShipModal,
+  approveReturn,
   openCancelModal,
+  openRejectReturnModal,
+  openRefundModal,
 } from "../../../redux/slices/ordersSlice";
 import styles from "./StatusActionPanel.module.css";
 
-// Renders only the single valid next action for the order's current status,
-// per the workflow's strict status-transition rules (Section 11–18).
 const StatusActionPanel = ({ order }) => {
   const dispatch = useDispatch();
+  const actionLoading = useSelector((state) => state.orders.actionLoading);
   const nextStatus = NEXT_STATUS[order.status];
-  const canCancel = order.status === "Pending";
+  const canCancel = ["Pending", "Confirmed"].includes(order.status);
+  const isReturnRequested = order.status === "Return Requested";
+  const canRefund =
+    ["Cancelled", "Returned", "Received", "Return Approved"].includes(order.status) &&
+    order.paymentStatus === "Paid";
 
-  if (!nextStatus && !canCancel) {
+  const isTerminal = !nextStatus && !canCancel && !isReturnRequested && !canRefund;
+
+  if (isTerminal) {
     return (
       <div className={styles.panel}>
         <p className={styles.terminalNote}>
           {order.status === "Cancelled"
             ? `Cancelled — ${order.cancellationReason || "no reason recorded"}`
+            : order.status === "Delivered"
+            ? "Order delivered successfully."
+            : order.status === "Refunded"
+            ? "Order has been refunded."
             : "This order has reached its final status."}
         </p>
       </div>
@@ -29,10 +40,6 @@ const StatusActionPanel = ({ order }) => {
   }
 
   const handleAdvance = () => {
-    if (nextStatus === "Shipped") {
-      dispatch(openShipModal());
-      return;
-    }
     dispatch(advanceStatus({ orderId: order.id }));
   };
 
@@ -41,8 +48,37 @@ const StatusActionPanel = ({ order }) => {
       <label className={styles.label}>Order Actions</label>
       <div className={styles.buttonRow}>
         {nextStatus && (
-          <button className={styles.primaryButton} onClick={handleAdvance}>
+          <button
+            className={styles.primaryButton}
+            onClick={handleAdvance}
+            disabled={actionLoading}
+          >
             {ACTION_LABEL[nextStatus]}
+          </button>
+        )}
+        {isReturnRequested && (
+          <>
+            <button
+              className={styles.primaryButton}
+              onClick={() => dispatch(approveReturn({ orderId: order.id }))}
+              disabled={actionLoading}
+            >
+              Approve Return
+            </button>
+            <button
+              className={styles.dangerButton}
+              onClick={() => dispatch(openRejectReturnModal())}
+            >
+              Reject Return
+            </button>
+          </>
+        )}
+        {canRefund && !order.refund && (
+          <button
+            className={styles.refundButton}
+            onClick={() => dispatch(openRefundModal())}
+          >
+            Process Refund
           </button>
         )}
         {canCancel && (

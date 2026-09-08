@@ -18,17 +18,32 @@
   margin: 0;
 }
 
-.editButton {
-  background: none;
-  border: none;
-  color: var(--color-primary);
+.refreshButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 4px;
+  padding: 4px 8px;
   font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--color-on-surface);
+  cursor: pointer;
+  transition: background 0.15s ease;
 }
 
-.editButton:hover {
-  text-decoration: underline;
+.refreshButton:hover:not(:disabled) {
+  background: var(--color-surface-container-high);
+}
+
+.refreshButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.refreshIcon {
+  font-size: 13px;
 }
 
 .rows {
@@ -50,6 +65,32 @@
 
 .value {
   font-weight: 600;
+}
+
+.valueMono {
+  font-weight: 600;
+  font-family: monospace;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trackLink {
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  background: #dbeafe;
+  color: #1d4ed8;
+  text-transform: uppercase;
 }
 
 .valueRight {

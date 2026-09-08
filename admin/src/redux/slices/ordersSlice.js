@@ -1,40 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiRequest } from "../../lib/api";
 
-// Updated status transitions to match backend constants
+// Business-only status transitions (Shiprocket handles logistics statuses)
 const NEXT_STATUS = {
   Pending: "Confirmed",
   Confirmed: "Processing",
-  Processing: "Packed",
-  Packed: "Shipped",
-  Shipped: "Out for Delivery",
-  "Out for Delivery": "Delivered"
-};
-
-// Return flow transitions (for future use)
-const RETURN_NEXT_STATUS = {
-  "Return Requested": "Return Approved",
-  "Return Approved": "Return Pickup",
-  "Return Pickup": "Picked Up",
-  "Picked Up": "Received",
-  Received: "Refund Processing",
-  "Refund Processing": "Refunded"
+  Processing: "Packed"
 };
 
 const ACTION_LABEL = {
   Confirmed: "Confirm Order",
   Processing: "Mark Processing",
   Packed: "Mark Packed",
-  Shipped: "Mark Shipped",
-  "Out for Delivery": "Mark Out for Delivery",
-  Delivered: "Mark Delivered",
   // Return actions
   "Return Approved": "Approve Return",
   "Return Rejected": "Reject Return",
-  "Return Pickup": "Schedule Pickup",
-  "Picked Up": "Mark Picked Up",
-  Received: "Mark Received",
-  "Refund Processing": "Process Refund"
+  Refunded: "Process Refund"
 };
 
 const STATUS_TONE = {
@@ -49,19 +30,38 @@ const STATUS_TONE = {
   "Return Requested": "amber",
   "Return Approved": "blue",
   "Return Rejected": "red",
-  "Return Pickup": "blue",
-  "Picked Up": "blue",
+  Returned: "blue",
   Received: "blue",
   "Refund Processing": "amber",
   Refunded: "green"
 };
 
+const PAYMENT_STATUS_TONE = {
+  Paid: "green",
+  Pending: "amber",
+  Failed: "red",
+  Refunded: "green",
+  "Partially Refunded": "blue",
+  "Refund Processing": "amber"
+};
+
 const fetchOrders = createAsyncThunk("orders/fetchOrders", async (_, { getState }) => {
-  const { statusFilter, paymentFilter, searchQuery, page, perPage } = getState().orders;
+  const {
+    statusFilter, paymentFilter, paymentMethodFilter,
+    shippingStatusFilter, searchQuery, page, perPage,
+    startDate, endDate, sortBy, sortOrder
+  } = getState().orders;
+
   const params = new URLSearchParams();
   if (statusFilter && statusFilter !== "All") params.append("status", statusFilter);
   if (paymentFilter && paymentFilter !== "All") params.append("paymentStatus", paymentFilter);
+  if (paymentMethodFilter && paymentMethodFilter !== "All") params.append("paymentMethod", paymentMethodFilter);
+  if (shippingStatusFilter && shippingStatusFilter !== "All") params.append("shippingStatus", shippingStatusFilter);
   if (searchQuery) params.append("search", searchQuery);
+  if (startDate) params.append("startDate", startDate);
+  if (endDate) params.append("endDate", endDate);
+  if (sortBy) params.append("sortBy", sortBy);
+  if (sortOrder) params.append("sortOrder", sortOrder);
   if (page) params.append("page", page);
   if (perPage) params.append("perPage", perPage);
 
@@ -80,45 +80,19 @@ const fetchOrders = createAsyncThunk("orders/fetchOrders", async (_, { getState 
 
 const advanceStatus = createAsyncThunk("orders/advanceStatus", async ({ orderId }, { getState }) => {
   const order = getState().orders.items.find((item) => item.id === orderId);
-  // Check regular flow first
-  let next = NEXT_STATUS[order?.status];
-  // If not in regular flow, check return flow
-  if (!next) {
-    next = RETURN_NEXT_STATUS[order?.status];
-  }
+  const next = NEXT_STATUS[order?.status];
 
   if (!order || !next) {
     return order;
   }
 
   let endpoint = "";
-  let body;
-
   if (next === "Confirmed") endpoint = "confirm";
   if (next === "Processing") endpoint = "process";
   if (next === "Packed") endpoint = "pack";
-  if (next === "Shipped") {
-    endpoint = "ship";
-    const shippingInfo = getState().orders.pendingShipment[orderId] || {};
-    body = JSON.stringify({
-      courier: shippingInfo.courier || "Standard Courier",
-      trackingNumber: shippingInfo.trackingNumber || `TRACK-${Date.now()}`,
-      shippingMethod: shippingInfo.shippingMethod || "Standard"
-    });
-  }
-  if (next === "Out for Delivery") endpoint = "out-for-delivery";
-  if (next === "Delivered") endpoint = "deliver";
-  // Return flow endpoints
-  if (next === "Return Approved") endpoint = "return/approve";
-  if (next === "Return Rejected") endpoint = "return/reject";
-  if (next === "Return Pickup") endpoint = "return/pickup";
-  if (next === "Picked Up") endpoint = "return/pickup-complete";
-  if (next === "Received") endpoint = "return/receive";
-  if (next === "Refund Processing") endpoint = "refund/process";
 
   const response = await apiRequest(`/admin/orders/${order.orderDbId || order.id}/${endpoint}`, {
-    method: "POST",
-    body
+    method: "POST"
   });
 
   return response.data;
@@ -130,7 +104,60 @@ const cancelOrder = createAsyncThunk("orders/cancelOrder", async ({ orderId, rea
     method: "POST",
     body: JSON.stringify({ reason })
   });
+  return response.data;
+});
 
+const approveReturn = createAsyncThunk("orders/approveReturn", async ({ orderId }, { getState }) => {
+  const order = getState().orders.items.find((item) => item.id === orderId);
+  const response = await apiRequest(`/admin/orders/${order.orderDbId || order.id}/return/approve`, {
+    method: "POST"
+  });
+  return response.data;
+});
+
+const rejectReturn = createAsyncThunk("orders/rejectReturn", async ({ orderId, reason }, { getState }) => {
+  const order = getState().orders.items.find((item) => item.id === orderId);
+  const response = await apiRequest(`/admin/orders/${order.orderDbId || order.id}/return/reject`, {
+    method: "POST",
+    body: JSON.stringify({ reason })
+  });
+  return response.data;
+});
+
+const processRefund = createAsyncThunk("orders/processRefund", async ({ orderId, amount, reason, method }, { getState }) => {
+  const order = getState().orders.items.find((item) => item.id === orderId);
+  const body = {};
+  if (amount) body.amount = amount;
+  if (reason) body.reason = reason;
+  if (method) body.method = method;
+  const response = await apiRequest(`/admin/orders/${order.orderDbId || order.id}/refund`, {
+    method: "POST",
+    body: JSON.stringify(body)
+  });
+  return response.data;
+});
+
+const refreshTracking = createAsyncThunk("orders/refreshTracking", async ({ orderId }, { getState }) => {
+  const order = getState().orders.items.find((item) => item.id === orderId);
+  const response = await apiRequest(`/admin/orders/${order.orderDbId || order.id}/refresh-tracking`, {
+    method: "POST"
+  });
+  return response.data;
+});
+
+const generateLabel = createAsyncThunk("orders/generateLabel", async ({ shipmentId }) => {
+  const response = await apiRequest(`/admin/shiprocket/generate-label`, {
+    method: "POST",
+    body: JSON.stringify({ shipment_id: shipmentId })
+  });
+  return response.data;
+});
+
+const generateInvoice = createAsyncThunk("orders/generateInvoice", async ({ orderIds }) => {
+  const response = await apiRequest(`/admin/shiprocket/generate-invoice`, {
+    method: "POST",
+    body: JSON.stringify({ ids: orderIds })
+  });
   return response.data;
 });
 
@@ -142,12 +169,28 @@ const initialState = {
   perPage: 20,
   statusFilter: "All",
   paymentFilter: "All",
-  dateRange: "",
+  paymentMethodFilter: "All",
+  shippingStatusFilter: "All",
+  startDate: "",
+  endDate: "",
+  sortBy: "createdAt",
+  sortOrder: "desc",
   searchQuery: "",
   drawerOrderId: null,
-  shipModalOpen: false,
   cancelModalOpen: false,
-  pendingShipment: {}
+  rejectReturnModalOpen: false,
+  refundModalOpen: false,
+  loading: false,
+  actionLoading: false,
+  error: null
+};
+
+const updateOrderInList = (state, payload) => {
+  if (!payload) return;
+  const index = state.items.findIndex((item) => item.id === payload.id || item.orderDbId === payload.orderDbId);
+  if (index >= 0) {
+    state.items[index] = payload;
+  }
 };
 
 const ordersSlice = createSlice({
@@ -162,8 +205,28 @@ const ordersSlice = createSlice({
       state.paymentFilter = action.payload;
       state.page = 1;
     },
-    setDateRange(state, action) {
-      state.dateRange = action.payload;
+    setPaymentMethodFilter(state, action) {
+      state.paymentMethodFilter = action.payload;
+      state.page = 1;
+    },
+    setShippingStatusFilter(state, action) {
+      state.shippingStatusFilter = action.payload;
+      state.page = 1;
+    },
+    setStartDate(state, action) {
+      state.startDate = action.payload;
+      state.page = 1;
+    },
+    setEndDate(state, action) {
+      state.endDate = action.payload;
+      state.page = 1;
+    },
+    setSortBy(state, action) {
+      state.sortBy = action.payload;
+      state.page = 1;
+    },
+    setSortOrder(state, action) {
+      state.sortOrder = action.payload;
     },
     setSearchQuery(state, action) {
       state.searchQuery = action.payload;
@@ -177,14 +240,9 @@ const ordersSlice = createSlice({
     },
     closeDrawer(state) {
       state.drawerOrderId = null;
-      state.shipModalOpen = false;
       state.cancelModalOpen = false;
-    },
-    openShipModal(state) {
-      state.shipModalOpen = true;
-    },
-    closeShipModal(state) {
-      state.shipModalOpen = false;
+      state.rejectReturnModalOpen = false;
+      state.refundModalOpen = false;
     },
     openCancelModal(state) {
       state.cancelModalOpen = true;
@@ -192,53 +250,82 @@ const ordersSlice = createSlice({
     closeCancelModal(state) {
       state.cancelModalOpen = false;
     },
-    setShippingInfo(state, action) {
-      const { orderId, carrier, trackingNumber, shippingMethod } = action.payload;
-      state.pendingShipment[orderId] = {
-        courier: carrier,
-        trackingNumber,
-        shippingMethod: shippingMethod || "Standard"
-      };
+    openRejectReturnModal(state) {
+      state.rejectReturnModalOpen = true;
+    },
+    closeRejectReturnModal(state) {
+      state.rejectReturnModalOpen = false;
+    },
+    openRefundModal(state) {
+      state.refundModalOpen = true;
+    },
+    closeRefundModal(state) {
+      state.refundModalOpen = false;
     }
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.items = action.payload.items;
         state.stats = action.payload.stats;
         state.meta = action.payload.meta;
+        state.loading = false;
       })
+      .addCase(fetchOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(advanceStatus.pending, (state) => { state.actionLoading = true; })
       .addCase(advanceStatus.fulfilled, (state, action) => {
-        if (!action.payload) return;
-        const index = state.items.findIndex((item) => item.id === action.payload.id || item.orderDbId === action.payload.orderDbId);
-        if (index >= 0) {
-          state.items[index] = action.payload;
-        }
-        state.shipModalOpen = false;
+        updateOrderInList(state, action.payload);
+        state.actionLoading = false;
       })
+      .addCase(advanceStatus.rejected, (state) => { state.actionLoading = false; })
       .addCase(cancelOrder.fulfilled, (state, action) => {
-        const index = state.items.findIndex((item) => item.id === action.payload.id || item.orderDbId === action.payload.orderDbId);
-        if (index >= 0) {
-          state.items[index] = action.payload;
-        }
+        updateOrderInList(state, action.payload);
         state.cancelModalOpen = false;
+      })
+      .addCase(approveReturn.fulfilled, (state, action) => {
+        updateOrderInList(state, action.payload);
+      })
+      .addCase(rejectReturn.fulfilled, (state, action) => {
+        updateOrderInList(state, action.payload);
+        state.rejectReturnModalOpen = false;
+      })
+      .addCase(processRefund.fulfilled, (state, action) => {
+        updateOrderInList(state, action.payload);
+        state.refundModalOpen = false;
+      })
+      .addCase(refreshTracking.fulfilled, (state, action) => {
+        updateOrderInList(state, action.payload);
       });
   }
 });
 
-export { NEXT_STATUS, ACTION_LABEL, STATUS_TONE, fetchOrders, advanceStatus, cancelOrder };
+export { NEXT_STATUS, ACTION_LABEL, STATUS_TONE, PAYMENT_STATUS_TONE };
+export { fetchOrders, advanceStatus, cancelOrder, approveReturn, rejectReturn, processRefund, refreshTracking, generateLabel, generateInvoice };
 export const {
   setStatusFilter,
   setPaymentFilter,
-  setDateRange,
+  setPaymentMethodFilter,
+  setShippingStatusFilter,
+  setStartDate,
+  setEndDate,
+  setSortBy,
+  setSortOrder,
   setSearchQuery,
   setPage,
   openDrawer,
   closeDrawer,
-  openShipModal,
-  closeShipModal,
   openCancelModal,
   closeCancelModal,
-  setShippingInfo
+  openRejectReturnModal,
+  closeRejectReturnModal,
+  openRefundModal,
+  closeRefundModal
 } = ordersSlice.actions;
 export default ordersSlice.reducer;

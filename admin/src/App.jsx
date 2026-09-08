@@ -14,6 +14,7 @@ import Customers from "./pages/Customers/Customers";
 import Coupons from "./pages/Coupons/Coupons";
 import Blogs from "./pages/Blogs/Blogs";
 import BlogForm from "./pages/BlogForm/BlogForm";
+import Settings from "./pages/Settings/Settings";
 import Login from "./pages/Login/Login";
 import ComingSoon from "./components/common/ComingSoon/ComingSoon";
 import ProtectedRoute from "./components/auth/ProtectedRoute/ProtectedRoute";
@@ -72,7 +73,7 @@ const App = () => {
                 <Route path="/blogs" element={<Blogs />} />
                 <Route path="/blogs/new" element={<BlogForm />} />
                 <Route path="/blogs/edit/:id" element={<BlogForm />} />
-                <Route path="/settings" element={<ComingSoon featureName="Settings" />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="/profile" element={<ComingSoon featureName="Profile" />} />
                 <Route path="/activity" element={<ComingSoon featureName="Activity Log" />} />
               </Routes>

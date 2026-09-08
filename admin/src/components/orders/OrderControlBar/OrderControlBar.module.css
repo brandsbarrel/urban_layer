@@ -8,7 +8,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .filterLabel {
@@ -25,32 +25,29 @@
 .select {
   border: 1px solid var(--color-outline-variant);
   border-radius: 0.5rem;
-  font-size: 14px;
+  font-size: 13px;
   background: var(--color-surface-container-lowest);
-  padding: 8px 16px;
-  min-width: 140px;
+  padding: 7px 12px;
+  min-width: 120px;
 }
 
-.dateWrapper {
-  position: relative;
-  min-width: 180px;
+.dateGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.dateIcon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+.dateSep {
+  font-size: 12px;
   color: var(--color-outline);
-  font-size: 18px;
 }
 
 .dateInput {
-  padding: 8px 16px 8px 40px;
+  padding: 7px 10px;
   border: 1px solid var(--color-outline-variant);
   border-radius: 0.5rem;
-  font-size: 14px;
-  width: 100%;
+  font-size: 13px;
+  width: 130px;
   background: var(--color-surface-container-lowest);
 }
 
@@ -59,6 +56,38 @@
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.sortGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-outline);
+  font-size: 18px;
+}
+
+.sortSelect {
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  font-size: 13px;
+  background: var(--color-surface-container-lowest);
+  padding: 7px 10px;
+  min-width: 80px;
+}
+
+.sortOrderBtn {
+  background: none;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--color-on-surface);
+}
+
+.sortOrderBtn:hover {
+  background: var(--color-surface-variant);
 }
 
 .exportButton {
@@ -75,22 +104,4 @@
 
 .exportButton:hover {
   color: var(--color-on-surface);
-}
-
-.createButton {
-  padding: 8px 20px;
-  background: var(--color-inverse-surface);
-  color: #ffffff;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 14px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.createButton:active {
-  transform: scale(0.95);
 }

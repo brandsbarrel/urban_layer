@@ -81,6 +81,20 @@ const ShippingPanel = () => {
         </div>
       </div>
 
+      <div className={styles.fieldGroup}>
+        <label className={styles.label}>Custom Pickup Location (Shiprocket)</label>
+        <input
+          className={styles.input}
+          type="text"
+          placeholder="e.g. Primary or Mumbai-Warehouse (optional)"
+          value={form.pickupLocation || ""}
+          onChange={set("pickupLocation")}
+        />
+        <span style={{ fontSize: "11px", color: "var(--text-secondary, #6b7280)", marginTop: "4px", display: "block" }}>
+          Leave empty to use universal default pickup location configured in Settings.
+        </span>
+      </div>
+
       <label className={styles.checkboxRow}>
         <input
           type="checkbox"

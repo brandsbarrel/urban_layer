@@ -27,6 +27,7 @@ const emptyForm = {
   packageType: "Box",
   shippingClass: "Standard",
   fragile: false,
+  pickupLocation: "",
   seoTitle: "",
   seoDescription: "",
   variants: [],

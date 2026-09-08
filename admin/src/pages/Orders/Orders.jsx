@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOrders, setSearchQuery, setPage } from "../../redux/slices/ordersSlice";
+import {
+  fetchOrders, setSearchQuery, setPage
+} from "../../redux/slices/ordersSlice";
 import OrderStatsRow from "../../components/orders/OrderStatsRow/OrderStatsRow";
 import OrderControlBar from "../../components/orders/OrderControlBar/OrderControlBar";
 import OrdersTable from "../../components/orders/OrdersTable/OrdersTable";
@@ -10,15 +12,21 @@ import styles from "./Orders.module.css";
 const Orders = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const { searchQuery, statusFilter, paymentFilter, page, perPage, meta } = useSelector(
-    (state) => state.orders
-  );
+  const {
+    searchQuery, statusFilter, paymentFilter, paymentMethodFilter,
+    shippingStatusFilter, startDate, endDate, sortBy, sortOrder,
+    page, perPage, meta, loading
+  } = useSelector((state) => state.orders);
 
   React.useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchOrders());
     }
-  }, [dispatch, isAuthenticated, searchQuery, statusFilter, paymentFilter, page]);
+  }, [
+    dispatch, isAuthenticated, searchQuery, statusFilter, paymentFilter,
+    paymentMethodFilter, shippingStatusFilter, startDate, endDate,
+    sortBy, sortOrder, page
+  ]);
 
   const totalItems = meta?.totalItems || 0;
   const startItem = totalItems > 0 ? (page - 1) * perPage + 1 : 0;
@@ -35,9 +43,10 @@ const Orders = () => {
           className={styles.searchInput}
           type="text"
           value={searchQuery}
-          placeholder="Search Order IDs, customers, or SKUs..."
+          placeholder="Search orders, customers, AWB, SKU..."
           onChange={(e) => dispatch(setSearchQuery(e.target.value))}
         />
+        {loading && <span className={styles.loadingDot}>Loading...</span>}
       </div>
 
       <div className={styles.tableCard}>

@@ -1,12 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { MdClose } from "react-icons/md";
-import { closeDrawer } from "../../../redux/slices/ordersSlice";
+import { closeDrawer, generateLabel, generateInvoice } from "../../../redux/slices/ordersSlice";
 import StatusActionPanel from "../StatusActionPanel/StatusActionPanel";
 import TrackingTimeline from "../TrackingTimeline/TrackingTimeline";
 import ShippingInfoCard from "../ShippingInfoCard/ShippingInfoCard";
 import ItemsSummary from "../ItemsSummary/ItemsSummary";
-import MarkShippedModal from "../MarkShippedModal/MarkShippedModal";
 import CancelOrderModal from "../CancelOrderModal/CancelOrderModal";
 import styles from "./OrderDrawer.module.css";
 
@@ -52,7 +51,7 @@ const OrderDrawer = () => {
 
               <StatusActionPanel order={order} />
               <TrackingTimeline timeline={order.timeline} />
-              <ShippingInfoCard shipping={order.shipping} />
+              <ShippingInfoCard shipping={order.shipping} orderId={order.id} />
               <ItemsSummary products={order.products} />
 
               {/* Totals Summary */}
@@ -80,15 +79,38 @@ const OrderDrawer = () => {
             </div>
 
             <div className={styles.footer}>
-              <button className={styles.footerButton} title="Integration Required">
+              <button
+                className={styles.footerButton}
+                onClick={async () => {
+                  if (order.shipping?.invoiceUrl) {
+                    window.open(order.shipping.invoiceUrl, "_blank");
+                  } else if (order.shipping?.shiprocketOrderId) {
+                    const res = await dispatch(generateInvoice({ orderIds: [order.shipping.shiprocketOrderId] })).unwrap();
+                    if (res?.invoice_url) window.open(res.invoice_url, "_blank");
+                  } else {
+                    alert("Invoice not yet available for this order.");
+                  }
+                }}
+              >
                 Download Invoice
               </button>
-              <button className={styles.footerButtonDark} title="Integration Required">
+              <button
+                className={styles.footerButtonDark}
+                onClick={async () => {
+                  if (order.shipping?.labelUrl) {
+                    window.open(order.shipping.labelUrl, "_blank");
+                  } else if (order.shipping?.shiprocketShipmentId) {
+                    const res = await dispatch(generateLabel({ shipmentId: order.shipping.shiprocketShipmentId })).unwrap();
+                    if (res?.label_url) window.open(res.label_url, "_blank");
+                  } else {
+                    alert("Shipping label not yet generated. Shipment must be created first.");
+                  }
+                }}
+              >
                 Print Label
               </button>
             </div>
 
-            <MarkShippedModal orderId={order.id} />
             <CancelOrderModal
               orderId={order.id}
               paymentMethod={order.paymentMethod}
