@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { MdArrowBack, MdLocalShipping, MdCheck, MdLocationOn, MdTimeline, MdReceiptLong, MdInfo, MdSchedule, MdInventory, MdEmail, MdPhone, MdUndo } from 'react-icons/md';
+import { MdArrowBack, MdLocalShipping, MdCheck, MdLocationOn, MdTimeline, MdReceiptLong, MdInfo, MdSchedule, MdInventory, MdEmail, MdPhone, MdArrowRight, MdRefreshCw, MdShield, MdUndo } from 'react-icons/md';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
-import { fetchOrderById, fetchOrderTracking, selectSelectedOrder, selectSelectedOrderTracking, selectOrdersLoading, selectOrdersError } from '../../redux/slices/ordersSlice';
+import { fetchOrderById, fetchOrderTracking, selectSelectedOrder, selectSelectedOrderTracking, selectOrdersLoading, selectOrdersError, selectTrackingLoading, selectTrackingError } from '../../redux/slices/ordersSlice';
 import styles from './TrackOrderPage.module.css';
 
 function TrackOrderPage() {
@@ -12,7 +12,9 @@ function TrackOrderPage() {
   const order = useSelector(selectSelectedOrder);
   const tracking = useSelector(selectSelectedOrderTracking);
   const loading = useSelector(selectOrdersLoading);
+  const trackingLoading = useSelector(selectTrackingLoading);
   const error = useSelector(selectOrdersError);
+  const trackingError = useSelector(selectTrackingError);
   const [activeTab, setActiveTab] = useState('forward'); // 'forward' or 'return'
 
   useEffect(() => {
@@ -39,7 +41,7 @@ function TrackOrderPage() {
         <div className={styles.error}>
           <MdInfo size={48} className={styles.errorIcon} />
           <p className={styles.errorText}>{error || 'Order not found.'}</p>
-          <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+          <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}> 
             <button
               onClick={() => dispatch(fetchOrderById(orderId))}
               className={styles.retryButton}
@@ -305,8 +307,6 @@ function TrackOrderPage() {
               </div>
             </div>
           )}
-          {activeTab === 'forward' && renderTrackingEvents(forwardEvents, false)}
-          {activeTab === 'return' && renderTrackingEvents(returnEvents, true)}
 
           {/* Backend Timeline Entries */}
           {timelineEntries.length > 0 && (
@@ -357,7 +357,7 @@ function TrackOrderPage() {
                       </p>
                     </div>
                     <p className={styles.itemPrice}>
-                      ₹{(item.price * (item.quantity || item.qty || 1)).toLocaleString('en-IN')}
+                      â‚¹{(item.price * (item.quantity || item.qty || 1)).toLocaleString('en-IN')}
                     </p>
                   </div>
                 ))}
@@ -400,25 +400,25 @@ function TrackOrderPage() {
             <div className={styles.summaryRows}>
               <div className={styles.summaryRow}>
                 <span>Subtotal</span>
-                <span>₹{(order.subtotal || order.totals?.subtotal || order.totalAmount || order.amount || 0).toLocaleString('en-IN')}</span>
+                <span>â‚¹{(order.subtotal || order.totals?.subtotal || order.totalAmount || order.amount || 0).toLocaleString('en-IN')}</span>
               </div>
               <div className={styles.summaryRow}>
                 <span>Shipping Fee</span>
-                <span>{(order.shippingAmount || order.totals?.shipping || 0) === 0 ? 'Free' : `₹${(order.shippingAmount || order.totals?.shipping || 0).toLocaleString('en-IN')}`}</span>
+                <span>{(order.shippingAmount || order.totals?.shipping || 0) === 0 ? 'Free' : `â‚¹${(order.shippingAmount || order.totals?.shipping || 0).toLocaleString('en-IN')}`}</span>
               </div>
               <div className={styles.summaryRow}>
                 <span>Estimated Tax</span>
-                <span>₹{(order.taxAmount || order.totals?.tax || 0).toLocaleString('en-IN')}</span>
+                <span>â‚¹{(order.taxAmount || order.totals?.tax || 0).toLocaleString('en-IN')}</span>
               </div>
               {(order.discountAmount || order.totals?.discount || 0) > 0 && (
                 <div className={styles.summaryRow} style={{ color: '#10b981' }}> 
                   <span>Discount</span>
-                  <span>-₹{(order.discountAmount || order.totals?.discount || 0).toLocaleString('en-IN')}</span>
+                  <span>-â‚¹{(order.discountAmount || order.totals?.discount || 0).toLocaleString('en-IN')}</span>
                 </div>
               )}
               <div className={styles.summaryTotalRow}>
                 <span>Total Amount</span>
-                <span>₹{(order.totalAmount || order.totals?.total || order.amount || 0).toLocaleString('en-IN')}</span>
+                <span>â‚¹{(order.totalAmount || order.totals?.total || order.amount || 0).toLocaleString('en-IN')}</span>
               </div>
             </div>
           </div>
@@ -448,11 +448,7 @@ function TrackOrderPage() {
         </div>
       )}
     </div>
-  </div>
   );
 }
 
 export default TrackOrderPage;
-
-
-

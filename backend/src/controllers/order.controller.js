@@ -9,7 +9,10 @@ import {
   listAdminOrders,
   outForDeliveryAdminOrder,
   packAdminOrder,
-  shipAdminOrder
+  shipAdminOrder,
+  approveAdminReturn,
+  rejectAdminReturn,
+  processAdminRefund
 } from "../services/order.service.js";
 
 const getAdminOrders = async (req, res, next) => {
@@ -102,6 +105,33 @@ const cancelOrderHandler = async (req, res, next) => {
   }
 };
 
+const approveReturnHandler = async (req, res, next) => {
+  try {
+    const order = await approveAdminReturn(req.params.id, req.user?.role || "admin", req.user?._id || null);
+    return sendSuccess({ res, message: "Return approved successfully.", data: order });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const rejectReturnHandler = async (req, res, next) => {
+  try {
+    const order = await rejectAdminReturn(req.params.id, req.body.reason, req.user?.role || "admin", req.user?._id || null);
+    return sendSuccess({ res, message: "Return rejected successfully.", data: order });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const processRefundHandler = async (req, res, next) => {
+  try {
+    const order = await processAdminRefund(req.params.id, req.body, req.user?.role || "admin", req.user?._id || null);
+    return sendSuccess({ res, message: "Refund processed successfully.", data: order });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 const getOrderStatsHandler = async (req, res, next) => {
   try {
     const stats = await getOrderStats();
@@ -121,5 +151,8 @@ export {
   outForDeliveryOrderHandler,
   deliverOrderHandler,
   cancelOrderHandler,
+  approveReturnHandler,
+  rejectReturnHandler,
+  processRefundHandler,
   getOrderStatsHandler
 };

@@ -14,10 +14,11 @@ const app = express();
 app.disable("x-powered-by");
 
 app.use(attachRequestId);
-app.use(pinoHttp({
-  logger,
-  genReqId: (req) => req.requestId
-}));
+// Disabled pinoHttp detailed request logging for clean console output
+// app.use(pinoHttp({
+//   logger,
+//   genReqId: (req) => req.requestId
+// }));
 app.use(helmet());
 app.use(cors({
   origin: env.FRONTEND_ORIGINS

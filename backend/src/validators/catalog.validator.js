@@ -75,6 +75,7 @@ const productCreateSchema = z.object({
   packageType: z.enum(["Box", "Padded Envelope", "Mailer"]).optional().default("Box"),
   shippingClass: z.enum(["Standard", "Express", "Fragile"]).optional().default("Standard"),
   fragile: z.boolean().optional().default(false),
+  pickupLocation: z.string().trim().max(120).optional().default(""),
   variants: z.array(z.object({
     id: z.string().trim().min(1),
     name: z.string().trim().optional().default(""),

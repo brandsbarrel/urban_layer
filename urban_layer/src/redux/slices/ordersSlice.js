@@ -23,12 +23,27 @@ export const fetchOrderById = createAsyncThunk(
   }
 );
 
+export const fetchOrderTracking = createAsyncThunk(
+  'orders/fetchOrderTracking',
+  async (orderId, { rejectWithValue }) => {
+    try {
+      const response = await orderApi.getOrderTracking(orderId);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch tracking');
+    }
+  }
+);
+
 const initialState = {
     orders: [],
     selectedOrder: null,
+    selectedOrderTracking: null,
     lastOrderId: null,
     loading: false,
+    trackingLoading: false,
     error: null,
+    trackingError: null,
 };
 
 const ordersSlice = createSlice({
@@ -43,6 +58,10 @@ const ordersSlice = createSlice({
             const order = state.orders.find((o) => o.id === action.payload.id);
             if (order) order.status = action.payload.status;
         },
+        clearTracking(state) {
+            state.selectedOrderTracking = null;
+            state.trackingError = null;
+        }
     },
     extraReducers: (builder) => {
       builder
@@ -77,16 +96,32 @@ const ordersSlice = createSlice({
         .addCase(fetchOrderById.rejected, (state, action) => {
           state.loading = false;
           state.error = action.payload;
+        })
+        // Fetch order tracking
+        .addCase(fetchOrderTracking.pending, (state) => {
+          state.trackingLoading = true;
+          state.trackingError = null;
+        })
+        .addCase(fetchOrderTracking.fulfilled, (state, action) => {
+          state.trackingLoading = false;
+          state.selectedOrderTracking = action.payload;
+        })
+        .addCase(fetchOrderTracking.rejected, (state, action) => {
+          state.trackingLoading = false;
+          state.trackingError = action.payload;
         });
     },
 });
 
-export const { placeOrder, updateOrderStatus } = ordersSlice.actions;
+export const { placeOrder, updateOrderStatus, clearTracking } = ordersSlice.actions;
 export const selectOrders = (state) => state.orders.orders;
 export const selectSelectedOrder = (state) => state.orders.selectedOrder;
+export const selectSelectedOrderTracking = (state) => state.orders.selectedOrderTracking;
 export const selectOrdersCount = (state) => state.orders.orders.length;
 export const selectOrdersLoading = (state) => state.orders.loading;
 export const selectOrdersError = (state) => state.orders.error;
+export const selectTrackingLoading = (state) => state.orders.trackingLoading;
+export const selectTrackingError = (state) => state.orders.trackingError;
 export const selectMostRecentOrder = (state) => {
     const orders = state.orders.orders;
     return orders.length > 0 ? orders[orders.length - 1] : null;

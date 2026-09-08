@@ -28,6 +28,7 @@ const errorHandler = (error, req, res, next) => {
   };
 
   logger.error(logPayload, "Request failed.");
+  console.error(`[Error] ${req.method} ${req.originalUrl} (${normalizedError.statusCode}):`, error.message || error);
 
   return sendError({
     res,

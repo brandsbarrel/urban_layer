@@ -8,7 +8,7 @@ import { BusinessRuleError, NotFoundError } from "../shared/app-error.js";
 import { generateOrderNumber } from "../helpers/order-number.js";
 import { runWithOptionalTransaction } from "../helpers/transaction.helper.js";
 import { env } from "../config/index.js";
-import { createRazorpayApiOrder, triggerShiprocketShipment } from "./payment.service.js";
+import { createRazorpayApiOrder, createShiprocketOrderForConfirmedOrder } from "./payment.service.js";
 
 const SHIPPING_FLAT_RATE = 1500;
 const FREE_SHIPPING_THRESHOLD = 15000;
@@ -169,7 +169,7 @@ const checkoutCart = async (customerId, payload) => {
   // Resolve shipping address
   let shippingAddress;
   if (payload.shippingAddress) {
-    shippingAddress = payload.shippingAddress;
+    shippingAddress = { ...payload.shippingAddress };
   } else if (payload.shippingAddressIndex !== undefined) {
     if (!customer.addresses || customer.addresses.length <= payload.shippingAddressIndex) {
       throw new BusinessRuleError({ message: "Selected shipping address not found." });
@@ -183,17 +183,42 @@ const checkoutCart = async (customerId, payload) => {
     shippingAddress = defaultAddress.toObject();
   }
 
+  // Attach contact phone and email into shipping address snapshot if provided
+  if (payload.contactPhone) {
+    shippingAddress.phone = payload.contactPhone;
+  } else if (!shippingAddress.phone && customer.phone) {
+    shippingAddress.phone = customer.phone;
+  }
+
+  if (payload.contactEmail) {
+    shippingAddress.email = payload.contactEmail;
+  } else if (!shippingAddress.email && customer.email) {
+    shippingAddress.email = customer.email;
+  }
+
   // Resolve billing address
   let billingAddress;
   if (payload.billingAddress) {
-    billingAddress = payload.billingAddress;
+    billingAddress = { ...payload.billingAddress };
   } else if (payload.billingAddressIndex !== undefined) {
     if (!customer.addresses || customer.addresses.length <= payload.billingAddressIndex) {
       throw new BusinessRuleError({ message: "Selected billing address not found." });
     }
     billingAddress = customer.addresses[payload.billingAddressIndex].toObject();
   } else {
-    billingAddress = shippingAddress;
+    billingAddress = { ...shippingAddress };
+  }
+
+  if (payload.contactPhone) {
+    billingAddress.phone = payload.contactPhone;
+  } else if (!billingAddress.phone && customer.phone) {
+    billingAddress.phone = customer.phone;
+  }
+
+  if (payload.contactEmail) {
+    billingAddress.email = payload.contactEmail;
+  } else if (!billingAddress.email && customer.email) {
+    billingAddress.email = customer.email;
   }
 
   let cart = await ensureCart(customerId);
@@ -214,7 +239,7 @@ const checkoutCart = async (customerId, payload) => {
 
   const isCOD = payload.paymentMethod === "COD";
 
-  return await runWithOptionalTransaction(async (options) => {
+  const { order, razorpayOrder } = await runWithOptionalTransaction(async (options) => {
     const hydratedCart = await findCartByCustomerId(customerId);
     const itemsToProcess = (hydratedCart?.items && hydratedCart.items.length > 0) ? hydratedCart.items : cart.items;
     const orderItems = [];
@@ -330,7 +355,7 @@ const checkoutCart = async (customerId, payload) => {
       shippingAddress.country
     ].filter(Boolean).join(", ");
 
-    const order = await createOrder({
+    const createdOrder = await createOrder({
       orderNumber,
       customer: customer._id,
       items: orderItems,
@@ -338,7 +363,7 @@ const checkoutCart = async (customerId, payload) => {
       billingAddress: billingAddress.toObject ? billingAddress.toObject() : billingAddress,
       status: initialStatus,
       paymentStatus: initialPaymentStatus,
-      paymentMethod: payload.paymentMethod,
+      paymentMethod: payload.paymentMethod || (isCOD ? "COD" : "Online"),
       subtotal: subtotalMinor,
       taxAmount: taxMinor,
       shippingAmount: shippingMinor,
@@ -352,7 +377,9 @@ const checkoutCart = async (customerId, payload) => {
         address: formattedAddress,
         carrier: isExpress ? "Express Courier (Shiprocket)" : "Standard Surface (Shiprocket)",
         trackingNumber: null,
-        shiprocketShipmentId: isCOD ? `SR-${orderNumber}` : null
+        shiprocketShipmentId: null,
+        shiprocketOrderId: null,
+        shiprocketReferenceOrderId: orderNumber
       },
       timeline
     }, options);
@@ -361,26 +388,19 @@ const checkoutCart = async (customerId, payload) => {
       // Clear DB cart for COD
       await updateCartByCustomerId(customerId, { items: [] }, options);
 
-      return {
-        orderId: order.id,
-        orderNumber: order.orderNumber,
-        status: order.status,
-        paymentStatus: order.paymentStatus,
-        paymentMethod: "COD",
-        totalAmount: order.totalAmount / 100
-      };
+      return { order: createdOrder, razorpayOrder: null };
     }
 
     // For Online payment: Create real Razorpay order via Razorpay API
-    let razorpayOrder;
+    let rzpOrder;
     try {
-      razorpayOrder = await createRazorpayApiOrder({
+      rzpOrder = await createRazorpayApiOrder({
         amountInPaise: totalAmount,
         currency: "INR",
-        receipt: order.orderNumber,
+        receipt: createdOrder.orderNumber,
         notes: {
-          orderId: order.id,
-          orderNumber: order.orderNumber,
+          orderId: createdOrder.id,
+          orderNumber: createdOrder.orderNumber,
           customerId: customer._id.toString()
         }
       });
@@ -390,23 +410,39 @@ const checkoutCart = async (customerId, payload) => {
       });
     }
 
-    await updateAdminOrderById(order.id, {
-      paymentGatewayOrderId: razorpayOrder.id
+    await updateAdminOrderById(createdOrder.id, {
+      paymentGatewayOrderId: rzpOrder.id
     }, options);
+
+    return { order: createdOrder, razorpayOrder: rzpOrder };
+  });
+
+  if (isCOD) {
+    // Trigger Shiprocket creation outside the Mongo transaction
+    await createShiprocketOrderForConfirmedOrder(order);
 
     return {
       orderId: order.id,
       orderNumber: order.orderNumber,
-      status: "Pending",
-      paymentStatus: "Pending",
-      paymentMethod: payload.paymentMethod,
-      razorpayOrderId: razorpayOrder.id,
-      amount: order.totalAmount / 100,
-      amountPaise: order.totalAmount,
-      currency: "INR",
-      keyId: env.RAZORPAY_KEY_ID
+      status: order.status,
+      paymentStatus: order.paymentStatus,
+      paymentMethod: "COD",
+      totalAmount: order.totalAmount / 100
     };
-  });
+  }
+
+  return {
+    orderId: order.id,
+    orderNumber: order.orderNumber,
+    status: "Pending",
+    paymentStatus: "Pending",
+    paymentMethod: payload.paymentMethod || "Online",
+    razorpayOrderId: razorpayOrder.id,
+    amount: order.totalAmount / 100,
+    amountPaise: order.totalAmount,
+    currency: "INR",
+    keyId: env.RAZORPAY_KEY_ID
+  };
 };
 
 export { getCart, addCartItem, updateCartItem, removeCartItem, checkoutCart };

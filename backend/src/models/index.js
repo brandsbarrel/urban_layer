@@ -7,5 +7,6 @@ import { CustomerModel } from "./customer.model.js";
 import { OrderModel } from "./order.model.js";
 import { PhoneModel } from "./phone-model.model.js";
 import { ProductModel } from "./product.model.js";
+import { SettingsModel, getSettings, updateSettings, getShiprocketSettings, getPaymentSettings } from "./settings.model.js";
 
-export { addressSchema, AdminModel, CartModel, CategoryModel, CouponModel, CustomerModel, OrderModel, PhoneModel, ProductModel };
+export { addressSchema, AdminModel, CartModel, CategoryModel, CouponModel, CustomerModel, OrderModel, PhoneModel, ProductModel, SettingsModel, getSettings, updateSettings, getShiprocketSettings, getPaymentSettings };

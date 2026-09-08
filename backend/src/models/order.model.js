@@ -78,7 +78,7 @@ const timelineEntrySchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    // New fields for enhanced timeline
+    // Source and actor
     source: {
       type: String,
       enum: ["order", "payment", "shipping", "return", "refund", "system"],
@@ -103,6 +103,9 @@ const timelineEntrySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.Mixed,
       default: {}
     },
+    // IMPORTANT: createdAt is the HISTORICAL timestamp of this event.
+    // It is set at event creation time and NEVER updated afterwards.
+    // This fixes the timeline date bug where all events showed the same date.
     createdAt: {
       type: Date,
       default: Date.now
@@ -119,6 +122,92 @@ const timelineEntrySchema = new mongoose.Schema(
   {
     timestamps: false
   }
+);
+
+/**
+ * Tracking event schema for Shiprocket scan events.
+ * Each event has its OWN occurredAt from the provider scan date.
+ * NEVER use order.updatedAt or webhook received time for occurredAt.
+ */
+const trackingEventSchema = new mongoose.Schema(
+  {
+    // Deterministic key for idempotency (sha256 of awb+date+status+activity+location)
+    eventKey: {
+      type: String,
+      trim: true,
+      required: true
+    },
+    provider: {
+      type: String,
+      default: "SHIPROCKET"
+    },
+    // Normalized Urban Layers status
+    status: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    // Human-readable label from provider
+    statusLabel: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    // Activity description from provider
+    activity: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    // Location from provider
+    location: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    // Raw provider status code
+    providerStatusCode: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    // Raw provider status string (preserved for debugging)
+    rawStatus: {
+      type: String,
+      trim: true,
+      default: ""
+    },
+    // CRITICAL: This is the ORIGINAL timestamp from the provider scan.
+    // Set from scans[].date, NEVER from current time or order.updatedAt.
+    occurredAt: {
+      type: Date,
+      required: true
+    }
+  },
+  {
+    _id: false,
+    timestamps: false
+  }
+);
+
+/**
+ * Return shipment sub-document schema.
+ * Kept SEPARATE from forward shipment to preserve both histories independently.
+ */
+const returnShipmentSchema = new mongoose.Schema(
+  {
+    provider: { type: String, default: "SHIPROCKET" },
+    shiprocketOrderId: { type: String, trim: true, default: null },
+    awb: { type: String, trim: true, default: null },
+    courierName: { type: String, trim: true, default: null },
+    currentStatus: { type: String, trim: true, default: null },
+    currentStatusId: { type: Number, default: null },
+    shipmentStatus: { type: String, trim: true, default: null },
+    podStatus: { type: String, trim: true, default: null },
+    pod: { type: String, trim: true, default: null },
+    updatedAt: { type: Date, default: null }
+  },
+  { _id: false }
 );
 
 const orderSchema = new mongoose.Schema(
@@ -218,6 +307,7 @@ const orderSchema = new mongoose.Schema(
       default: "Label Created"
     },
     shipping: {
+      // Delivery recipient and address
       recipient: {
         type: String,
         trim: true,
@@ -228,22 +318,57 @@ const orderSchema = new mongoose.Schema(
         trim: true,
         default: ""
       },
+      // Shipping provider
+      provider: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      // Carrier / courier name (human-readable)
       carrier: {
         type: String,
         trim: true,
         default: "Not yet assigned"
       },
+      courierName: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      // Tracking number (same as AWB for Shiprocket)
       trackingNumber: {
         type: String,
         trim: true,
         default: null
       },
-      // Shiprocket specific fields
+      // ============================================================
+      // SHIPROCKET IDENTIFIERS — stored separately, NEVER collapsed
+      // ============================================================
+      // The order_id Shiprocket assigns (e.g., "1373900_150876814")
+      shiprocketOrderId: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      // The channel_order_id / our reference (e.g., Urban Layers orderNumber)
+      shiprocketReferenceOrderId: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      // The sr_order_id (Shiprocket's internal numeric order ID)
       shiprocketShipmentId: {
         type: String,
         trim: true,
         default: null
       },
+      // AWB code (Air Waybill — the courier tracking number)
+      awb: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      // Legacy field kept for backwards compatibility
       shiprocketAwbCode: {
         type: String,
         trim: true,
@@ -254,14 +379,46 @@ const orderSchema = new mongoose.Schema(
         trim: true,
         default: null
       },
-      labelUrl: {
+      // ============================================================
+      // CURRENT STATUS (snapshot, updated by webhooks)
+      // ============================================================
+      currentStatus: {
         type: String,
         trim: true,
         default: null
       },
-      invoiceUrl: {
+      currentStatusId: {
+        type: Number,
+        default: null
+      },
+      shipmentStatus: {
         type: String,
         trim: true,
+        default: null
+      },
+      shipmentStatusId: {
+        type: Number,
+        default: null
+      },
+      currentTimestamp: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      channelId: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      // ============================================================
+      // DATES
+      // ============================================================
+      awbAssignedDate: {
+        type: Date,
+        default: null
+      },
+      pickupScheduledDate: {
+        type: Date,
         default: null
       },
       pickupDate: {
@@ -275,7 +432,65 @@ const orderSchema = new mongoose.Schema(
       actualDeliveryDate: {
         type: Date,
         default: null
+      },
+      // ============================================================
+      // POD & QC
+      // ============================================================
+      podStatus: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      pod: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      qcImage: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      qcFailureReason: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      // Label and invoice
+      labelUrl: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      invoiceUrl: {
+        type: String,
+        trim: true,
+        default: null
       }
+    },
+    // ============================================================
+    // TRACKING EVENTS (Shiprocket scans[] — forward shipment)
+    // Each event preserves its OWN occurredAt from the provider scan date.
+    // NEVER use order.updatedAt or webhook received time.
+    // ============================================================
+    trackingEvents: {
+      type: [trackingEventSchema],
+      default: []
+    },
+    // ============================================================
+    // RETURN SHIPMENT — separate from forward shipment
+    // ============================================================
+    returnShipment: {
+      type: returnShipmentSchema,
+      default: null
+    },
+    // ============================================================
+    // RETURN TRACKING EVENTS (Shiprocket scans[] — return shipment)
+    // Stored separately to preserve forward shipment history.
+    // ============================================================
+    returnTrackingEvents: {
+      type: [trackingEventSchema],
+      default: []
     },
     // Return request (embedded for quick access)
     returnRequest: {
@@ -355,11 +570,21 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
+// ============================================================
+// INDEXES
+// ============================================================
 orderSchema.index({ orderNumber: 1 }, { unique: true });
 orderSchema.index({ customer: 1, createdAt: -1 });
 orderSchema.index({ status: 1, createdAt: -1 });
 orderSchema.index({ shippingStatus: 1 });
 orderSchema.index({ paymentStatus: 1 });
+// Shiprocket identifier indexes for fast webhook lookup
+orderSchema.index({ "shipping.awb": 1 }, { sparse: true });
+orderSchema.index({ "shipping.shiprocketOrderId": 1 }, { sparse: true });
+orderSchema.index({ "shipping.shiprocketShipmentId": 1 }, { sparse: true });
+// Return shipment AWB index
+orderSchema.index({ "returnShipment.awb": 1 }, { sparse: true });
+// Tracking event idempotency (covered at application level via eventKey set)
 
 const OrderModel = mongoose.model("Order", orderSchema);
 

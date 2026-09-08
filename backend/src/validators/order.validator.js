@@ -5,7 +5,13 @@ const adminOrderListQuerySchema = z.object({
   perPage: z.coerce.number().int().positive().optional().default(20),
   search: z.string().trim().optional().default(""),
   status: z.string().trim().optional().default("All"),
-  paymentStatus: z.string().trim().optional().default("All")
+  paymentStatus: z.string().trim().optional().default("All"),
+  paymentMethod: z.string().trim().optional().default("All"),
+  shippingStatus: z.string().trim().optional().default("All"),
+  startDate: z.string().trim().optional(),
+  endDate: z.string().trim().optional(),
+  sortBy: z.enum(["createdAt", "totalAmount", "orderNumber", "status"]).optional().default("createdAt"),
+  sortOrder: z.enum(["desc", "asc"]).optional().default("desc")
 });
 
 const markShippedSchema = z.object({
@@ -16,6 +22,16 @@ const markShippedSchema = z.object({
 
 const cancelOrderSchema = z.object({
   reason: z.string().trim().min(1).max(200)
+});
+
+const rejectReturnSchema = z.object({
+  reason: z.string().trim().min(1).max(300)
+});
+
+const processRefundSchema = z.object({
+  amount: z.coerce.number().positive().optional(),
+  reason: z.string().trim().min(1).max(200).optional().default("Admin processed refund"),
+  method: z.string().trim().optional().default("Original Payment Method")
 });
 
 const verifyPaymentSchema = z.object({
@@ -29,5 +45,7 @@ export {
   adminOrderListQuerySchema,
   markShippedSchema,
   cancelOrderSchema,
+  rejectReturnSchema,
+  processRefundSchema,
   verifyPaymentSchema
 };

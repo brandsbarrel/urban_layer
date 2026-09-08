@@ -4,6 +4,7 @@ import { findAdminOrderById, findAdminOrderByGatewayOrderId, updateAdminOrderByI
 import { findProductById, updateProductById } from "../repositories/product.repository.js";
 import { updateCartByCustomerId } from "../repositories/cart.repository.js";
 import { BusinessRuleError, NotFoundError } from "../shared/app-error.js";
+import { createShiprocketOrder } from "./shiprocket.service.js";
 
 /**
  * Creates a real Razorpay Order via Razorpay REST API
@@ -51,51 +52,96 @@ const createRazorpayApiOrder = async ({ amountInPaise, currency = "INR", receipt
 };
 
 /**
- * Triggers Shiprocket shipment flow exactly once
+ * Create Shiprocket order for confirmed orders (COD or Paid)
  */
-const triggerShiprocketShipment = async (order) => {
+export const createShiprocketOrderForConfirmedOrder = async (order) => {
   try {
-    if (!order) return;
+    if (!order) return null;
+    const orderId = order.id || order._id;
 
-    // Prevent duplicate shipment creation if already created
-    if (order.shipping?.shiprocketShipmentId) {
-      logger.info({ orderNumber: order.orderNumber, shipmentId: order.shipping.shiprocketShipmentId }, "Shiprocket shipment already exists. Skipping duplicate.");
-      return;
+    // Fetch fresh state to prevent race conditions
+    const { OrderModel } = await import("../models/index.js");
+    const freshOrder = await OrderModel.findById(orderId);
+    if (!freshOrder) return null;
+
+    // Prevent duplicate Shiprocket order creation (idempotency guard)
+    if (freshOrder.shipping?.shiprocketOrderId) {
+      console.log(`[Shiprocket] Order #${freshOrder.orderNumber} already has Shiprocket Order ID (${freshOrder.shipping.shiprocketOrderId}). Skipping.`);
+      logger.info(
+        { orderNumber: freshOrder.orderNumber, shiprocketOrderId: freshOrder.shipping.shiprocketOrderId },
+        "Shiprocket order already exists. Skipping duplicate creation."
+      );
+      return {
+        shiprocketShipmentId: freshOrder.shipping.shiprocketShipmentId,
+        shiprocketOrderId: freshOrder.shipping.shiprocketOrderId
+      };
     }
 
-    const carrier = order.shippingMethod === "express" ? "Express Courier (Shiprocket)" : "Standard Surface (Shiprocket)";
-    const generatedShipmentId = `SR-${order.orderNumber}`;
-
+    console.log(`[Shiprocket] Triggering order creation for order #${freshOrder.orderNumber}...`);
     logger.info(
-      { orderNumber: order.orderNumber, shipmentId: generatedShipmentId, carrier },
-      "Triggering Shiprocket shipment flow for confirmed order."
+      { orderNumber: freshOrder.orderNumber },
+      "Creating Shiprocket order for confirmed order."
     );
 
-    const shippingAddress = order.shippingAddress || {};
-    const formattedAddress = [
-      shippingAddress.line1,
-      shippingAddress.line2,
-      shippingAddress.city,
-      shippingAddress.state,
-      shippingAddress.postalCode,
-      shippingAddress.country
-    ].filter(Boolean).join(", ");
+    // Create the order on Shiprocket
+    const response = await createShiprocketOrder(freshOrder);
 
-    await updateAdminOrderById(order.id || order._id, {
-      shippingStatus: "Label Created",
-      shipping: {
-        recipient: shippingAddress.recipientName || order.shipping?.recipient || "Customer",
-        address: formattedAddress || order.shipping?.address || "",
-        carrier: order.shipping?.carrier && order.shipping.carrier !== "Not yet assigned" ? order.shipping.carrier : carrier,
-        trackingNumber: order.shipping?.trackingNumber || null,
-        shiprocketShipmentId: generatedShipmentId,
-        shiprocketAwbCode: order.shipping?.shiprocketAwbCode || null,
-        shiprocketTrackingUrl: order.shipping?.shiprocketTrackingUrl || null
+    // Shiprocket returns order_id (their internal order ID) and shipment_id (their shipment ID).
+    // NEVER conflate these with our Urban Layers orderNumber — they are different identifiers.
+    const shiprocketOrderId = response.order_id;
+    const shipmentId = response.shipment_id;
+
+    if (!shiprocketOrderId) {
+      console.error(`[Shiprocket Error] Shiprocket did not return order_id for order #${freshOrder.orderNumber}`, response);
+      logger.error(
+        { orderNumber: freshOrder.orderNumber, response },
+        "Shiprocket did not return order_id. Cannot save Shiprocket details."
+      );
+      return null;
+    }
+
+    if (!shipmentId) {
+      logger.warn(
+        { orderNumber: freshOrder.orderNumber, shiprocketOrderId },
+        "Shiprocket did not return shipment_id."
+      );
+    }
+
+    // Use $set to update only the Shiprocket-related shipping fields, preserving all others
+    await OrderModel.findByIdAndUpdate(orderId, {
+      $set: {
+        shippingStatus: "Label Created",
+        "shipping.shiprocketOrderId": shiprocketOrderId,
+        "shipping.shiprocketShipmentId": shipmentId || null,
+        // Our Urban Layers reference — NEVER equals shiprocketOrderId
+        "shipping.shiprocketReferenceOrderId": freshOrder.shipping?.shiprocketReferenceOrderId || freshOrder.orderNumber
       }
     });
+
+    console.log(`[Shiprocket Success] Created order #${freshOrder.orderNumber} in Shiprocket. Shiprocket Order ID: ${shiprocketOrderId}, Shipment ID: ${shipmentId}`);
+    logger.info(
+      { orderNumber: freshOrder.orderNumber, shiprocketOrderId, shipmentId },
+      "Shiprocket order created successfully."
+    );
+
+    return { shiprocketOrderId, shipmentId };
   } catch (error) {
-    logger.error({ error, orderNumber: order?.orderNumber }, "Error executing Shiprocket shipment trigger.");
+    console.error(`[Shiprocket Order Creation Failed for #${order?.orderNumber}]:`, error.message, error.details || "");
+    logger.error(
+      { error: error.message, orderNumber: order?.orderNumber },
+      "Shiprocket order creation failed. Urban Layers order remains Confirmed. Retry via admin panel."
+    );
+    // Do NOT throw — Urban Layers order/payment confirmation must not be rolled back
+    return null;
   }
+};
+
+/**
+ * Triggers Shiprocket shipment flow exactly once (legacy - kept for compatibility)
+ * @deprecated Use createShiprocketOrderForConfirmedOrder instead
+ */
+const triggerShiprocketShipment = async (order) => {
+  return createShiprocketOrderForConfirmedOrder(order);
 };
 
 /**
@@ -109,13 +155,14 @@ const confirmOnlinePaymentSuccess = async ({
   eventSource = "system"
 }) => {
   const orderId = order.id || order._id;
+  const { OrderModel } = await import("../models/index.js");
   const freshOrder = await findAdminOrderById(orderId);
 
   if (!freshOrder) {
     throw new NotFoundError("Order not found for confirmation.");
   }
 
-  // Idempotency: If already paid and confirmed, return immediately without re-processing
+  // Idempotency check 1: If already paid and confirmed, return immediately without re-processing
   if (freshOrder.paymentStatus === "Paid" && freshOrder.status === "Confirmed") {
     logger.info({ orderNumber: freshOrder.orderNumber, eventSource }, "Order already confirmed and paid. Idempotent return.");
     return {
@@ -128,8 +175,81 @@ const confirmOnlinePaymentSuccess = async ({
     };
   }
 
-  // 1. Deduct stock for items in the confirmed order
-  for (const item of freshOrder.items || []) {
+  const carrier = freshOrder.shippingMethod === "express" ? "Express Courier (Shiprocket)" : "Standard Surface (Shiprocket)";
+  const now = new Date();
+
+  // Atomic confirmation claim: update paymentStatus to "Paid" and status to "Confirmed" ONLY if paymentStatus is not already "Paid"
+  const updatedOrder = await OrderModel.findOneAndUpdate(
+    {
+      _id: orderId,
+      paymentStatus: { $ne: "Paid" }
+    },
+    {
+      $set: {
+        status: "Confirmed",
+        paymentStatus: "Paid",
+        paymentGatewayOrderId: gatewayOrderId || freshOrder.paymentGatewayOrderId,
+        paymentGatewayPaymentId: paymentId || freshOrder.paymentGatewayPaymentId,
+        paymentGatewaySignature: signature || freshOrder.paymentGatewaySignature,
+        "shipping.recipient": freshOrder.shippingAddress?.recipientName || freshOrder.shipping?.recipient || "Customer",
+        "shipping.address": [
+          freshOrder.shippingAddress?.line1,
+          freshOrder.shippingAddress?.line2,
+          freshOrder.shippingAddress?.city,
+          freshOrder.shippingAddress?.state,
+          freshOrder.shippingAddress?.postalCode,
+          freshOrder.shippingAddress?.country
+        ].filter(Boolean).join(", "),
+        "shipping.carrier": freshOrder.shipping?.carrier && freshOrder.shipping.carrier !== "Not yet assigned" ? freshOrder.shipping.carrier : carrier,
+        "shipping.shiprocketReferenceOrderId": freshOrder.shipping?.shiprocketReferenceOrderId || freshOrder.orderNumber
+      },
+      $push: {
+        timeline: {
+          $each: [
+            {
+              title: "Payment Captured",
+              note: `Payment of ₹${(freshOrder.totalAmount / 100).toLocaleString('en-IN')} captured successfully via Razorpay (${paymentId || 'Verified'}).`,
+              done: true,
+              active: false,
+              source: "payment",
+              actor: "system",
+              createdAt: now,
+              updatedAt: now,
+              timestamp: now
+            },
+            {
+              title: "Order Confirmed",
+              note: "Payment verified. Order confirmed and ready for fulfillment.",
+              done: true,
+              active: true,
+              source: "order",
+              actor: "system",
+              createdAt: now,
+              updatedAt: now,
+              timestamp: now
+            }
+          ]
+        }
+      }
+    },
+    { new: true }
+  );
+
+  // If another concurrent worker claimed and finalized this order, return existing state
+  if (!updatedOrder) {
+    const existingConfirmedOrder = await findAdminOrderById(orderId);
+    return {
+      orderId: existingConfirmedOrder.id,
+      orderNumber: existingConfirmedOrder.orderNumber,
+      status: existingConfirmedOrder.status,
+      paymentStatus: existingConfirmedOrder.paymentStatus,
+      razorpayPaymentId: existingConfirmedOrder.paymentGatewayPaymentId,
+      totalAmount: existingConfirmedOrder.totalAmount / 100
+    };
+  }
+
+  // 1. Deduct stock for items in the confirmed order exactly once
+  for (const item of updatedOrder.items || []) {
     const productId = item.productId?._id ? item.productId._id.toString() : item.productId?.toString();
     if (productId) {
       const product = await findProductById(productId);
@@ -141,7 +261,7 @@ const confirmOnlinePaymentSuccess = async ({
           unfulfilledOrders: (product.unfulfilledOrders || 0) + item.quantity,
           activity: [
             {
-              message: `Stock deducted for paid order #${freshOrder.orderNumber} (${item.quantity} units)`,
+              message: `Stock deducted for paid order #${updatedOrder.orderNumber} (${item.quantity} units)`,
               meta: `Payment confirmed via ${eventSource} on ${new Date().toLocaleString()}`
             },
             ...(product.activity || [])
@@ -151,80 +271,16 @@ const confirmOnlinePaymentSuccess = async ({
     }
   }
 
-  // 2. Clear customer's cart in database
-  if (freshOrder.customer) {
-    const customerId = freshOrder.customer._id ? freshOrder.customer._id.toString() : freshOrder.customer.toString();
+  // 2. Clear customer's cart in database exactly once
+  if (updatedOrder.customer) {
+    const customerId = updatedOrder.customer._id ? updatedOrder.customer._id.toString() : updatedOrder.customer.toString();
     await updateCartByCustomerId(customerId, { items: [] });
   }
 
-  // 3. Update order status to Confirmed and paymentStatus to Paid
-  const existingTimeline = (freshOrder.timeline || []).map((entry) => {
-    const raw = entry.toObject ? entry.toObject() : entry;
-    const entryTime = raw.createdAt || raw.timestamp || freshOrder.createdAt || new Date();
-    return {
-      ...raw,
-      createdAt: entryTime,
-      updatedAt: raw.updatedAt || entryTime,
-      timestamp: raw.timestamp || entryTime,
-      active: false
-    };
-  });
+  logger.info({ orderNumber: updatedOrder.orderNumber }, "Order confirmed. Creating Shiprocket order.");
 
-  const carrier = freshOrder.shippingMethod === "express" ? "Express Courier (Shiprocket)" : "Standard Surface (Shiprocket)";
-  const shipmentId = freshOrder.shipping?.shiprocketShipmentId || `SR-${freshOrder.orderNumber}`;
-  const now = new Date();
-
-  const updatedOrder = await updateAdminOrderById(freshOrder.id, {
-    status: "Confirmed",
-    paymentStatus: "Paid",
-    paymentGatewayOrderId: gatewayOrderId || freshOrder.paymentGatewayOrderId,
-    paymentGatewayPaymentId: paymentId || freshOrder.paymentGatewayPaymentId,
-    paymentGatewaySignature: signature || freshOrder.paymentGatewaySignature,
-    shippingStatus: "Label Created",
-    shipping: {
-      recipient: freshOrder.shippingAddress?.recipientName || freshOrder.shipping?.recipient || "Customer",
-      address: [
-        freshOrder.shippingAddress?.line1,
-        freshOrder.shippingAddress?.line2,
-        freshOrder.shippingAddress?.city,
-        freshOrder.shippingAddress?.state,
-        freshOrder.shippingAddress?.postalCode,
-        freshOrder.shippingAddress?.country
-      ].filter(Boolean).join(", "),
-      carrier: freshOrder.shipping?.carrier && freshOrder.shipping.carrier !== "Not yet assigned" ? freshOrder.shipping.carrier : carrier,
-      trackingNumber: freshOrder.shipping?.trackingNumber || null,
-      shiprocketShipmentId: shipmentId,
-      shiprocketAwbCode: freshOrder.shipping?.shiprocketAwbCode || null,
-      shiprocketTrackingUrl: freshOrder.shipping?.shiprocketTrackingUrl || null
-    },
-    timeline: [
-      ...existingTimeline,
-      {
-        title: "Payment Captured",
-        note: `Payment of ₹${(freshOrder.totalAmount / 100).toLocaleString('en-IN')} captured successfully via Razorpay (${paymentId || 'Verified'}).`,
-        done: true,
-        active: false,
-        source: "payment",
-        actor: "system",
-        createdAt: now,
-        updatedAt: now,
-        timestamp: now
-      },
-      {
-        title: "Order Confirmed",
-        note: "Payment verified. Order confirmed and ready for fulfillment.",
-        done: true,
-        active: true,
-        source: "order",
-        actor: "system",
-        createdAt: now,
-        updatedAt: now,
-        timestamp: now
-      }
-    ]
-  });
-
-  logger.info({ orderNumber: updatedOrder.orderNumber, shipmentId }, "Shiprocket shipment initiated for confirmed order.");
+  // 3. Create Shiprocket order after successful payment confirmation exactly once
+  await createShiprocketOrderForConfirmedOrder(updatedOrder);
 
   return {
     orderId: updatedOrder.id,

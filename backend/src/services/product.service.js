@@ -60,6 +60,7 @@ const mapProductToAdminListItem = (product) => {
     image: product.featuredImage || product.gallery?.[0]?.url || "",
     description: product.description,
     variants: product.variants,
+    pickupLocation: product.pickupLocation || "",
     activity: product.activity.map((entry) => ({
       id: entry._id.toString(),
       message: entry.message,
@@ -105,6 +106,7 @@ const mapProductToFormShape = (product) => {
     packageType: product.packageType || "Box",
     shippingClass: product.shippingClass || "Standard",
     fragile: Boolean(product.fragile),
+    pickupLocation: product.pickupLocation || "",
     seoTitle: product.seoTitle,
     seoDescription: product.seoDescription,
     variants: product.variants

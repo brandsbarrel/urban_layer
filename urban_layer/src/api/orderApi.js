@@ -11,6 +11,12 @@ export const orderApi = {
   getOrderById: async (orderId) => {
     const response = await api.get(`/customer/orders/${orderId}`);
     return response.data.data;
+  },
+
+  // Get tracking details for a specific order
+  getOrderTracking: async (orderId) => {
+    const response = await api.get(`/customer/orders/${orderId}/tracking`);
+    return response.data.data;
   }
 };
 

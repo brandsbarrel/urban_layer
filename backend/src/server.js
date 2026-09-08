@@ -2,11 +2,15 @@ import http from "node:http";
 import { app } from "./app.js";
 import { env, logger } from "./config/index.js";
 import { connectMongo, disconnectMongo } from "./database/mongo.js";
+import { startJobs, stopJobs } from "./jobs/index.js";
 
 const server = http.createServer(app);
 
 const startServer = async () => {
   await connectMongo();
+
+  // Start scheduled jobs
+  startJobs();
 
   server.listen(env.PORT, () => {
     logger.info({ port: env.PORT }, "HTTP server listening.");
@@ -15,6 +19,9 @@ const startServer = async () => {
 
 const shutdown = async (signal) => {
   logger.info({ signal }, "Shutdown signal received.");
+
+  // Stop scheduled jobs
+  stopJobs();
 
   server.close(async (serverError) => {
     if (serverError) {

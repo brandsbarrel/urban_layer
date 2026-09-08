@@ -211,6 +211,11 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    pickupLocation: {
+      type: String,
+      trim: true,
+      default: ""
+    },
     variants: {
       type: [variantSchema],
       default: []
