@@ -12,26 +12,38 @@ import { AppError } from "../shared/app-error.js";
 import { OrderModel } from "../models/index.js";
 
 /**
- * Shiprocket webhook handler
- * POST /api/webhooks/shiprocket
- * Validates webhook using shared secret token in request header
+ * Tracking webhook handler
+ * POST /api/webhooks/tracking
+ * Validates webhook using x-api-key header
  */
 const shiprocketWebhookHandler = async (req, res, next) => {
   try {
     const webhookSecret =
+      req.headers["x-api-key"] ||
       req.headers["x-shiprocket-signature"] ||
       req.headers["shiprocket-webhook-secret"];
 
-    const expectedSecret = process.env.SHIPROCKET_WEBHOOK_SECRET;
+    const { SettingsModel } = await import("../models/index.js");
+    let configuredSecret = process.env.SHIPROCKET_WEBHOOK_SECRET;
+    try {
+      const settingsDoc = await SettingsModel.findById("global_settings")
+        .select("+shiprocket.credentials.webhookSecret")
+        .lean();
+      if (settingsDoc?.shiprocket?.credentials?.webhookSecret) {
+        configuredSecret = settingsDoc.shiprocket.credentials.webhookSecret;
+      }
+    } catch {
+      // fallback to process.env
+    }
 
-    if (!expectedSecret) {
+    if (!configuredSecret) {
       throw new AppError(
-        "Shiprocket webhook secret is not configured",
+        "Tracking webhook secret is not configured",
         500
       );
     }
 
-    if (!webhookSecret || webhookSecret !== expectedSecret) {
+    if (!webhookSecret || webhookSecret !== configuredSecret) {
       return res.status(401).json({
         status: "error",
         message: "Invalid webhook signature"

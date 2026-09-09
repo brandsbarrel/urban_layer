@@ -17,10 +17,10 @@ import {
 const router = express.Router();
 
 /**
- * Public webhook endpoint - no auth required
- * POST /api/webhooks/shiprocket
+ * Public tracking webhook endpoint - no auth required
+ * POST /api/webhooks/tracking
  */
-router.post("/webhooks/ship", shiprocketWebhookHandler);
+router.post("/webhooks/tracking", shiprocketWebhookHandler);
 
 /**
  * Admin Shiprocket order management routes - require admin auth
