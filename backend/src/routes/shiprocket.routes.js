@@ -20,7 +20,7 @@ const router = express.Router();
  * Public webhook endpoint - no auth required
  * POST /api/webhooks/shiprocket
  */
-router.post("/webhooks/shiprocket", shiprocketWebhookHandler);
+router.post("/webhooks/ship", shiprocketWebhookHandler);
 
 /**
  * Admin Shiprocket order management routes - require admin auth
