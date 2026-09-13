@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loginSuccess, logout } from "../../redux/slices/authSlice";
+import { authInitializationComplete, loginSuccess, logout } from "../../redux/slices/authSlice";
 import { fetchCart } from "../../redux/slices/cartSlice";
 import { fetchAddresses } from "../../redux/slices/addressesSlice";
 import { getProfile } from "../../services/authService";
@@ -12,7 +12,10 @@ function AuthInitializer({ children }) {
     const initialize = async () => {
       const token = localStorage.getItem("customerAccessToken");
 
-      if (!token) return;
+      if (!token) {
+        dispatch(authInitializationComplete());
+        return;
+      }
 
       try {
         const profile = await getProfile();
@@ -20,9 +23,11 @@ function AuthInitializer({ children }) {
         dispatch(loginSuccess(profile));
         dispatch(fetchCart());
         dispatch(fetchAddresses());
-      } catch (error) {
+      } catch {
         localStorage.removeItem("customerAccessToken");
         dispatch(logout());
+      } finally {
+        dispatch(authInitializationComplete());
       }
     };
 

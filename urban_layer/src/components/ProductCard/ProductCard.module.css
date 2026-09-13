@@ -342,8 +342,13 @@
 }
 
 .iconActionButton {
+  align-items: center;
   background-color: var(--color-surface-container-lowest);
   color: var(--color-primary);
+  display: inline-flex;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
   padding: 12px;
   border-radius: var(--radius-full);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -355,6 +360,11 @@
   color: var(--color-on-primary);
 }
 
+.iconActionButton:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 3px;
+}
+
 .infoIconOverlay {
   margin-top: var(--spacing-unit-md);
   padding: 0 var(--spacing-unit-xs);
@@ -364,11 +374,14 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: var(--spacing-unit-sm);
+  min-width: 0;
 }
 
 .nameIconOverlay {
   composes: text-title-lg from global;
   color: var(--color-on-background);
+  min-width: 0;
 }
 
 .priceIconOverlay {
@@ -538,5 +551,18 @@
   .reviewCount {
     font-size: 11px;
     line-height: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .iconOverlayActions {
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .iconActionButton {
+    min-height: 40px;
+    min-width: 40px;
+    padding: 9px;
   }
 }

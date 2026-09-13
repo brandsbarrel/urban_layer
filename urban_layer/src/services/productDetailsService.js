@@ -1,22 +1,42 @@
-import api from "./api";
+import publicApi, { logPublicApiResult } from "./publicApi";
+import { normalizeProduct } from "./productsService";
 
 export async function fetchProductDetailsAsync(productId) {
     try {
-        const response = await api.get(`/storefront/catalog/products/${productId}`);
-        if (response.data && response.data.data) {
-            const apiItem = response.data.data;
+        let apiItem = null;
 
-            const images = (apiItem.images && apiItem.images.length > 0)
-                ? apiItem.images
-                : (apiItem.featuredImage ? [apiItem.featuredImage] : []);
+        try {
+            const response = await publicApi.get(`/products/${productId}`);
+            logPublicApiResult("Product Details", `/api/products/${productId}`, response.data);
+            apiItem = response.data?.data || response.data?.item || response.data;
+        } catch {
+            const response = await publicApi.get("/products", {
+                params: { search: productId, page: 1, perPage: 50 },
+            });
+            logPublicApiResult("Product Details fallback", `/api/products?search=${productId}`, response.data);
+            const items = response.data?.data?.items || response.data?.items || response.data?.data || [];
+            apiItem = (Array.isArray(items) ? items : []).find((item) => (
+                item.id === productId ||
+                item._id === productId ||
+                item.slug === productId ||
+                item.sku === productId
+            ));
+        }
+
+        if (apiItem) {
+            const normalized = normalizeProduct(apiItem);
+
+            const images = normalized.images?.length
+                ? normalized.images
+                : (normalized.featuredImage ? [normalized.featuredImage] : []);
 
             const thumbnails = images.map((src, idx) => ({
                 src,
-                alt: `${apiItem.name} view ${idx + 1}`
+                alt: `${normalized.name} view ${idx + 1}`
             }));
 
-            const primaryCategory = apiItem.categories && apiItem.categories.length > 0
-                ? apiItem.categories[0]
+            const primaryCategory = normalized.categories && normalized.categories.length > 0
+                ? normalized.categories[0]
                 : null;
 
             const breadcrumb = [
@@ -33,42 +53,26 @@ export async function fetchProductDetailsAsync(productId) {
 
             breadcrumb.push({ label: apiItem.name });
 
-            const price = Number(apiItem.price || apiItem.salePrice || apiItem.basePrice || 0);
-            const originalPrice = (apiItem.salePrice != null && apiItem.basePrice > apiItem.salePrice)
-                ? Number(apiItem.basePrice)
-                : null;
-
             return {
-                id: apiItem.id,
-                _id: apiItem.id,
-                name: apiItem.name,
-                slug: apiItem.slug,
-                sku: apiItem.sku || "",
-                phoneModel: apiItem.phoneModel || null,
-                description: apiItem.description || "",
-                categories: apiItem.categories || [],
-                collection: apiItem.collection || "",
-                tags: apiItem.tags || [],
-                price,
-                originalPrice,
-                basePrice: apiItem.basePrice ? Number(apiItem.basePrice) : null,
-                salePrice: apiItem.salePrice ? Number(apiItem.salePrice) : null,
-                stock: apiItem.stock ?? 0,
-                inStock: (apiItem.stock ?? 0) > 0,
-                weight: apiItem.weight || null,
-                dimensions: apiItem.dimensions || null,
-                packageType: apiItem.packageType || "",
-                shippingClass: apiItem.shippingClass || "",
-                fragile: Boolean(apiItem.fragile),
-                heroImage: apiItem.featuredImage || images[0] || "",
+                ...normalized,
+                sku: normalized.sku || "",
+                description: normalized.description || "",
+                tags: normalized.tags || [],
+                stock: normalized.stock ?? 0,
+                weight: normalized.weight || null,
+                dimensions: normalized.dimensions || null,
+                packageType: normalized.packageType || "",
+                shippingClass: normalized.shippingClass || "",
+                fragile: Boolean(normalized.fragile),
+                heroImage: normalized.featuredImage || images[0] || "",
                 thumbnails,
                 images,
                 breadcrumb,
-                bentoFeatures: apiItem.bentoFeatures || [],
-                editorialHighlights: apiItem.editorialHighlights || [],
-                lifestyleBanner: apiItem.lifestyleBanner || null,
-                bundle: apiItem.bundle || null,
-                reviews: apiItem.reviews || [],
+                bentoFeatures: normalized.bentoFeatures || [],
+                editorialHighlights: normalized.editorialHighlights || [],
+                lifestyleBanner: normalized.lifestyleBanner || null,
+                bundle: normalized.bundle || null,
+                reviews: normalized.reviews || [],
             };
         }
     } catch (error) {

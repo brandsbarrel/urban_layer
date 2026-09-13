@@ -1,0 +1,32 @@
+.state {
+  border: 1px solid rgba(37, 37, 37, 0.14);
+  background: #ffffff;
+  color: #252525;
+  padding: 28px;
+  text-align: center;
+}
+
+.state p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.button {
+  margin-top: 16px;
+  border: 1px solid #171717;
+  background: #171717;
+  color: #ffffff;
+  min-height: 42px;
+  padding: 0 18px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  background: #b08a57;
+  color: #171717;
+}

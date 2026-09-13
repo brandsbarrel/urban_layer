@@ -11,13 +11,14 @@ function HeroSearchBar({ value, onChange, onSearch, placeholder = 'Search...' })
         <form className={styles.wrapper} onSubmit={handleSubmit}>
             <MdSearch size={22} className={styles.icon} />
             <input
+                aria-label="Search products"
                 type="text"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder}
                 className={styles.input}
             />
-            <button type="submit" className={styles.button}>
+            <button type="submit" className={styles.button} aria-label="Submit search">
                 Search
             </button>
         </form>

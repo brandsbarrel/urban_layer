@@ -1,15 +1,14 @@
-/* Overlay variant — Login / Register */
 .headerOverlay {
   position: fixed;
-  top: 0;
-  width: 100%;
+  inset: 0 0 auto;
   z-index: 50;
   height: 80px;
-  background-color: transparent;
+  background: transparent;
   pointer-events: none;
 }
 
 .navOverlay {
+  position: relative;
   height: 100%;
   padding: 0 var(--spacing-margin-mobile);
   display: flex;
@@ -27,10 +26,10 @@
   composes: text-label-md from global;
   display: flex;
   align-items: center;
-  gap: var(--spacing-unit-sm);
+  gap: 8px;
   color: var(--color-on-surface);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   transition: opacity 0.2s ease;
   pointer-events: auto;
 }
@@ -40,11 +39,15 @@
 }
 
 .brandOverlay {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   composes: text-headline-sm from global;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--color-primary);
   pointer-events: auto;
+  white-space: nowrap;
 }
 
 .spacer {
@@ -58,47 +61,67 @@
   }
 }
 
-/* Solid variant — Forgot Password */
 .headerSolid {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset: 0 0 auto;
   z-index: 50;
-  background-color: rgba(251, 249, 249, 0.8);
+  background: rgba(251, 249, 249, 0.92);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(207, 196, 197, 0.3);
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
 .navSolid {
   max-width: var(--spacing-container-max);
   margin: 0 auto;
-  padding: var(--spacing-unit-md) var(--spacing-margin-desktop);
+  padding: 16px var(--spacing-margin-mobile);
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media (min-width: 768px) {
+  .navSolid {
+    padding-inline: var(--spacing-margin-desktop);
+  }
 }
 
 .backLinkSolid {
   composes: text-label-md from global;
   display: flex;
   align-items: center;
-  gap: var(--spacing-unit-sm);
+  gap: 8px;
   color: var(--color-primary);
-  transition: color 0.2s ease, transform 0.1s ease;
+  transition: color 0.2s ease;
 }
 
 .backLinkSolid:hover {
   color: var(--color-secondary);
 }
 
-.backLinkSolid:active {
-  transform: scale(0.95);
-}
-
 .brandSolid {
   composes: text-headline-md from global;
   color: var(--color-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
+}
+
+@media (max-width: 767px) {
+  .navOverlay {
+    padding-inline: 16px;
+  }
+
+  .brandOverlay {
+    left: auto;
+    right: 16px;
+    transform: none;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0.08em;
+  }
+
+  .navNoBack .brandOverlay {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
 }

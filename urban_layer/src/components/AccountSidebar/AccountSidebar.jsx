@@ -30,6 +30,7 @@ function AccountSidebar({ user }) {
     const closeDrawer = () => setIsOpen(false);
 
     const handleLogout = () => {
+        localStorage.removeItem('customerAccessToken');
         dispatch(logout());
         navigate('/');
         closeDrawer();

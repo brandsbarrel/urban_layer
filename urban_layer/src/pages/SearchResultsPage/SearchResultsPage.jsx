@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { MdClose, MdTune } from 'react-icons/md';
 import NewsletterSignup from '../../components/NewsletterSignup/NewsletterSignup';
@@ -10,7 +10,7 @@ import RecommendedForYouSection from './sections/RecommendedForYouSection';
 import { searchProducts, searchPriceRange } from '../../services/searchResultsData';
 import styles from './SearchResultsPage.module.css';
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 8;
 const DEFAULT_FILTERS = {
     brands: [],
     materials: [],
@@ -77,12 +77,28 @@ function SearchResultsPage() {
         filters.features.length +
         (filters.maxPrice < searchPriceRange.max ? 1 : 0);
 
+    useEffect(() => {
+        if (!isFilterOpen) return undefined;
+
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = previousOverflow;
+        };
+    }, [isFilterOpen]);
+
     return (
         <div className={styles.page}>
             <SearchHeroSection query={queryInput} onQueryChange={setQueryInput} onSearch={handleSearch} />
 
             <div className={styles.mobileFilterBar}>
-                <button type="button" className={styles.filterToggle} onClick={() => setIsFilterOpen(true)}>
+                <button
+                    type="button"
+                    className={styles.filterToggle}
+                    onClick={() => setIsFilterOpen(true)}
+                    aria-label={`Open filters${activeFilterCount ? `, ${activeFilterCount} active` : ''}`}
+                >
                     <MdTune size={20} />
                     <span>Filters</span>
                     {activeFilterCount > 0 && <strong>{activeFilterCount}</strong>}

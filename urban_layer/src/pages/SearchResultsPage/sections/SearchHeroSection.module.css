@@ -1,6 +1,6 @@
 .section {
   position: relative;
-  padding: var(--spacing-unit-xl) 0;
+  padding: clamp(40px, 8vw, var(--spacing-unit-xl)) 0 clamp(28px, 6vw, var(--spacing-unit-xl));
   background: linear-gradient(to bottom, var(--color-surface-container-low), var(--color-background));
   overflow: hidden;
 }
@@ -21,5 +21,13 @@
 .heading {
   composes: text-display-lg from global;
   color: var(--color-primary);
-  margin-bottom: var(--spacing-unit-lg);
+  font-size: clamp(34px, 8vw, 64px);
+  line-height: 1.08;
+  margin-bottom: clamp(20px, 4vw, var(--spacing-unit-lg));
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding-inline: 16px;
+  }
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import fallbackImage from '../../assets/auth-brand-mark.png';
 import styles from './AuthBrandPanel.module.css';
 
 function AuthBrandPanel({
@@ -45,6 +46,11 @@ function AuthBrandPanel({
           src={image}
           alt={imageAlt}
           className={enableParallax ? styles.image : `${styles.image} ${styles.imageHoverScale}`}
+          onError={(event) => {
+            event.currentTarget.onerror = null;
+            event.currentTarget.src = fallbackImage;
+            event.currentTarget.classList.add(styles.fallbackImage);
+          }}
         />
       </div>
 

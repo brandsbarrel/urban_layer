@@ -1,6 +1,7 @@
 .wrapper {
   flex: 1;
   min-width: 0;
+  width: auto;
 }
 
 .header {
@@ -10,6 +11,7 @@
   align-items: flex-start;
   gap: var(--spacing-unit-md);
   margin-bottom: var(--spacing-unit-lg);
+  min-width: 0;
 }
 
 @media (min-width: 768px) {
@@ -22,6 +24,7 @@
 .heading {
   composes: text-headline-sm from global;
   color: var(--color-primary);
+  overflow-wrap: anywhere;
 }
 
 .resultsText {
@@ -33,6 +36,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-unit-md);
+  max-width: 100%;
 }
 
 .sortLabel {
@@ -43,34 +47,50 @@
 }
 
 .sortSelect {
-  background: transparent;
-  border: none;
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
   composes: text-label-md from global;
   color: var(--color-primary);
   cursor: pointer;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 0 40px 0 14px;
+}
+
+.sortSelect:focus-visible {
+  border-color: var(--color-secondary);
+  outline: 2px solid rgba(115, 92, 0, 0.18);
+  outline-offset: 2px;
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--spacing-gutter);
+  gap: clamp(16px, 2.5vw, var(--spacing-gutter));
+}
+
+@media (min-width: 420px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 768px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1024px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1280px) {
   .grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -78,7 +98,10 @@
   composes: text-body-md from global;
   color: var(--color-on-surface-variant);
   text-align: center;
-  padding: var(--spacing-unit-xl) 0;
+  background: var(--color-surface-container-lowest);
+  border: 1px solid rgba(207, 196, 197, 0.45);
+  border-radius: var(--radius-xl);
+  padding: clamp(40px, 8vw, var(--spacing-unit-xl)) var(--spacing-unit-md);
 }
 
 @media (max-width: 767px) {
@@ -90,13 +113,16 @@
     align-items: stretch;
     flex-direction: column;
     gap: 8px;
+    width: 100%;
   }
 
   .sortSelect {
-    border: 1px solid var(--color-outline-variant);
-    border-radius: var(--radius-lg);
-    min-height: 44px;
-    padding: 0 var(--spacing-unit-sm);
     width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 899px) {
+  .sortWrapper {
+    flex: 0 0 240px;
   }
 }
