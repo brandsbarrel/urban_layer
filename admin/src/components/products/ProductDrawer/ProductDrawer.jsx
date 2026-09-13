@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { MdClose, MdMoreVert } from "react-icons/md";
-import { closeDrawer } from "../../../redux/slices/productsSlice";
+import { MdClose, MdMoreVert, MdStar, MdStarBorder } from "react-icons/md";
+import { closeDrawer, toggleBestSeller } from "../../../redux/slices/productsSlice";
 import styles from "./ProductDrawer.module.css";
 
 const ProductDrawer = () => {
@@ -16,6 +16,7 @@ const ProductDrawer = () => {
   );
 
   const isOpen = Boolean(product);
+  const isBestSeller = Boolean(product && (product.tags || []).includes("best-seller"));
 
   return (
     <>
@@ -44,10 +45,28 @@ const ProductDrawer = () => {
               <div className={styles.infoSection}>
                 <div className={styles.infoTop}>
                   <div>
-                  <span className={styles.collectionLabel}>
-                      {product.phoneModel || product.collectionLabel}
-                  </span>
+                    <span className={styles.collectionLabel}>
+                      {product.phoneModel?.name || product.phoneModelName || product.collectionLabel}
+                    </span>
                     <h4 className={styles.productName}>{product.name}</h4>
+                    {isBestSeller && (
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          color: "#854d0e",
+                          background: "#fef9c3",
+                          padding: "2px 8px",
+                          borderRadius: "12px",
+                          marginTop: "4px"
+                        }}
+                      >
+                        <MdStar style={{ color: "#ca8a04" }} /> Best Seller
+                      </span>
+                    )}
                   </div>
                   <span className={styles.price}>
                     ${product.price.toFixed(2)}
@@ -74,9 +93,9 @@ const ProductDrawer = () => {
               <div className={styles.variantsSection}>
                 <h5 className={styles.sectionLabel}>COLOR VARIANTS</h5>
                 <div className={styles.swatches}>
-                  {product.variants.map((variant, index) => (
+                  {(product.variants || []).map((variant, index) => (
                     <div
-                      key={variant.id}
+                      key={variant.id || index}
                       className={
                         index === 0
                           ? `${styles.swatch} ${styles.swatchActive}`
@@ -95,8 +114,8 @@ const ProductDrawer = () => {
               <div className={styles.activitySection}>
                 <h5 className={styles.sectionLabel}>RECENT ACTIVITY</h5>
                 <div className={styles.timeline}>
-                  {product.activity.map((entry, index) => (
-                    <div key={entry.id} className={styles.timelineItem}>
+                  {(product.activity || []).map((entry, index) => (
+                    <div key={entry.id || index} className={styles.timelineItem}>
                       <div
                         className={
                           index === 0
@@ -117,6 +136,29 @@ const ProductDrawer = () => {
             </div>
 
             <div className={styles.footer}>
+              <button
+                className={styles.editButton}
+                style={{
+                  background: isBestSeller ? "#fef9c3" : "#ffffff",
+                  color: isBestSeller ? "#854d0e" : "#333",
+                  border: "1px solid #ca8a04",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "6px"
+                }}
+                onClick={() => dispatch(toggleBestSeller(product))}
+              >
+                {isBestSeller ? (
+                  <>
+                    <MdStar style={{ color: "#ca8a04" }} /> Unmark Best Seller
+                  </>
+                ) : (
+                  <>
+                    <MdStarBorder /> Mark Best Seller
+                  </>
+                )}
+              </button>
               <button
                 className={styles.editButton}
                 onClick={() => navigate(`/products/edit/${product.id}`)}

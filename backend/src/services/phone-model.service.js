@@ -21,6 +21,7 @@ const mapPhoneModel = async (phoneModel) => {
     brand: phoneModel.brand,
     name: phoneModel.name,
     slug: phoneModel.slug,
+    image: phoneModel.image || "",
     active: phoneModel.active,
     sortOrder: phoneModel.sortOrder,
     productsAssigned
@@ -133,8 +134,15 @@ const deletePhoneModelRecord = async (id) => {
   await deletePhoneModelById(id);
 };
 
+const getPhoneModelById = async (id) => {
+  const phoneModel = await findPhoneModelById(id);
+  if (!phoneModel) throw new NotFoundError("Phone model not found.");
+  return mapPhoneModel(phoneModel);
+};
+
 export {
   listPhoneModels,
+  getPhoneModelById,
   createPhoneModelRecord,
   updatePhoneModelRecord,
   togglePhoneModelActive,

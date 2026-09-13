@@ -11,8 +11,6 @@ import customersReducer from "./slices/customersSlice";
 import couponsReducer from "./slices/couponsSlice";
 import blogsReducer from "./slices/blogsSlice";
 import blogFormReducer from "./slices/blogFormSlice";
-import paymentsReducer from "./slices/paymentsSlice";
-import heroSlidesReducer from "./slices/heroSlidesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -28,8 +26,6 @@ export const store = configureStore({
     coupons: couponsReducer,
     blogs: blogsReducer,
     blogForm: blogFormReducer,
-    payments: paymentsReducer,
-    heroSlides: heroSlidesReducer,
   },
 });
 

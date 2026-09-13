@@ -2,6 +2,7 @@ import { sendSuccess } from "../shared/api-response.js";
 import {
   createPhoneModelRecord,
   deletePhoneModelRecord,
+  getPhoneModelById,
   listPhoneModels,
   togglePhoneModelActive,
   updatePhoneModelRecord
@@ -63,6 +64,19 @@ const togglePhoneModelActiveHandler = async (req, res, next) => {
   }
 };
 
+const getPhoneModelByIdHandler = async (req, res, next) => {
+  try {
+    const phoneModel = await getPhoneModelById(req.params.id);
+    return sendSuccess({
+      res,
+      message: "Phone model fetched successfully.",
+      data: phoneModel
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 const deletePhoneModelHandler = async (req, res, next) => {
   try {
     await deletePhoneModelRecord(req.params.id);
@@ -74,6 +88,7 @@ const deletePhoneModelHandler = async (req, res, next) => {
 
 export {
   getPhoneModels,
+  getPhoneModelByIdHandler,
   createPhoneModelHandler,
   updatePhoneModelHandler,
   togglePhoneModelActiveHandler,

@@ -15,8 +15,6 @@ import {
   MdLogout,
   MdAdd,
   MdClose,
-  MdPayments,
-  MdViewCarousel,
 } from "react-icons/md";
 import { closeSidebar } from "../../../redux/slices/uiSlice";
 import { logout } from "../../../redux/slices/authSlice";
@@ -24,12 +22,10 @@ import styles from "./Sidebar.module.css";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: MdDashboard, end: true },
-  { to: "/hero-slides", label: "Hero Slider", icon: MdViewCarousel },
   { to: "/products", label: "Products", icon: MdInventory2 },
   { to: "/categories", label: "Categories", icon: MdCategory },
-  { to: "/phone-models", label: "Devices", icon: MdPhoneIphone },
+  { to: "/phone-models", label: "Phone Models", icon: MdPhoneIphone },
   { to: "/orders", label: "Orders", icon: MdShoppingCart },
-  { to: "/payments", label: "Payments", icon: MdPayments },
   { to: "/customers", label: "Customers", icon: MdGroup },
   { to: "/coupons", label: "Coupons & Offers", icon: MdLocalOffer },
   { to: "/blogs", label: "Blogs", icon: MdArticle },

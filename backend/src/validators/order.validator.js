@@ -14,6 +14,18 @@ const adminOrderListQuerySchema = z.object({
   sortOrder: z.enum(["desc", "asc"]).optional().default("desc")
 });
 
+const adminPaymentsQuerySchema = z.object({
+  page: z.coerce.number().int().positive().optional().default(1),
+  perPage: z.coerce.number().int().positive().optional().default(20),
+  search: z.string().trim().optional().default(""),
+  paymentStatus: z.string().trim().optional().default("All"),
+  paymentMethod: z.string().trim().optional().default("All"),
+  startDate: z.string().trim().optional(),
+  endDate: z.string().trim().optional(),
+  sortBy: z.enum(["createdAt", "amount"]).optional().default("createdAt"),
+  sortOrder: z.enum(["desc", "asc"]).optional().default("desc")
+});
+
 const markShippedSchema = z.object({
   courier: z.string().trim().min(1),
   trackingNumber: z.string().trim().min(1),
@@ -43,6 +55,7 @@ const verifyPaymentSchema = z.object({
 
 export {
   adminOrderListQuerySchema,
+  adminPaymentsQuerySchema,
   markShippedSchema,
   cancelOrderSchema,
   rejectReturnSchema,

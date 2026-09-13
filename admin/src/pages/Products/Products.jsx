@@ -15,12 +15,13 @@ const Products = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const page = useSelector((state) => state.products.pagination.page);
+  const bestSellerOnly = useSelector((state) => state.products.bestSellerOnly);
 
   React.useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchProducts());
     }
-  }, [dispatch, isAuthenticated, page]);
+  }, [dispatch, isAuthenticated, page, bestSellerOnly]);
 
   return (
     <div className={styles.page}>

@@ -8,6 +8,8 @@ import { customerAuthRouter } from "./customer-auth.routes.js";
 import { customerOrderRouter } from "./customer-order.routes.js";
 import { customerProfileRouter } from "./customer-profile.routes.js";
 import { healthRouter } from "./health.routes.js";
+import { heroSlidePublicRouter, heroSlideAdminRouter } from "./hero-slide.routes.js";
+import { homepagePublicRouter } from "./homepage.routes.js";
 import { orderRouter } from "./order.routes.js";
 import { paymentRouter } from "./payment.routes.js";
 import { phoneModelRouter } from "./phone-model.routes.js";
@@ -26,6 +28,7 @@ apiRouter.use("/admin/auth", adminAuthRouter);
 apiRouter.use("/admin/categories", categoryRouter);
 apiRouter.use("/admin/customers", adminCustomerRouter);
 apiRouter.use("/admin/coupons", couponRouter);
+apiRouter.use("/admin/hero-slides", heroSlideAdminRouter);
 apiRouter.use("/admin/orders", orderRouter);
 apiRouter.use("/admin/settings", settingsRouter);
 apiRouter.use("/", shiprocketRouter);        // Shiprocket webhook at /webhooks/shiprocket
@@ -43,5 +46,9 @@ apiRouter.use("/storefront/catalog", storefrontCatalogRouter);
 apiRouter.use("/storefront/payments", paymentRouter);
 apiRouter.post("/webhooks/razorpay", razorpayWebhookHandler);
 // Shiprocket webhook - mounted in shiprocketRouter
+
+// Public homepage APIs
+apiRouter.use("/hero-slides", heroSlidePublicRouter);
+apiRouter.use("/", homepagePublicRouter);  // GET /api/categories, /api/devices, /api/products
 
 export { apiRouter };

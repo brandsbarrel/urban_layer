@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdStar } from "react-icons/md";
 import {
   toggleCategory,
   addTag,
@@ -22,6 +22,8 @@ const OrganizationPanel = () => {
       setTagInput("");
     }
   };
+
+  const isBestSeller = form.tags.includes("best-seller");
 
   return (
     <section className={styles.card}>
@@ -65,7 +67,35 @@ const OrganizationPanel = () => {
       </div>
 
       <div className={styles.fieldGroup}>
-        <label className={styles.label}>Tags</label>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+          <label className={styles.label} style={{ margin: 0 }}>Tags</label>
+          <button
+            type="button"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "4px",
+              fontSize: "12px",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              border: "1px solid #ca8a04",
+              background: isBestSeller ? "#fef9c3" : "#ffffff",
+              color: isBestSeller ? "#854d0e" : "#555",
+              cursor: "pointer",
+              fontWeight: 600
+            }}
+            onClick={() => {
+              if (isBestSeller) {
+                dispatch(removeTag("best-seller"));
+              } else {
+                dispatch(addTag("best-seller"));
+              }
+            }}
+          >
+            <MdStar style={{ color: "#ca8a04" }} />
+            {isBestSeller ? "Best Seller (Active)" : "Mark as Best Seller"}
+          </button>
+        </div>
         <div className={styles.tagList}>
           {form.tags.map((tag) => (
             <span key={tag} className={styles.tag}>

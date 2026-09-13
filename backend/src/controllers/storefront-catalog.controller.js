@@ -29,7 +29,8 @@ const getStorefrontProducts = async (req, res, next) => {
       search: req.query.search || "",
       category: req.query.category || "",
       phoneModel: req.query.phoneModel || "",
-      maxPrice: req.query.maxPrice ? Number(req.query.maxPrice) : null
+      maxPrice: req.query.maxPrice ? Number(req.query.maxPrice) : null,
+      tag: req.query.tag || ""
     });
 
     return sendSuccess({

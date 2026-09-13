@@ -16,11 +16,27 @@ const buildStats = (items) => {
 
 const fetchProducts = createAsyncThunk("products/fetchProducts", async (_, { getState }) => {
   const { page, perPage } = getState().products.pagination;
-  const response = await apiRequest(`/admin/products?page=${page}&perPage=${perPage}`);
+  const { bestSellerOnly } = getState().products;
+  const tagParam = bestSellerOnly ? "&tag=best-seller" : "";
+  const response = await apiRequest(`/admin/products?page=${page}&perPage=${perPage}${tagParam}`);
   return {
     items: response.data.items,
     meta: response.meta
   };
+});
+
+const toggleBestSeller = createAsyncThunk("products/toggleBestSeller", async (product) => {
+  const isCurrentlyBestSeller = (product.tags || []).includes("best-seller");
+  const nextTags = isCurrentlyBestSeller
+    ? (product.tags || []).filter((t) => t !== "best-seller")
+    : [...(product.tags || []), "best-seller"];
+
+  const response = await apiRequest(`/admin/products/${product.id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ tags: nextTags })
+  });
+
+  return response.data.listItem;
 });
 
 const archiveProduct = createAsyncThunk("products/archiveProduct", async (id) => {
@@ -48,6 +64,7 @@ const initialState = {
   selectedIds: [],
   drawerProductId: null,
   searchQuery: "",
+  bestSellerOnly: false,
   pagination: {
     page: 1,
     perPage: 10,
@@ -82,6 +99,10 @@ const productsSlice = createSlice({
       state.searchQuery = action.payload;
       state.pagination.page = 1;
     },
+    setBestSellerFilter(state, action) {
+      state.bestSellerOnly = action.payload;
+      state.pagination.page = 1;
+    },
     setPage(state, action) {
       state.pagination.page = action.payload;
     }
@@ -92,6 +113,12 @@ const productsSlice = createSlice({
         state.items = action.payload.items;
         state.pagination.totalItems = action.payload.meta?.totalItems || action.payload.items.length;
         state.stats = buildStats(action.payload.items);
+      })
+      .addCase(toggleBestSeller.fulfilled, (state, action) => {
+        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        if (index >= 0) {
+          state.items[index] = action.payload;
+        }
       })
       .addCase(archiveProduct.fulfilled, (state, action) => {
         const index = state.items.findIndex((item) => item.id === action.payload.id);
@@ -111,7 +138,7 @@ const productsSlice = createSlice({
   }
 });
 
-export { fetchProducts, archiveProduct, archiveSelected, deleteProducts };
+export { fetchProducts, toggleBestSeller, archiveProduct, archiveSelected, deleteProducts };
 export const {
   toggleSelect,
   toggleSelectAll,
@@ -119,6 +146,7 @@ export const {
   openDrawer,
   closeDrawer,
   setSearchQuery,
+  setBestSellerFilter,
   setPage
 } = productsSlice.actions;
 export default productsSlice.reducer;

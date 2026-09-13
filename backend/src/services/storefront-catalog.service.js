@@ -73,17 +73,29 @@ const listStorefrontPhoneModels = async () => {
     limit: 500
   });
 
-  return {
-    items: phoneModels.map((phoneModel) => ({
-      id: phoneModel.id,
-      brand: phoneModel.brand,
-      name: phoneModel.name,
-      slug: phoneModel.slug
-    }))
-  };
+  // Dynamically count published products per phone model
+  const withCounts = await Promise.all(
+    phoneModels.map(async (phoneModel) => {
+      const productCount = await countProducts({
+        phoneModelId: phoneModel._id,
+        status: "Published",
+        visibility: "Public"
+      });
+      return {
+        id: phoneModel.id,
+        brand: phoneModel.brand,
+        name: phoneModel.name,
+        slug: phoneModel.slug,
+        image: phoneModel.image || "",
+        productCount
+      };
+    })
+  );
+
+  return { items: withCounts };
 };
 
-const listStorefrontProducts = async ({ page = 1, perPage = 20, search = "", category = "", phoneModel = "", maxPrice = null }) => {
+const listStorefrontProducts = async ({ page = 1, perPage = 20, search = "", category = "", phoneModel = "", maxPrice = null, tag = "" }) => {
   const filter = {
     status: "Published",
     visibility: "Public"
@@ -94,6 +106,10 @@ const listStorefrontProducts = async ({ page = 1, perPage = 20, search = "", cat
       { name: { $regex: search, $options: "i" } },
       { sku: { $regex: search, $options: "i" } }
     ];
+  }
+
+  if (tag) {
+    filter.tags = tag;
   }
 
   if (phoneModel) {

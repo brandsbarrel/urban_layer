@@ -1,0 +1,326 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.backdropOpen {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 480px;
+  max-width: 100vw;
+  background: var(--color-surface);
+  border-left: 1px solid var(--color-outline-variant);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.paymentId {
+  font-weight: 400;
+  color: var(--color-on-surface-variant);
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--color-outline);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.closeButton:hover {
+  background: var(--color-surface-container-highest);
+  color: var(--color-on-surface);
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  text-transform: capitalize;
+}
+
+.toneGreen {
+  background: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}
+
+.toneAmber {
+  background: var(--color-tertiary-container);
+  color: var(--color-on-tertiary-container);
+}
+
+.toneRed {
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+.toneBlue {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.gatewayLabel {
+  font-size: 12px;
+  color: var(--color-outline);
+  font-weight: 500;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-on-surface-variant);
+}
+
+.customerCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 8px;
+}
+
+.customerAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-outline-variant);
+}
+
+.customerName {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.customerEmail {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--color-outline);
+}
+
+.customerPhone {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--color-outline);
+}
+
+.detailsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detailLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-on-surface-variant);
+}
+
+.detailValue {
+  font-size: 13px;
+  color: var(--color-on-surface);
+}
+
+.detailValueMonospace {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+  word-break: break-all;
+}
+
+.methodBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.methodCod {
+  background: var(--color-tertiary-container);
+  color: var(--color-on-tertiary-container);
+}
+
+.methodOnline {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.copyRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-outline);
+  background: var(--color-surface-container-highest);
+  border-radius: 6px;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.copyButton:hover {
+  background: var(--color-primary-container);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.amountCard {
+  background: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.amountRow,
+.amountRowRefund {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.amountRowRefund {
+  color: var(--color-error);
+}
+
+.amountLabel {
+  color: var(--color-on-surface-variant);
+}
+
+.amountValue {
+  font-weight: 600;
+  color: var(--color-on-surface);
+}
+
+.amountValueRefund {
+  font-weight: 600;
+  color: var(--color-error);
+}
+
+.footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--color-outline-variant);
+  background: var(--color-surface-container-low);
+}
+
+.footerButton {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.footerButton:hover {
+  background: var(--color-primary-dark, var(--color-primary));
+}
+
+@media (max-width: 768px) {
+  .drawer {
+    width: 100vw;
+  }
+}

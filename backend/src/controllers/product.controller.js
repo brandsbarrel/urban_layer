@@ -15,7 +15,8 @@ const getProducts = async (req, res, next) => {
     const data = await listProducts({
       page,
       perPage,
-      search: req.query.search || ""
+      search: req.query.search || "",
+      tag: req.query.tag || ""
     });
 
     return sendSuccess({

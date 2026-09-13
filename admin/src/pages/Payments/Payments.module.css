@@ -1,0 +1,107 @@
+.page {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.searchRow {
+  margin: 16px 0;
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid var(--color-outline);
+  border-radius: 8px;
+  background: var(--color-surface-container-highest);
+  color: var(--color-on-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-container);
+}
+
+.loadingDot {
+  margin-left: 12px;
+  font-size: 12px;
+  color: var(--color-outline);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.tableCard {
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.paginationFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-top: 1px solid var(--color-outline-variant);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.paginationText {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-on-surface-variant);
+}
+
+.pageControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pageButton {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--color-outline);
+  border-radius: 6px;
+  background: var(--color-surface-container-highest);
+  color: var(--color-on-surface);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageButton:hover:not(:disabled) {
+  background: var(--color-primary-container);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 16px;
+  }
+
+  .paginationFooter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pageControls {
+    justify-content: center;
+  }
+}

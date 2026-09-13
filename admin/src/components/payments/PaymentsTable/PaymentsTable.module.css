@@ -1,0 +1,191 @@
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.headRow {
+  background: var(--color-surface-container-highest);
+}
+
+.headCell {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-on-surface-variant);
+  border-bottom: 1px solid var(--color-outline-variant);
+}
+
+.row {
+  border-bottom: 1px solid var(--color-outline-variant);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.row:hover {
+  background: var(--color-surface-container-highest);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.cell {
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.paymentId {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+}
+
+.orderId {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 13px;
+}
+
+.customerCol {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-outline-variant);
+}
+
+.customerName {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-on-surface);
+}
+
+.customerEmail {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: var(--color-outline);
+}
+
+.amount {
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-on-surface);
+}
+
+.methodBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.methodCod {
+  background: var(--color-tertiary-container);
+  color: var(--color-on-tertiary-container);
+}
+
+.methodOnline {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.paymentBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 16px;
+  text-transform: capitalize;
+}
+
+.toneGreen {
+  background: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}
+
+.toneAmber {
+  background: var(--color-tertiary-container);
+  color: var(--color-on-tertiary-container);
+}
+
+.toneRed {
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+.toneBlue {
+  background: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.gatewayBadge {
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+  font-weight: 500;
+}
+
+.dateLabel {
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+}
+
+.rowActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.iconButton:hover {
+  background: var(--color-surface-container-highest);
+  color: var(--color-primary);
+}
+
+.iconButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+.emptyCell {
+  padding: 48px 16px;
+  text-align: center;
+  color: var(--color-outline);
+  font-size: 14px;
+}

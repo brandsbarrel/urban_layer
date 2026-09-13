@@ -498,6 +498,137 @@ const getOrderStats = async () => {
   ];
 };
 
+const PAYMENT_STATUS_LABELS = {
+  Paid: "Paid",
+  Pending: "Pending",
+  Failed: "Failed",
+  Refunded: "Refunded",
+  "Partially Refunded": "Partially Refunded",
+  "Refund Processing": "Refund Processing",
+  Collected: "Collected",
+  Settled: "Settled",
+  "Collection Failed": "Collection Failed",
+  "Settlement Failed": "Settlement Failed"
+};
+
+const mapOrderToPaymentItem = (order) => {
+  const customer = order.customer || {};
+  const amount = (order.totalAmount || 0) / 100;
+  const paymentStatus = order.paymentStatus || "Pending";
+  const paymentMethod = order.paymentMethod || "Online";
+  const purpose = paymentMethod === "COD" ? "Cash on Delivery" : "Online Payment";
+
+  return {
+    id: order.paymentGatewayPaymentId || order.paymentGatewayOrderId || order._id?.toString(),
+    orderNumber: order.orderNumber,
+    orderDbId: order._id?.toString(),
+    createdAt: order.createdAt,
+    placedAt: formatOrderDate(order.createdAt),
+    customer: {
+      id: customer._id?.toString() || "",
+      name: customer.name || order.shippingAddress?.recipientName || "Unknown Customer",
+      email: customer.email || order.shippingAddress?.email || "",
+      phone: customer.phone || order.shippingAddress?.phone || order.billingAddress?.phone || "",
+    },
+    amount,
+    currency: "INR",
+    paymentMethod,
+    paymentStatus,
+    paymentGateway: "Razorpay",
+    paymentGatewayOrderId: order.paymentGatewayOrderId || null,
+    paymentGatewayPaymentId: order.paymentGatewayPaymentId || null,
+    paymentGatewaySignature: order.paymentGatewaySignature || null,
+    purpose,
+    refund: order.refund ? {
+      amount: order.refund.amount / 100,
+      reason: order.refund.reason,
+      status: order.refund.status,
+      processedAt: order.refund.processedAt,
+      method: order.refund.method,
+      razorpayRefundId: order.refund.razorpayRefundId,
+    } : null,
+  };
+};
+
+const listAdminPayments = async (query = {}) => {
+  const {
+    page = 1,
+    perPage = 20,
+    search = "",
+    paymentStatus = "All",
+    paymentMethod = "All",
+    startDate,
+    endDate,
+    sortBy = "createdAt",
+    sortOrder = "desc",
+  } = query;
+
+  const filter = {};
+  const skip = (page - 1) * perPage;
+  const limit = perPage;
+  const sort = { [sortBy]: sortOrder === "desc" ? -1 : 1 };
+
+  // Only include orders that have some payment info
+  filter.$or = [
+    { paymentGatewayOrderId: { $exists: true, $ne: null } },
+    { paymentGatewayPaymentId: { $exists: true, $ne: null } },
+    { paymentStatus: { $in: ["Paid", "Collected", "Settled", "Refunded", "Partially Refunded", "Refund Processing", "Failed"] } },
+  ];
+
+  if (paymentStatus && paymentStatus !== "All") {
+    filter.paymentStatus = paymentStatus;
+  }
+
+  if (paymentMethod && paymentMethod !== "All") {
+    filter.paymentMethod = paymentMethod;
+  }
+
+  if (startDate) {
+    filter.createdAt = { ...filter.createdAt, $gte: new Date(startDate) };
+  }
+  if (endDate) {
+    filter.createdAt = { ...filter.createdAt, $lte: new Date(endDate) };
+  }
+
+  if (search) {
+    const searchRegex = new RegExp(search.trim(), "i");
+    const searchFilter = {
+      $or: [
+        { orderNumber: searchRegex },
+        { paymentGatewayOrderId: searchRegex },
+        { paymentGatewayPaymentId: searchRegex },
+        { "customer.name": searchRegex },
+        { "customer.email": searchRegex },
+        { "customer.phone": searchRegex },
+      ],
+    };
+    // Merge with existing filter
+    if (Object.keys(filter).length > 0) {
+      filter.$and = [filter, searchFilter];
+    } else {
+      Object.assign(filter, searchFilter);
+    }
+  }
+
+  const [orders, totalItems] = await Promise.all([
+    findAdminOrders({ filter, skip, limit, sort }),
+    countAdminOrders(filter),
+  ]);
+
+  const items = orders.map(mapOrderToPaymentItem);
+  const totalPages = Math.ceil(totalItems / perPage);
+
+  return {
+    items,
+    meta: {
+      page: parseInt(page),
+      perPage: parseInt(perPage),
+      totalItems,
+      totalPages,
+    },
+  };
+};
+
 export {
   listAdminOrders,
   getAdminOrderDetails,
@@ -511,5 +642,6 @@ export {
   approveAdminReturn,
   rejectAdminReturn,
   processAdminRefund,
-  getOrderStats
+  getOrderStats,
+  listAdminPayments
 };

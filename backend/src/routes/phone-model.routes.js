@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createPhoneModelHandler,
   deletePhoneModelHandler,
+  getPhoneModelByIdHandler,
   getPhoneModels,
   togglePhoneModelActiveHandler,
   updatePhoneModelHandler
@@ -21,9 +22,11 @@ phoneModelRouter.use(authenticate("admin"));
 phoneModelRouter.use(authorize("Admin", "SuperAdmin"));
 
 phoneModelRouter.get("/", validate(phoneModelListQuerySchema, "query"), getPhoneModels);
+phoneModelRouter.get("/:id", getPhoneModelByIdHandler);
 phoneModelRouter.post("/", validate(phoneModelCreateSchema), createPhoneModelHandler);
 phoneModelRouter.patch("/:id", validate(phoneModelUpdateSchema), updatePhoneModelHandler);
 phoneModelRouter.post("/:id/toggle-active", togglePhoneModelActiveHandler);
 phoneModelRouter.delete("/:id", deletePhoneModelHandler);
 
 export { phoneModelRouter };
+

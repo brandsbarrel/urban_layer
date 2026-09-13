@@ -50,3 +50,10 @@
 .toolButton:hover {
   background: var(--color-surface-container-high);
 }
+
+.toolButtonActive {
+  background: #fefce8;
+  border-color: #facc15;
+  color: #854d0e;
+  font-weight: 600;
+}

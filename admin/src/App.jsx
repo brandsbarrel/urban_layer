@@ -9,7 +9,9 @@ import Products from "./pages/Products/Products";
 import ProductForm from "./pages/ProductForm/ProductForm";
 import Categories from "./pages/Categories/Categories";
 import PhoneModels from "./pages/PhoneModels/PhoneModels";
+import HeroSlides from "./pages/HeroSlides/HeroSlides";
 import Orders from "./pages/Orders/Orders";
+import Payments from "./pages/Payments/Payments";
 import Customers from "./pages/Customers/Customers";
 import Coupons from "./pages/Coupons/Coupons";
 import Blogs from "./pages/Blogs/Blogs";
@@ -52,17 +54,21 @@ const App = () => {
             <AdminLayout>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/hero-slides" element={<HeroSlides />} />
+                <Route path="/homepage" element={<HeroSlides />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/new" element={<ProductForm />} />
                 <Route path="/products/edit/:id" element={<ProductForm />} />
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/phone-models" element={<PhoneModels />} />
+                <Route path="/devices" element={<PhoneModels />} />
                 <Route
                   path="/categories/edit/:id"
                   element={<ComingSoon featureName="Edit Category" />}
                 />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/orders/new" element={<ComingSoon featureName="Create Order" />} />
+                <Route path="/payments" element={<Payments />} />
                 <Route path="/customers" element={<Customers />} />
                 <Route
                   path="/customers/new"

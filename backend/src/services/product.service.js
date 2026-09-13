@@ -59,6 +59,7 @@ const mapProductToAdminListItem = (product) => {
     status: mapProductStatusForTable(product),
     image: product.featuredImage || product.gallery?.[0]?.url || "",
     description: product.description,
+    tags: product.tags || [],
     variants: product.variants,
     pickupLocation: product.pickupLocation || "",
     activity: product.activity.map((entry) => ({
@@ -89,31 +90,30 @@ const mapProductToFormShape = (product) => {
     galleryImages: product.gallery.map((image) => image.url),
     status: product.status,
     visibility: product.visibility,
-    basePrice: String(product.basePrice / 100),
-    salePrice: product.salePrice == null ? "" : String(product.salePrice / 100),
-    costPrice: product.costPrice == null ? "" : String(product.costPrice / 100),
-    taxRate: product.taxRate ?? "",
+    basePrice: product.basePrice / 100,
+    salePrice: product.salePrice == null ? "" : product.salePrice / 100,
+    costPrice: product.costPrice == null ? "" : product.costPrice / 100,
+    taxRate: product.taxRate,
     totalStock: product.stock,
     trackStock: product.trackStock,
-    categories: product.categories.map((category) => category.name),
-    categoryIds: product.categories.map((category) => category.id),
+    categories: (product.categories || []).map((cat) => cat.id || cat._id || cat),
     collection: product.collection,
-    tags: product.tags,
+    tags: product.tags || [],
     weight: product.weight ?? "",
     length: product.length ?? "",
     width: product.width ?? "",
     height: product.height ?? "",
-    packageType: product.packageType || "Box",
-    shippingClass: product.shippingClass || "Standard",
-    fragile: Boolean(product.fragile),
-    pickupLocation: product.pickupLocation || "",
+    packageType: product.packageType,
+    shippingClass: product.shippingClass,
+    fragile: product.fragile,
+    pickupLocation: product.pickupLocation,
     seoTitle: product.seoTitle,
     seoDescription: product.seoDescription,
     variants: product.variants
   };
 };
 
-const listProducts = async ({ page = 1, perPage = 10, search = "" }) => {
+const listProducts = async ({ page = 1, perPage = 10, search = "", tag = "" }) => {
   const filter = {};
 
   if (search) {
@@ -121,6 +121,10 @@ const listProducts = async ({ page = 1, perPage = 10, search = "" }) => {
       { name: { $regex: search, $options: "i" } },
       { sku: { $regex: search, $options: "i" } }
     ];
+  }
+
+  if (tag) {
+    filter.tags = tag;
   }
 
   const skip = (page - 1) * perPage;

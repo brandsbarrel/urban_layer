@@ -3,6 +3,7 @@ import {
   createCategoryHandler,
   deleteCategoryHandler,
   getCategories,
+  getCategoryByIdHandler,
   moveCategoryHandler,
   toggleCategoryVisibilityHandler,
   updateCategoryHandler
@@ -18,6 +19,7 @@ categoryRouter.use(authenticate("admin"));
 categoryRouter.use(authorize("Admin", "SuperAdmin"));
 
 categoryRouter.get("/", getCategories);
+categoryRouter.get("/:id", getCategoryByIdHandler);
 categoryRouter.post("/", validate(categoryCreateSchema), createCategoryHandler);
 categoryRouter.patch("/:id", validate(categoryUpdateSchema), updateCategoryHandler);
 categoryRouter.post("/:id/toggle-visibility", toggleCategoryVisibilityHandler);
@@ -25,3 +27,4 @@ categoryRouter.post("/:id/move", validate(categoryMoveSchema), moveCategoryHandl
 categoryRouter.delete("/:id", deleteCategoryHandler);
 
 export { categoryRouter };
+

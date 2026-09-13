@@ -1,12 +1,13 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { MdSearch, MdFilterList, MdSort } from "react-icons/md";
-import { setSearchQuery } from "../../../redux/slices/productsSlice";
+import { MdSearch, MdFilterList, MdSort, MdStar } from "react-icons/md";
+import { setSearchQuery, setBestSellerFilter } from "../../../redux/slices/productsSlice";
 import styles from "./ProductToolbar.module.css";
 
 const ProductToolbar = () => {
   const dispatch = useDispatch();
   const searchQuery = useSelector((state) => state.products.searchQuery);
+  const bestSellerOnly = useSelector((state) => state.products.bestSellerOnly);
 
   return (
     <div className={styles.row}>
@@ -20,6 +21,14 @@ const ProductToolbar = () => {
           onChange={(e) => dispatch(setSearchQuery(e.target.value))}
         />
       </div>
+      <button
+        className={`${styles.toolButton} ${bestSellerOnly ? styles.toolButtonActive : ""}`}
+        type="button"
+        onClick={() => dispatch(setBestSellerFilter(!bestSellerOnly))}
+      >
+        <MdStar style={{ color: bestSellerOnly ? "#ca8a04" : "#999", fontSize: "16px" }} />
+        {bestSellerOnly ? "Best Sellers (Filtered)" : "Best Sellers Only"}
+      </button>
       <button className={styles.toolButton} title="Coming Soon">
         <MdFilterList />
         Advanced Filters

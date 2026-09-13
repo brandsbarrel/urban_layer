@@ -6,6 +6,7 @@ const phoneModelCreateSchema = z.object({
   brand: z.string().trim().min(1).max(80),
   name: z.string().trim().min(1).max(120),
   slug: slugSchema.optional(),
+  image: z.string().optional().default(""),
   active: z.boolean().optional().default(true),
   sortOrder: z.coerce.number().int().nonnegative().optional()
 });

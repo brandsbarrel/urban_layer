@@ -203,8 +203,15 @@ const deleteCategoryRecord = async ({ id, force = false, reassignToCategoryId = 
   });
 };
 
+const getCategoryById = async (id) => {
+  const category = await findCategoryById(id);
+  if (!category) throw new NotFoundError("Category not found.");
+  return mapCategoryToAdminListItem(category);
+};
+
 export {
   listCategories,
+  getCategoryById,
   createCategoryRecord,
   updateCategoryRecord,
   toggleCategoryVisibility,

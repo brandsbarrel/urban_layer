@@ -2,6 +2,7 @@ import { sendSuccess } from "../shared/api-response.js";
 import {
   createCategoryRecord,
   deleteCategoryRecord,
+  getCategoryById,
   listCategories,
   moveCategoryRecord,
   toggleCategoryVisibility,
@@ -97,8 +98,22 @@ const deleteCategoryHandler = async (req, res, next) => {
   }
 };
 
+const getCategoryByIdHandler = async (req, res, next) => {
+  try {
+    const category = await getCategoryById(req.params.id);
+    return sendSuccess({
+      res,
+      message: "Category fetched successfully.",
+      data: category
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export {
   getCategories,
+  getCategoryByIdHandler,
   createCategoryHandler,
   updateCategoryHandler,
   toggleCategoryVisibilityHandler,

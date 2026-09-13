@@ -12,16 +12,20 @@ import {
   shipOrderHandler,
   approveReturnHandler,
   rejectReturnHandler,
-  processRefundHandler
+  processRefundHandler,
+  getAdminPayments
 } from "../controllers/order.controller.js";
 import { authorize } from "../middlewares/authorize.middleware.js";
 import { authenticate } from "../middlewares/authenticate.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
-import { cancelOrderSchema, markShippedSchema, adminOrderListQuerySchema, rejectReturnSchema, processRefundSchema } from "../validators/order.validator.js";
+import { cancelOrderSchema, markShippedSchema, adminOrderListQuerySchema, rejectReturnSchema, processRefundSchema, adminPaymentsQuerySchema } from "../validators/order.validator.js";
 
 const orderRouter = Router();
 
 orderRouter.use(authenticate("admin"));
+
+// Payments routes (read-only): Staff, Admin, SuperAdmin
+orderRouter.get("/payments", authorize("Staff", "Admin", "SuperAdmin"), validate(adminPaymentsQuerySchema, "query"), getAdminPayments);
 
 // Read-only routes: Staff, Admin, SuperAdmin
 orderRouter.get("/", authorize("Staff", "Admin", "SuperAdmin"), validate(adminOrderListQuerySchema, "query"), getAdminOrders);

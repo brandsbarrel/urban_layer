@@ -12,7 +12,8 @@ import {
   shipAdminOrder,
   approveAdminReturn,
   rejectAdminReturn,
-  processAdminRefund
+  processAdminRefund,
+  listAdminPayments
 } from "../services/order.service.js";
 
 const getAdminOrders = async (req, res, next) => {
@@ -141,6 +142,20 @@ const getOrderStatsHandler = async (req, res, next) => {
   }
 };
 
+const getAdminPayments = async (req, res, next) => {
+  try {
+    const data = await listAdminPayments(req.query);
+    return sendSuccess({
+      res,
+      message: "Payments fetched successfully.",
+      data: { items: data.items },
+      meta: data.meta
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export {
   getAdminOrders,
   getAdminOrderById,
@@ -154,5 +169,6 @@ export {
   approveReturnHandler,
   rejectReturnHandler,
   processRefundHandler,
-  getOrderStatsHandler
+  getOrderStatsHandler,
+  getAdminPayments
 };
