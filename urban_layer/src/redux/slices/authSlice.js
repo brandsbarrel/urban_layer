@@ -1,31 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  user: {
-    id: 'usr_demo',
-    name: 'Aniket',
-    fullName: 'Aniket Sharma',
-    email: 'aniket.s@urbanlayers.co',
-    phone: '+919876543210',
-    currency: 'INR',
-    language: 'EN',
-    memberSince: 'Jan 2024',
-    location: 'Gurugram, India',
-    tier: 'Gold',
-    nextTier: 'Platinum',
-    tierProgress: 75,
-    pointsToNextTier: 550,
-    rewardPoints: 2450,
-    activeCoupons: 3,
-    profileCompletion: 85,
-    avatarInitial: 'A',
-    communicationPrefs: {
-      emailUpdates: true,
-      smsNotifications: true,
-      whatsappConcierge: false,
-    },
-  },
-  isAuthenticated: true,
+  user: null,
+  isAuthenticated: false,
+  isInitializing: true,
   status: 'idle',
   error: null,
 };
@@ -34,6 +12,9 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    authInitializationComplete(state) {
+      state.isInitializing = false;
+    },
     loginStart(state) {
       state.status = 'loading';
       state.error = null;
@@ -41,6 +22,7 @@ const authSlice = createSlice({
     loginSuccess(state, action) {
       state.status = 'succeeded';
       state.isAuthenticated = true;
+      state.isInitializing = false;
       state.user = { ...action.payload, isGuest: false };
     },
     loginFailure(state, action) {
@@ -51,11 +33,6 @@ const authSlice = createSlice({
       state.status = 'loading';
       state.error = null;
     },
-    registerSuccess(state, action) {
-      state.status = 'succeeded';
-      state.isAuthenticated = true;
-      state.user = { ...action.payload, isGuest: false };
-    },
     registerFailure(state, action) {
       state.status = 'failed';
       state.error = action.payload;
@@ -63,10 +40,12 @@ const authSlice = createSlice({
     logout(state) {
       state.user = null;
       state.isAuthenticated = false;
+      state.isInitializing = false;
       state.status = 'idle';
     },
     continueAsGuest(state) {
       state.isAuthenticated = false;
+      state.isInitializing = false;
       state.user = { isGuest: true };
     },
     updateProfile(state, action) {
@@ -89,8 +68,8 @@ export const {
   loginStart,
   loginSuccess,
   loginFailure,
+  authInitializationComplete,
   registerStart,
-  registerSuccess,
   registerFailure,
   logout,
   continueAsGuest,

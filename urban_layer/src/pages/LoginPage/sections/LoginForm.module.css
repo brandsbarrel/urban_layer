@@ -1,10 +1,11 @@
 .wrapper {
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-unit-lg);
+  gap: 12px;
+  padding-bottom: 0;
 }
 
 .header {
@@ -12,60 +13,62 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: var(--spacing-unit-md);
-  margin-bottom: var(--spacing-unit-xl);
+  gap: 6px;
 }
 
 .logo {
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
-  margin-bottom: var(--spacing-unit-sm);
+  margin-bottom: 4px;
 }
 
 .heading {
   composes: text-headline-md from global;
   color: var(--color-primary);
-  letter-spacing: -0.02em;
+  font-size: 28px;
+  line-height: 34px;
 }
 
 .subheading {
   composes: text-body-md from global;
   color: var(--color-on-surface-variant);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.successText {
+  margin: 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--color-secondary);
+  background: #fff8dc;
+  color: var(--color-on-secondary-fixed-variant);
+  composes: text-body-md from global;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: var(--radius-2xl);
-  padding: var(--spacing-unit-lg);
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.04);
-}
-
-@media (min-width: 768px) {
-  .card {
-    padding: var(--spacing-unit-xl);
-  }
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: 0 18px 44px rgba(27, 28, 28, 0.08);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-unit-lg);
+  gap: 12px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-unit-xs);
+  gap: 6px;
 }
 
 .label {
   composes: text-label-sm from global;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
   color: var(--color-on-surface-variant);
 }
 
@@ -74,7 +77,7 @@
   background: transparent;
   border: none;
   border-bottom: 1px solid var(--color-outline-variant);
-  padding: var(--spacing-unit-md) 0;
+  padding: 8px 0;
   composes: text-body-md from global;
   outline: none;
   transition: border-color 0.2s ease;
@@ -87,24 +90,25 @@
 .forgotLink {
   composes: text-label-sm from global;
   color: var(--color-secondary);
-  transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
-.forgotLink:hover {
-  color: var(--color-secondary-fixed-dim);
+.forgotLink:hover,
+.registerLink:hover,
+.footerLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .rememberRow {
   display: flex;
   align-items: center;
-  gap: var(--spacing-unit-sm);
+  gap: 10px;
 }
 
 .checkbox {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: 1px solid var(--color-outline-variant);
+  width: 18px;
+  height: 18px;
   accent-color: var(--color-primary);
   cursor: pointer;
 }
@@ -112,118 +116,144 @@
 .rememberLabel {
   composes: text-body-md from global;
   color: var(--color-on-surface-variant);
+  font-size: 14px;
+  line-height: 20px;
   cursor: pointer;
   user-select: none;
 }
 
 .errorText {
-  composes: text-label-sm from global;
+  margin: -8px 0 0;
   color: var(--color-error);
+  composes: text-label-sm from global;
 }
 
 .submitButton {
   width: 100%;
-  padding: var(--spacing-unit-md);
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
-  border-radius: var(--radius-xl);
-  composes: text-label-md from global;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
+  min-height: 46px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-unit-sm);
-  transition: box-shadow 0.5s ease;
+  gap: 10px;
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.submitButton:hover:not(:disabled) {
-  box-shadow: 0 0 20px rgba(115, 92, 0, 0.4);
+.guestButton {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  composes: text-label-md from global;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.submitButton {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.submitButton:hover:not(:disabled),
+.guestButton:hover {
+  background: var(--color-secondary);
+  color: var(--color-on-secondary);
+  box-shadow: 0 8px 20px rgba(115, 92, 0, 0.2);
 }
 
 .submitButton:disabled {
-  opacity: 0.7;
+  opacity: 0.65;
   cursor: not-allowed;
-}
-
-.divider {
-  position: relative;
-  margin: var(--spacing-unit-xl) 0;
-  text-align: center;
-}
-
-.divider::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  border-top: 1px solid rgba(207, 196, 197, 0.3);
-}
-
-.dividerText {
-  composes: text-label-sm from global;
-  position: relative;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 0 16px;
-  color: var(--color-on-surface-variant);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
 }
 
 .footerActions {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-unit-md);
+  gap: 8px;
 }
 
 .guestButton {
-  width: 100%;
-  padding: var(--spacing-unit-md);
+  background: transparent;
   border: 1px solid var(--color-primary);
   color: var(--color-primary);
-  border-radius: var(--radius-xl);
-  composes: text-label-md from global;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  transition: all 0.3s ease;
-}
-
-.guestButton:hover {
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
 }
 
 .registerText {
-  composes: text-body-md from global;
+  margin: 0;
+  text-align: center;
   color: var(--color-on-surface-variant);
+  composes: text-body-md from global;
 }
 
 .registerLink {
   color: var(--color-secondary);
-  font-weight: 600;
-  margin-left: 4px;
-  transition: text-decoration 0.2s ease;
-}
-
-.registerLink:hover {
-  text-decoration: underline;
+  font-weight: 700;
+  margin-left: 5px;
 }
 
 .footerLinks {
-  padding-top: var(--spacing-unit-xl);
   display: flex;
   justify-content: center;
-  gap: var(--spacing-unit-lg);
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  padding-top: 0;
 }
 
 .footerLink {
-  composes: text-label-sm from global;
   color: var(--color-on-surface-variant);
-  transition: color 0.2s ease;
+  composes: text-label-sm from global;
 }
 
-.footerLink:hover {
-  color: var(--color-primary);
+@media (min-width: 768px) {
+  .wrapper {
+    gap: 16px;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .heading {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .subheading {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .card {
+    padding: 28px 34px;
+  }
+
+  .form {
+    gap: 18px;
+  }
+
+  .submitButton,
+  .guestButton {
+    min-height: 50px;
+  }
+}
+
+@media (min-width: 768px) and (max-height: 800px) {
+  .card {
+    padding: 20px 28px;
+  }
+
+  .form {
+    gap: 12px;
+  }
 }

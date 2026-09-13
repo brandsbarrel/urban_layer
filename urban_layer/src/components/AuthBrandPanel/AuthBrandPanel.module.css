@@ -1,12 +1,13 @@
 .panel {
   display: none;
   position: relative;
-  width: 50%;
-  height: 100vh;
+  flex: 0 0 50%;
+  min-height: 100dvh;
   overflow: hidden;
   flex-direction: column;
   justify-content: flex-end;
-  padding: var(--spacing-margin-desktop);
+  padding: 120px clamp(32px, 6vw, 80px) 56px;
+  background: #171817;
 }
 
 @media (min-width: 768px) {
@@ -19,13 +20,14 @@
   position: absolute;
   inset: 0;
   z-index: 0;
+  background: #171817;
 }
 
 .gradient {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2) 60%, transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.18) 64%, rgba(0, 0, 0, 0.05));
 }
 
 .image {
@@ -35,98 +37,121 @@
   transition: transform 0.3s ease-out;
 }
 
+.fallbackImage {
+  object-fit: contain;
+  padding: 22%;
+  opacity: 0.92;
+}
+
 .content {
   position: relative;
   z-index: 2;
   color: var(--color-on-primary);
-  max-width: 32rem;
+  max-width: 34rem;
 }
 
 .heading {
   composes: text-display-lg from global;
-  margin-bottom: var(--spacing-unit-lg);
+  margin-bottom: 28px;
   line-height: 1;
+  letter-spacing: 0;
 }
 
 .subtitle {
   composes: text-body-lg from global;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: var(--spacing-unit-lg);
+  color: rgba(255, 255, 255, 0.84);
+  margin-bottom: 28px;
 }
 
 .featureList {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-unit-md);
+  gap: 18px;
 }
 
 .featureItem {
   display: flex;
   align-items: center;
-  gap: var(--spacing-unit-md);
+  gap: 16px;
 }
 
 .featureIcon {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: var(--radius-full);
-  border: 1px solid rgba(115, 92, 0, 0.4);
-  background-color: rgba(115, 92, 0, 0.1);
+  border: 1px solid rgba(255, 224, 136, 0.55);
+  background: rgba(115, 92, 0, 0.24);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-secondary);
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.featureItem:hover .featureIcon {
-  background-color: var(--color-secondary);
-  color: #000000;
+  color: var(--color-secondary-fixed);
+  flex-shrink: 0;
 }
 
 .featureLabel {
   composes: text-label-md from global;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
 }
 
 .featureLabelTitle {
   composes: text-title-lg from global;
-  font-weight: 300;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
 .footerBranding {
   position: absolute;
-  bottom: var(--spacing-unit-xl);
-  left: var(--spacing-margin-desktop);
+  bottom: 24px;
+  left: clamp(32px, 6vw, 80px);
   z-index: 2;
 }
 
 .footerText {
   composes: text-label-sm from global;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.68);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
 }
 
-/* Mobile-visible variant — Forgot Password panel mobile pe bhi dikhta hai */
 .panelVisible {
   display: flex;
   position: relative;
   width: 100%;
-  min-height: 400px;
+  height: 104px;
+  min-height: 104px;
   overflow: hidden;
   flex-direction: column;
   justify-content: flex-end;
-  padding: var(--spacing-margin-mobile);
+  padding: 0;
+}
+
+.panelVisible .content,
+.panelVisible .footerBranding {
+  display: none;
 }
 
 @media (min-width: 768px) {
   .panelVisible {
-    width: 50%;
-    height: 100vh;
-    padding: var(--spacing-margin-desktop);
+    flex: 0 0 50%;
+    height: auto;
+    min-height: 100dvh;
+    padding: 120px clamp(32px, 6vw, 80px) 56px;
+  }
+
+  .panelVisible .content {
+    display: block;
+  }
+
+  .panelVisible .footerBranding {
+    display: block;
+  }
+}
+
+@media (max-height: 700px) and (max-width: 767px) {
+  .panelVisible {
+    height: 76px;
+    min-height: 76px;
   }
 }
 
@@ -134,7 +159,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 50%, rgba(0, 0, 0, 0.2));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 54%, rgba(0, 0, 0, 0.18));
 }
 
 .imageHoverScale {
@@ -150,14 +175,14 @@
   font-size: 32px;
   line-height: 40px;
   font-weight: 600;
-  margin-bottom: var(--spacing-unit-lg);
+  margin-bottom: 28px;
+  letter-spacing: 0;
 }
 
 @media (min-width: 768px) {
   .headingHeadline {
     font-size: 64px;
     line-height: 72px;
-    letter-spacing: -0.02em;
     font-weight: 700;
   }
 }
@@ -165,8 +190,8 @@
 .badgeRow {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-unit-sm);
-  padding-top: var(--spacing-unit-md);
+  gap: 8px;
+  padding-top: 16px;
 }
 
 .badge {
@@ -187,6 +212,6 @@
 .badgeLabel {
   composes: text-label-sm from global;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: var(--color-surface);
 }

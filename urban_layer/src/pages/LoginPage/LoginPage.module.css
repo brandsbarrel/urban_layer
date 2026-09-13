@@ -1,7 +1,10 @@
 .page {
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  background: var(--color-surface-container-low);
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -12,18 +15,29 @@
 
 .formSection {
   width: 100%;
-  min-height: 100vh;
+  height: calc(100dvh - 104px);
+  min-height: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: var(--spacing-margin-mobile);
-  background-color: var(--color-surface-container-low);
+  padding: 14px var(--spacing-margin-mobile) 10px;
+  background: var(--color-surface-container-low);
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .formSection {
     width: 50%;
-    padding: var(--spacing-margin-desktop);
+    height: 100dvh;
+    padding: 84px clamp(28px, 5vw, 72px) 20px;
+    align-items: center;
+  }
+}
+
+@media (max-height: 700px) {
+  .formSection {
+    padding-top: 8px;
+    padding-bottom: 6px;
   }
 }
 

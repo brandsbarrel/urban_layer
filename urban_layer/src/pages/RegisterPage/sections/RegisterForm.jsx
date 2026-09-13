@@ -1,25 +1,18 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaGoogle, FaApple } from 'react-icons/fa';
 import { MdArrowForward } from 'react-icons/md';
 import FloatingLabelInput from '../../../components/FloatingLabelInput/FloatingLabelInput';
 import CountryCodeSelect from '../../../components/CountryCodeSelect/CountryCodeSelect';
 import PasswordInput from '../../../components/PasswordInput/PasswordInput';
-import SocialLoginButtons from '../../../components/SocialLoginButtons/SocialLoginButtons';
 import {
+    logout,
     registerStart,
-    registerSuccess,
     registerFailure,
     selectAuth,
 } from '../../../redux/slices/authSlice';
 import { registerUser } from '../../../services/authService';
 import styles from './RegisterForm.module.css';
-
-const REGISTER_SOCIAL_PROVIDERS = [
-    { id: 'google', label: 'Google', icon: FaGoogle },
-    { id: 'apple', label: 'Apple', icon: FaApple },
-];
 
 function RegisterForm() {
     const dispatch = useDispatch();
@@ -49,14 +42,18 @@ function RegisterForm() {
             
             
 
-            const user = await registerUser({
+            await registerUser({
                 name: fullName,
                 email,
                 mobile: `${countryCode}${mobile}`,
                 password,
             });
-            dispatch(registerSuccess(user));
-            navigate('/');
+            localStorage.removeItem('customerAccessToken');
+            dispatch(logout());
+            navigate('/login', {
+                replace: true,
+                state: { message: 'Your account is ready. Sign in to continue.' },
+            });
         } catch (err) {
             dispatch(registerFailure(err.message));
         }
@@ -140,11 +137,6 @@ function RegisterForm() {
                     <MdArrowForward size={18} className={styles.submitIcon} />
                 </button>
 
-                <div className={styles.divider}>
-                    <span className={styles.dividerText}>OR</span>
-                </div>
-
-                <SocialLoginButtons providers={REGISTER_SOCIAL_PROVIDERS} showLabels />
             </form>
 
             <footer className={styles.footer}>

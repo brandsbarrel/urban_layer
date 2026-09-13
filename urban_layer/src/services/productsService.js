@@ -1,4 +1,101 @@
-import api from "./api";
+import publicApi, { logPublicApiResult } from "./publicApi";
+
+const getItems = (responseData) => {
+    if (Array.isArray(responseData?.data?.items)) return responseData.data.items;
+    if (Array.isArray(responseData?.items)) return responseData.items;
+    if (Array.isArray(responseData?.data)) return responseData.data;
+    if (Array.isArray(responseData?.products)) return responseData.products;
+    if (Array.isArray(responseData)) return responseData;
+    return [];
+};
+
+const getMeta = (responseData, fallback = {}) => {
+    const meta = responseData?.meta || {};
+    return {
+        page: Number(meta.page || responseData?.page || fallback.page || 1),
+        perPage: Number(meta.perPage || meta.limit || responseData?.perPage || fallback.perPage || 20),
+        totalItems: Number(meta.totalItems || meta.total || responseData?.total || fallback.totalItems || 0),
+        totalPages: Number(meta.totalPages || responseData?.totalPages || fallback.totalPages || 1),
+        hasNextPage: Boolean(meta.hasNextPage),
+        hasPrevPage: Boolean(meta.hasPrevPage),
+    };
+};
+
+export const normalizeProduct = (product = {}) => {
+    const id = product.id || product._id || product.slug || product.sku;
+    const phoneModel = product.phoneModel || product.phoneModelId || null;
+    const phoneModelLabel =
+        typeof phoneModel === "object" && phoneModel !== null
+            ? [phoneModel.brand, phoneModel.name].filter(Boolean).join(" ")
+            : phoneModel || "";
+    const categories = Array.isArray(product.categories) ? product.categories : [];
+    const primaryCategory = categories[0] || null;
+    const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
+    const featuredImage = product.featuredImage || images[0] || product.image || "";
+    const price = Number(product.price ?? product.salePrice ?? product.basePrice ?? 0);
+    const basePrice = Number(product.basePrice ?? price);
+    const salePrice = product.salePrice == null ? null : Number(product.salePrice);
+    const originalPrice = salePrice != null && basePrice > salePrice ? basePrice : product.originalPrice;
+
+    return {
+        ...product,
+        id,
+        _id: id,
+        slug: product.slug || id,
+        image: featuredImage,
+        featuredImage,
+        images: images.length ? images : featuredImage ? [featuredImage] : [],
+        imageAlt: product.imageAlt || product.name || "Urban Layers product",
+        name: product.name || product.title || "Urban Layers Product",
+        price,
+        basePrice,
+        salePrice,
+        originalPrice,
+        rating: Number(product.rating || product.averageRating || 0) || 0,
+        reviewCount: Number(product.reviewCount || product.reviewsCount || 0) || 0,
+        badge: product.badge || product.tags?.[0] || null,
+        category: product.category || primaryCategory?.slug || primaryCategory?.id || "",
+        categories,
+        collection: product.collection || primaryCategory?.name || "",
+        compatibility: product.compatibility || phoneModelLabel || primaryCategory?.name || "",
+        device: phoneModelLabel || product.device || product.compatibility || "",
+        phoneModel,
+        phoneModelId: product.phoneModelId || (typeof phoneModel === "object" ? phoneModel.id : phoneModel),
+        inStock: product.inStock ?? Number(product.stock || 0) > 0,
+    };
+};
+
+export const normalizeCategory = (category = {}) => ({
+    ...category,
+    id: category.id || category._id || category.slug || category.name,
+    slug: category.slug || category.id || category._id,
+    name: category.name || category.title || "Collection",
+    title: category.title || category.name || "Collection",
+    description: category.description || "",
+    image: category.image || category.featuredImage || "",
+    imageAlt: category.imageAlt || category.name || "Urban Layers collection",
+    href: `/shop?category=${encodeURIComponent(category.slug || category.id || category._id || category.name)}`,
+    productCount: category.productCount || category.productsAssigned || category.productsAssignedCount || 0,
+    categoryLabel: category.categoryLabel || "Collection",
+    phoneModels: Array.isArray(category.phoneModels) ? category.phoneModels : [],
+});
+
+export const normalizePhoneModel = (model = {}) => {
+    const id = model.id || model._id || model.slug || model.name;
+    const label = [model.brand, model.name].filter(Boolean).join(" ") || model.name || model.label || id;
+
+    return {
+        ...model,
+        id,
+        slug: model.slug || id,
+        name: label,
+        label,
+        image: model.image || model.featuredImage || "",
+        imageAlt: model.imageAlt || `${label} case fit`,
+        href: `/shop?phoneModel=${encodeURIComponent(model.slug || model.name || id)}`,
+        productCount: model.productCount || model.productsAssigned || 0,
+    };
+};
 
 export const getProducts = async ({
     page = 1,
@@ -12,33 +109,54 @@ export const getProducts = async ({
     sortBy = "best-sellers",
 }) => {
     try {
-        const response = await api.get("/storefront/catalog/products", {
+        const params = {
+            page,
+            perPage,
+            search,
+            category,
+            phoneModel,
+            maxPrice,
+        };
+        const response = await publicApi.get("/products", {
             params: {
-                page,
-                perPage,
-                search,
-                category,
-                phoneModel,
-                maxPrice,
+                ...params,
+                tag: sortBy === "best-sellers" ? "best-seller" : undefined,
             },
         });
 
-        if (response.data && response.data.data && Array.isArray(response.data.data.items)) {
-            let items = response.data.data.items;
+        logPublicApiResult("Shop/Product listing", "/api/products", response.data);
+
+        const apiItems = getItems(response.data).map(normalizeProduct);
+        if (Array.isArray(apiItems)) {
+            let items = apiItems;
 
             if (maxPrice != null) {
                 items = items.filter((item) => item.price <= maxPrice);
             }
 
-            // Apply frontend sorting if not handled by API
+            if (material) {
+                items = items.filter((item) => item.material === material || item.collection === material);
+            }
+
+            if (color) {
+                items = items.filter((item) => item.color === color);
+            }
+
             items = sortProductList(items, sortBy);
+            const meta = getMeta(response.data, {
+                page,
+                perPage,
+                totalItems: items.length,
+                totalPages: Math.max(1, Math.ceil(items.length / perPage)),
+            });
 
             return {
                 ...response.data,
                 data: {
-                    ...response.data.data,
+                    ...(response.data.data || {}),
                     items,
                 },
+                meta,
             };
         }
         throw new Error("Failed to load products.");
@@ -49,12 +167,11 @@ export const getProducts = async ({
 
 export const getCategories = async () => {
     try {
-        const response = await api.get("/storefront/catalog/categories");
-        if (response.data?.data?.items) {
-            return response.data.data.items;
-        }
-    } catch {
-        // Fallback
+        const response = await publicApi.get("/categories");
+        logPublicApiResult("Categories/Collections", "/api/categories", response.data);
+        return getItems(response.data).map(normalizeCategory);
+    } catch (error) {
+        console.error("[PUBLIC API] Categories failed", { endpoint: "/api/categories", message: error.message });
     }
 
     return [];
@@ -62,15 +179,22 @@ export const getCategories = async () => {
 
 export const getPhoneModels = async () => {
     try {
-        const response = await api.get("/storefront/catalog/phone-models");
-        if (response.data?.data?.items) {
-            return response.data.data.items;
-        }
-    } catch {
-        // Fallback
+        const response = await publicApi.get("/devices");
+        logPublicApiResult("Devices", "/api/devices", response.data);
+        return getItems(response.data).map(normalizePhoneModel);
+    } catch (error) {
+        console.error("[PUBLIC API] Devices failed", { endpoint: "/api/devices", message: error.message });
     }
 
     return [];
+};
+
+export const getBestSellerProducts = async ({ page = 1, perPage = 8 } = {}) => {
+    const response = await publicApi.get("/products", {
+        params: { tag: "best-seller", page, perPage },
+    });
+    logPublicApiResult("Best Sellers", "/api/products?tag=best-seller", response.data);
+    return getItems(response.data).map(normalizeProduct);
 };
 
 // Legacy static catalog used only by non-API sections.

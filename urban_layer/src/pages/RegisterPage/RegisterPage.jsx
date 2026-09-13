@@ -5,7 +5,7 @@ import RegisterForm from './sections/RegisterForm';
 import styles from './RegisterPage.module.css';
 
 const BRAND_IMAGE =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuB7qpowOwp7NBd7X2I0nUy_a-G6MtShGq6u9TvaihEgUEcxjafQ08bqOafou2J0EDoV6g8TIhX0c7GJHkRMDpLPAofIZGm1_ztyrMpU1EDqJgNG4O0w0Vpl9IjRUPAGT1EwGO37QKG6mDZlUT6-DXZ8ZV1puhQaC_u3Bp7T4UD0CubTZvUJFOwd4btEcpAQEJ1WWlWp5RTS8MkjPTMdPWF0YKOst1M1IgJ7gNI2e5Lw8IOon_L79vS-jfMriY-Mio-pEWlgkLiJiqA';
+  'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1400&q=88';
 
 const REGISTER_FEATURES = [
   { icon: MdBolt, label: 'Faster Checkout' },
@@ -17,7 +17,11 @@ const REGISTER_FEATURES = [
 function RegisterPage() {
   return (
     <>
-      <AuthHeader variant="overlay" backLabel="Back to Store" backPath="/" brandText="URBAN LAYERS" />
+      <AuthHeader
+        variant="overlay"
+        brandText="URBAN LAYERS"
+        showBack={false}
+      />
       <main className={styles.page}>
         <AuthBrandPanel
           image={BRAND_IMAGE}
@@ -29,6 +33,7 @@ function RegisterPage() {
           }
           features={REGISTER_FEATURES}
           featureVariant="title"
+          mobileVisible
           footerText="© 2024 Urban Layers Co."
         />
         <section className={styles.formSection}>

@@ -23,6 +23,7 @@ import ForgotPasswordPage from '../pages/ForgotPasswordPage/ForgotPasswordPage';
 import CheckoutPage from '../pages/CheckoutPage/CheckoutPage';
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
 import LegalPage from '../pages/LegalPage/LegalPage';
+import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute';
 // import TrackOrderPage from '../pages/TrackOrderPage/TrackOrderPage';
 // import OrderDetailPage from '../pages/OrderDetailPage/OrderDetailPage';
 // import AddressesPage from '../pages/AddressesPage/AddressesPage';
@@ -48,12 +49,14 @@ function AppRoutes() {
         <Route path="/privacy-policy" element={<LegalPage type="privacy" />} />
         <Route path="/terms-conditions" element={<LegalPage type="terms" />} />
 
-        <Route element={<AccountLayout />}>
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/account/orders" element={<OrdersPage />} />
-          <Route path="/account/orders/:orderId" element={<OrderDetailsPage />} />
-          <Route path="/account/addresses" element={<AddressesPage />} />
-          <Route path="/account/settings" element={<SettingsPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AccountLayout />}>
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/account/orders" element={<OrdersPage />} />
+            <Route path="/account/orders/:orderId" element={<OrderDetailsPage />} />
+            <Route path="/account/addresses" element={<AddressesPage />} />
+            <Route path="/account/settings" element={<SettingsPage />} />
+          </Route>
         </Route>
       </Route>
 
@@ -63,7 +66,9 @@ function AppRoutes() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       </Route>
 
-      <Route path="/checkout" element={<CheckoutPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/checkout" element={<CheckoutPage />} />
+      </Route>
     </Routes>
   );
 }

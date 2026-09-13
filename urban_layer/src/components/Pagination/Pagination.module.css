@@ -1,16 +1,18 @@
 .pagination {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
   margin-top: var(--spacing-unit-xl);
 }
 
 .pageButton {
-  width: 40px;
-  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: var(--radius-full);
   composes: text-label-md from global;
   color: var(--color-on-surface);
+  padding: 0 14px;
   transition: background-color 0.2s ease;
 }
 
@@ -25,4 +27,14 @@
 
 .pageButtonActive:hover {
   background-color: var(--color-primary);
+}
+
+.pageButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.pageButton:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
 }

@@ -1,3 +1,21 @@
 .page {
   overflow-x: hidden;
+  background: #ffffff;
+  color: #171717;
+}
+
+.sectionShell {
+  min-width: 0;
+}
+
+.sectionShell > [class*='grid'] {
+  width: min(100%, var(--spacing-container-max));
+  margin: 0 auto;
+  padding: 86px var(--spacing-margin-mobile);
+}
+
+@media (min-width: 768px) {
+  .sectionShell > [class*='grid'] {
+    padding-inline: var(--spacing-margin-desktop);
+  }
 }

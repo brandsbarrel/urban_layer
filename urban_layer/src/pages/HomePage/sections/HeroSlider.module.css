@@ -1,0 +1,207 @@
+.hero {
+  --swiper-theme-color: #b08a57;
+  --swiper-navigation-size: 22px;
+  background: #171717;
+  overflow: hidden;
+}
+
+.swiper,
+.slide {
+  /* fallback values added — undefined var() tha to poori clamp() hi invalid ho rahi thi */
+  min-height: clamp(520px,
+      calc(100dvh - var(--announcement-bar-height, 44px)),
+      820px);
+  overflow: hidden;
+}
+
+.slide {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.image,
+.overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  background:
+    linear-gradient(90deg, rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0.68) 45%, rgba(10, 10, 10, 0.25)),
+    linear-gradient(0deg, rgba(10, 10, 10, 0.5), transparent 35%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, var(--spacing-container-max, 1280px));
+  margin: 0 auto;
+  padding: clamp(80px, 12vh, 120px) var(--spacing-margin-mobile, 20px) clamp(48px, 8vh, 72px);
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  color: #d9bd92;
+  font: 600 0.78rem/1.2 'Inter', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title {
+  max-width: 720px;
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  /* pehle max 5.9rem tha jo chhoti screen height pe overflow kar raha tha */
+  font-size: clamp(2.2rem, 7vw, 4.8rem);
+  line-height: 1.02;
+  letter-spacing: 0;
+}
+
+.description {
+  max-width: 520px;
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  line-height: 1.6;
+}
+
+.meta {
+  margin: 16px 0 0;
+  color: #f5f3ee;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 24px;
+  border: 1px solid transparent;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.primaryButton {
+  background: #b08a57;
+  color: #171717;
+}
+
+.secondaryButton {
+  border-color: rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.primaryButton:hover,
+.primaryButton:focus-visible {
+  background: #f5f3ee;
+}
+
+.secondaryButton:hover,
+.secondaryButton:focus-visible {
+  border-color: #b08a57;
+  background: rgba(176, 138, 87, 0.18);
+}
+
+.hero :global(.swiper-button-prev),
+.hero :global(.swiper-button-next) {
+  opacity: 0;
+  width: 44px;
+  height: 44px;
+  color: #ffffff;
+  background: rgba(23, 23, 23, 0.52);
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.hero:hover :global(.swiper-button-prev),
+.hero:hover :global(.swiper-button-next),
+.hero :global(.swiper-button-prev:focus-visible),
+.hero :global(.swiper-button-next:focus-visible) {
+  opacity: 1;
+}
+
+.hero :global(.swiper-button-prev:hover),
+.hero :global(.swiper-button-next:hover) {
+  background: rgba(176, 138, 87, 0.92);
+}
+
+.hero :global(.swiper-pagination-bullet) {
+  width: 28px;
+  height: 2px;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.72);
+  opacity: 1;
+}
+
+.hero :global(.swiper-pagination-bullet-active) {
+  background: #b08a57;
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding-inline: var(--spacing-margin-desktop, 48px);
+  }
+}
+
+@media (max-width: 640px) {
+
+  .swiper,
+  .slide {
+    min-height: 600px;
+  }
+
+  .overlay {
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.3), rgba(10, 10, 10, 0.88) 52%, rgba(10, 10, 10, 0.94));
+  }
+
+  .content {
+    justify-content: flex-end;
+    padding-bottom: 56px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+
+  .hero :global(.swiper-button-prev),
+  .hero :global(.swiper-button-next) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .hero *,
+  .hero :global(*) {
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+  }
+}

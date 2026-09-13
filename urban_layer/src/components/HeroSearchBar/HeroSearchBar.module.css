@@ -9,10 +9,12 @@
   align-items: center;
   padding: 4px;
   transition: box-shadow 0.4s ease;
+  width: 100%;
 }
 
 .wrapper:focus-within {
   box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: rgba(115, 92, 0, 0.35);
 }
 
 .icon {
@@ -23,6 +25,7 @@
 
 .input {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   outline: none;
@@ -41,9 +44,39 @@
   padding: 12px var(--spacing-unit-lg);
   border-radius: var(--radius-lg);
   flex-shrink: 0;
+  min-height: 46px;
   transition: opacity 0.2s ease;
 }
 
 .button:hover {
   opacity: 0.9;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+  .wrapper {
+    align-items: stretch;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 8px;
+    row-gap: 8px;
+  }
+
+  .icon {
+    align-self: center;
+    padding: 0 10px 0 6px;
+  }
+
+  .input {
+    padding: 12px 0;
+  }
+
+  .button {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
 }

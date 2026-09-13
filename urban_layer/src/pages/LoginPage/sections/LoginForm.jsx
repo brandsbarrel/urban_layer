@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaGoogle } from 'react-icons/fa';
-import { MdApps, MdFace, MdArrowForward } from 'react-icons/md';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { MdArrowForward } from 'react-icons/md';
 import PasswordInput from '../../../components/PasswordInput/PasswordInput';
-import SocialLoginButtons from '../../../components/SocialLoginButtons/SocialLoginButtons';
 import {
     loginStart,
     loginSuccess,
@@ -14,20 +12,12 @@ import {
 } from '../../../redux/slices/authSlice';
 import { loginUser } from '../../../services/authService';
 import styles from './LoginForm.module.css';
-
-
-const LOGO_IMAGE =
-    'https://lh3.googleusercontent.com/aida/AP1WRLuM8MJ3KmurenQcOLHRpiykXhdIlUWmGH2uIzgwngzBiE_pmX-vaLFNFgPrYhPkk_7GphrkrQcKij7hhHljKNqd5adJpgSv3HSQHWhH6IdyWyO3EdW8OyXnaLS2XamQr3NbqnULxKlan16wXIxek9BaWePbDfIYO2jOI9sWCGivl3t2U8QwE888AaxW5tHq1m9rzHH3d9Rx6jR-flBS-9R88oLeKr2CscYlmsr2IEv0lcHrlxyN4FhH7w';
-
-const LOGIN_SOCIAL_PROVIDERS = [
-    { id: 'google', label: 'Google', icon: FaGoogle },
-    { id: 'apps', label: 'Apps', icon: MdApps },
-    { id: 'faceid', label: 'Face ID', icon: MdFace },
-];
+import brandMark from '../../../assets/auth-brand-mark.png';
 
 function LoginForm() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const { status, error } = useSelector(selectAuth);
 
     const [email, setEmail] = useState('');
@@ -47,13 +37,18 @@ function LoginForm() {
 
         dispatch(loginSuccess(customer));
 
-        navigate("/");
+        const from = location.state?.from;
+        const destination = from
+            ? `${from.pathname}${from.search || ''}${from.hash || ''}`
+            : '/account';
+        navigate(destination, { replace: true });
     } catch (err) {
         dispatch(loginFailure(err.message));
     }
 };
 
     const handleGuest = () => {
+        localStorage.removeItem('customerAccessToken');
         dispatch(continueAsGuest());
         navigate('/');
     };
@@ -61,12 +56,14 @@ function LoginForm() {
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
-                <img src={LOGO_IMAGE} alt="Urban Layers Co. Logo" className={styles.logo} />
+                <img src={brandMark} alt="Urban Layers Co. mark" className={styles.logo} />
                 <div>
                     <h2 className={styles.heading}>Welcome Back</h2>
                     <p className={styles.subheading}>Secure access to your luxury collection.</p>
                 </div>
             </div>
+
+            {location.state?.message && <p className={styles.successText}>{location.state.message}</p>}
 
             <div className={styles.card}>
                 <form className={styles.form} onSubmit={handleSubmit}>
@@ -118,11 +115,6 @@ function LoginForm() {
                     </button>
                 </form>
 
-                <div className={styles.divider}>
-                    <span className={styles.dividerText}>Or login with</span>
-                </div>
-
-                <SocialLoginButtons providers={LOGIN_SOCIAL_PROVIDERS} showLabels={false} />
             </div>
 
             <div className={styles.footerActions}>

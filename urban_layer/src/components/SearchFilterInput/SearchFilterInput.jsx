@@ -4,7 +4,7 @@ import styles from './SearchFilterInput.module.css';
 function SearchFilterInput({
   value,
   onChange,
-  placeholder = 'Search collections...',
+  placeholder = 'Search ...',
   icon: Icon = MdMic,
   iconPosition = 'right',
 }) {
@@ -18,7 +18,7 @@ function SearchFilterInput({
         placeholder={placeholder}
         className={iconPosition === 'left' ? styles.inputWithLeftIcon : styles.input}
       />
-      {iconPosition === 'right' && <Icon size={20} className={styles.icon} />}
+      {/* {iconPosition === 'right' && <Icon size={20} className={styles.icon} />} */}
     </div>
   );
 }

@@ -32,8 +32,11 @@ function SearchResultsGrid({
                     </p>
                 </div>
                 <div className={styles.sortWrapper}>
-                    <span className={styles.sortLabel}>Sort By:</span>
+                    <label className={styles.sortLabel} htmlFor="search-sort">
+                        Sort By:
+                    </label>
                     <select
+                        id="search-sort"
                         value={sortBy}
                         onChange={(e) => onSortChange(e.target.value)}
                         className={styles.sortSelect}

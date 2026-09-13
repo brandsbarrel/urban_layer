@@ -113,26 +113,26 @@ function ShopFilterSidebar({ filters, categories = [], phoneModels = [], loading
                 <FilterSkeleton />
             ) : (
                 <>
-            <PriceRangeFilter
-                min={499}
-                max={4999}
-                value={filters.maxPrice || 4999}
-                onChange={handlePriceChange}
-            />
+                    <PriceRangeFilter
+                        min={499}
+                        max={4999}
+                        value={filters.maxPrice || 4999}
+                        onChange={handlePriceChange}
+                    />
 
-            <CheckboxFilterGroup
-                title="Device Model"
-                options={phoneOptions}
-                selectedIds={filters.phoneModel ? [filters.phoneModel] : []}
-                onToggle={togglePhoneModel}
-            />
+                    <CheckboxFilterGroup
+                        title="Device Model"
+                        options={phoneOptions}
+                        selectedIds={filters.phoneModel ? [filters.phoneModel] : []}
+                        onToggle={togglePhoneModel}
+                    />
 
-            <CheckboxFilterGroup
-                title="Category"
-                options={categoryOptions}
-                selectedIds={filters.category ? [filters.category] : []}
-                onToggle={toggleCategory}
-            />
+                    <CheckboxFilterGroup
+                        title="Collections"
+                        options={categoryOptions}
+                        selectedIds={filters.category ? [filters.category] : []}
+                        onToggle={toggleCategory}
+                    />
                 </>
             )}
         </aside>

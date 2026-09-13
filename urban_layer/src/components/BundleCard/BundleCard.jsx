@@ -12,7 +12,6 @@ function BundleCard({
     price,
     originalPrice,
     ctaLabel,
-    path = '/shop',
     variant = 'light',
     compact = false,
 }) {
@@ -27,7 +26,7 @@ function BundleCard({
         return (
             <div className={styles.cardCompact}>
                 <div className={styles.imageWrapperCompact}>
-                    <img src={image} alt={imageAlt} className={styles.image} />
+                    <img src={image} alt={imageAlt || title} className={styles.image} />
                 </div>
                 <div className={styles.contentCompact}>
                     <span className={styles.badgeLight}>{badge}</span>
