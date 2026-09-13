@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { MdClose, MdTune } from "react-icons/md";
@@ -20,33 +20,56 @@ import {
     selectProducts,
 } from "../../redux/slices/productSlice";
 
-import { getCategories, getPhoneModels, getProducts } from "../../services/productsService";
+import { getCategories, getPhoneModels, getProducts, slugifyValue } from "../../services/productsService";
+
+const DEFAULT_MAX_PRICE = 4999;
+
+const getFiltersFromSearchParams = (searchParams) => ({
+    search: searchParams.get("search") || searchParams.get("q") || "",
+    category: searchParams.get("category") || "",
+    phoneModel: searchParams.get("phoneModel") || searchParams.get("device") || "",
+    material: searchParams.get("material") || "",
+    color: searchParams.get("color") || "",
+    maxPrice: Number(searchParams.get("maxPrice") || DEFAULT_MAX_PRICE),
+});
+
+const buildMaterialOptions = (products = []) => {
+    const options = new Map();
+    products.forEach((product) => {
+        const label = product.collection || product.material || "";
+        const id = slugifyValue(product.material || product.collection || "");
+        if (id && label && !options.has(id)) {
+            options.set(id, { id, label });
+        }
+    });
+    return Array.from(options.values());
+};
 
 function ShopPage() {
     const dispatch = useDispatch();
 
     const { items, meta, loading, error } = useSelector(selectProducts);
 
-    const [searchParams] = useSearchParams();
-    const initialCategory = searchParams.get("category") || "";
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const [filters, setFilters] = useState({
-        search: "",
-        category: initialCategory,
-        phoneModel: "",
-        material: "",
-        color: "",
-        maxPrice: 4999,
-    });
+    const [filters, setFilters] = useState(() => getFiltersFromSearchParams(searchParams));
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const [categories, setCategories] = useState([]);
     const [phoneModels, setPhoneModels] = useState([]);
+    const [materialOptions, setMaterialOptions] = useState([]);
     const [filtersLoading, setFiltersLoading] = useState(true);
 
-    const [sortBy, setSortBy] = useState("best-sellers");
+    const [sortBy, setSortBy] = useState("all");
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
+
+    const searchParamsKey = useMemo(() => searchParams.toString(), [searchParams]);
+
+    useEffect(() => {
+        setFilters(getFiltersFromSearchParams(searchParams));
+        setCurrentPage(1);
+    }, [searchParamsKey]);
 
     useEffect(() => {
         const timer = window.setTimeout(() => {
@@ -64,6 +87,7 @@ function ShopPage() {
         debouncedSearch,
         filters.category,
         filters.phoneModel,
+        filters.material,
         filters.maxPrice,
         sortBy,
     ]);
@@ -72,15 +96,18 @@ function ShopPage() {
         const loadInitialData = async () => {
             setFiltersLoading(true);
             try {
-                const [categoryList, phoneList] = await Promise.all([
+                const [categoryList, phoneList, catalogResponse] = await Promise.all([
                     getCategories(),
                     getPhoneModels(),
+                    getProducts({ page: 1, perPage: 100, sortBy: "newest", maxPrice: null }),
                 ]);
                 setCategories(categoryList || []);
                 setPhoneModels(phoneList || []);
+                setMaterialOptions(buildMaterialOptions(catalogResponse?.data?.items || []));
             } catch {
                 setCategories([]);
                 setPhoneModels([]);
+                setMaterialOptions([]);
             } finally {
                 setFiltersLoading(false);
             }
@@ -114,6 +141,16 @@ function ShopPage() {
     const handleFilterChange = (nextFilters) => {
         setFilters(nextFilters);
         setCurrentPage(1);
+        const nextParams = {};
+        if (nextFilters.search) nextParams.search = nextFilters.search;
+        if (nextFilters.category) nextParams.category = nextFilters.category;
+        if (nextFilters.phoneModel) nextParams.phoneModel = nextFilters.phoneModel;
+        if (nextFilters.material) nextParams.material = nextFilters.material;
+        if (nextFilters.color) nextParams.color = nextFilters.color;
+        if (nextFilters.maxPrice && nextFilters.maxPrice < DEFAULT_MAX_PRICE) {
+            nextParams.maxPrice = String(nextFilters.maxPrice);
+        }
+        setSearchParams(nextParams, { replace: true });
     };
 
     const handleSortChange = (newSort) => {
@@ -127,7 +164,7 @@ function ShopPage() {
         filters.phoneModel,
         filters.material,
         filters.color,
-        filters.maxPrice && filters.maxPrice < 4999 ? filters.maxPrice : '',
+        filters.maxPrice && filters.maxPrice < DEFAULT_MAX_PRICE ? filters.maxPrice : '',
     ].filter(Boolean).length;
 
     return (
@@ -161,6 +198,7 @@ function ShopPage() {
                         filters={filters}
                         categories={categories}
                         phoneModels={phoneModels}
+                        materialOptions={materialOptions}
                         loading={filtersLoading}
                         onFilterChange={handleFilterChange}
                     />

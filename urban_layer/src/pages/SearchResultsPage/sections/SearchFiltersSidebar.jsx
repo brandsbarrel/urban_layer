@@ -8,7 +8,7 @@ import {
 } from '../../../services/searchResultsData';
 import styles from './SearchFiltersSidebar.module.css';
 
-function SearchFiltersSidebar({ filters, onFilterChange, onClearAll }) {
+function SearchFiltersSidebar({ filters, materialOptions = searchMaterialOptions, onFilterChange, onClearAll }) {
     const toggleValue = (key, id) => {
         const current = filters[key];
         const next = current.includes(id) ? current.filter((v) => v !== id) : [...current, id];
@@ -33,7 +33,7 @@ function SearchFiltersSidebar({ filters, onFilterChange, onClearAll }) {
 
             <CheckboxFilterGroup
                 title="Material"
-                options={searchMaterialOptions}
+                options={materialOptions.length ? materialOptions : searchMaterialOptions}
                 selectedIds={filters.materials}
                 onToggle={(id) => toggleValue('materials', id)}
             />

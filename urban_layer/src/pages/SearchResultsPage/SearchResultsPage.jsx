@@ -7,7 +7,8 @@ import SearchFiltersSidebar from './sections/SearchFiltersSidebar';
 import SearchResultsGrid from './sections/SearchResultsGrid';
 import BundleSuggestionsSection from './sections/BundleSuggestionsSection';
 import RecommendedForYouSection from './sections/RecommendedForYouSection';
-import { searchProducts, searchPriceRange } from '../../services/searchResultsData';
+import { searchPriceRange } from '../../services/searchResultsData';
+import { getProducts, slugifyValue } from '../../services/productsService';
 import styles from './SearchResultsPage.module.css';
 
 const PAGE_SIZE = 8;
@@ -18,19 +19,79 @@ const DEFAULT_FILTERS = {
     maxPrice: searchPriceRange.max,
 };
 
+const buildMaterialOptions = (products = []) => {
+    const options = new Map();
+    products.forEach((product) => {
+        const label = product.collection || product.material || '';
+        const id = slugifyValue(product.material || product.collection || '');
+        if (id && label && !options.has(id)) {
+            options.set(id, { id, label });
+        }
+    });
+    return Array.from(options.values());
+};
+
 function SearchResultsPage() {
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [queryInput, setQueryInput] = useState(searchParams.get('q') || '');
     const [activeQuery, setActiveQuery] = useState(searchParams.get('q') || '');
     const [filters, setFilters] = useState(DEFAULT_FILTERS);
     const [sortBy, setSortBy] = useState('newest');
     const [currentPage, setCurrentPage] = useState(1);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [apiProducts, setApiProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const searchParamsKey = searchParams.toString();
+
+    useEffect(() => {
+        const query = searchParams.get('q') || '';
+        setQueryInput(query);
+        setActiveQuery(query);
+        setCurrentPage(1);
+    }, [searchParamsKey]);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadResults = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                const response = await getProducts({
+                    page: 1,
+                    perPage: 100,
+                    search: activeQuery,
+                    maxPrice: filters.maxPrice,
+                    sortBy: 'newest',
+                });
+                if (isMounted) {
+                    setApiProducts(response?.data?.items || []);
+                    setLoading(false);
+                }
+            } catch (err) {
+                if (isMounted) {
+                    setApiProducts([]);
+                    setError(err.message || 'Failed to load search results.');
+                    setLoading(false);
+                }
+            }
+        };
+
+        loadResults();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [activeQuery, filters.maxPrice]);
 
     const handleSearch = (query) => {
         setQueryInput(query);
         setActiveQuery(query);
         setCurrentPage(1);
+        const nextQuery = query.trim();
+        setSearchParams(nextQuery ? { q: nextQuery } : {}, { replace: true });
     };
 
     const handleFilterChange = (nextFilters) => {
@@ -44,15 +105,29 @@ function SearchResultsPage() {
     };
 
     const filteredProducts = useMemo(() => {
-        let result = searchProducts.filter((product) => {
+        let result = apiProducts.filter((product) => {
             const matchesQuery =
                 !activeQuery || product.name.toLowerCase().includes(activeQuery.toLowerCase());
-            const matchesBrand = filters.brands.length === 0 || filters.brands.includes(product.brand);
+            const productBrand = slugifyValue(product.brand || product.phoneModel?.brand || '');
+            const matchesBrand = filters.brands.length === 0 || filters.brands.includes(productBrand);
             const matchesMaterial =
-                filters.materials.length === 0 || filters.materials.includes(product.material);
+                filters.materials.length === 0 ||
+                filters.materials.some((material) =>
+                    [
+                        product.material,
+                        product.collection,
+                        ...(product.categories || []).flatMap((category) => [
+                            category.slug,
+                            category.id,
+                            category.name,
+                        ]),
+                    ].some((value) => slugifyValue(value) === material)
+                );
             const matchesFeatures =
                 filters.features.length === 0 ||
-                filters.features.every((f) => product.features.includes(f));
+                filters.features.every((feature) =>
+                    (product.tags || []).some((tag) => slugifyValue(tag) === feature)
+                );
             const matchesPrice = product.price <= filters.maxPrice;
             return matchesQuery && matchesBrand && matchesMaterial && matchesFeatures && matchesPrice;
         });
@@ -62,7 +137,7 @@ function SearchResultsPage() {
         if (sortBy === 'best-selling') result = [...result].sort((a, b) => b.reviewCount - a.reviewCount);
 
         return result;
-    }, [activeQuery, filters, sortBy]);
+    }, [activeQuery, apiProducts, filters, sortBy]);
 
     const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
     const paginatedProducts = filteredProducts.slice(
@@ -76,6 +151,7 @@ function SearchResultsPage() {
         filters.materials.length +
         filters.features.length +
         (filters.maxPrice < searchPriceRange.max ? 1 : 0);
+    const materialOptions = useMemo(() => buildMaterialOptions(apiProducts), [apiProducts]);
 
     useEffect(() => {
         if (!isFilterOpen) return undefined;
@@ -115,6 +191,7 @@ function SearchResultsPage() {
                     </div>
                     <SearchFiltersSidebar
                         filters={filters}
+                        materialOptions={materialOptions}
                         onFilterChange={handleFilterChange}
                         onClearAll={handleClearAll}
                     />
@@ -127,10 +204,13 @@ function SearchResultsPage() {
                     heading={heading}
                     products={paginatedProducts}
                     totalCount={filteredProducts.length}
+                    loading={loading}
+                    error={error}
                     sortBy={sortBy}
                     onSortChange={setSortBy}
                     currentPage={currentPage}
                     totalPages={totalPages}
+                    pageSize={PAGE_SIZE}
                     onPageChange={setCurrentPage}
                 />
             </section>

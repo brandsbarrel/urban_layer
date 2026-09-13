@@ -3,7 +3,7 @@ import Pagination from '../../../components/Pagination/Pagination';
 import styles from './ProductGridSection.module.css';
 
 const SORT_OPTIONS = [
-    { value: 'best-sellers', label: 'Sort by: Best Sellers' },
+    { value: 'all', label: 'All Products' },
     { value: 'newest', label: 'Newest First' },
     { value: 'price-high', label: 'Price: High to Low' },
     { value: 'price-low', label: 'Price: Low to High' },

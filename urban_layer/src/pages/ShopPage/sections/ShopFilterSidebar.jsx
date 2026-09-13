@@ -19,46 +19,46 @@ function FilterSkeleton() {
     );
 }
 
-function ShopFilterSidebar({ filters, categories = [], phoneModels = [], loading = false, onFilterChange }) {
+function ShopFilterSidebar({ filters, categories = [], phoneModels = [], materialOptions = [], loading = false, onFilterChange }) {
     const categoryOptions = categories.map((category) => ({
         id: category.slug || category.id,
         label: category.name,
     }));
 
-    // Collect all unique phone models dynamically from API models and category models.
-    const apiPhoneNames = (phoneModels || []).map((pm) =>
-        typeof pm === 'string' ? pm : pm.name || pm.label || pm.id
-    );
-    const categoryPhoneNames = categories.flatMap((cat) => cat.phoneModels || []);
-
-    const allPhoneNames = Array.from(
-        new Set([...apiPhoneNames, ...categoryPhoneNames])
-    );
+    const phoneOptions = (phoneModels || []).map((model) => ({
+        id: typeof model === 'string' ? model : model.slug || model.id || model.name,
+        label: typeof model === 'string' ? model : model.label || model.name,
+    }));
 
     // Dynamically filter available phone models if a category is currently selected
-    let activePhoneModels = allPhoneNames;
+    let activePhoneOptions = phoneOptions;
     if (filters.category) {
         const selectedCat = categories.find(
             (cat) => cat.slug === filters.category || cat.id === filters.category
         );
         if (selectedCat && Array.isArray(selectedCat.phoneModels) && selectedCat.phoneModels.length > 0) {
-            const catModelsSet = new Set(selectedCat.phoneModels);
-            const filteredModels = allPhoneNames.filter((model) => catModelsSet.has(model));
+            const catModelsSet = new Set(selectedCat.phoneModels.map((item) => String(item).toLowerCase()));
+            const filteredModels = phoneOptions.filter((model) =>
+                catModelsSet.has(String(model.id).toLowerCase()) ||
+                catModelsSet.has(String(model.label).toLowerCase())
+            );
             if (filteredModels.length > 0) {
-                activePhoneModels = filteredModels;
+                activePhoneOptions = filteredModels;
             }
         }
     }
-
-    const phoneOptions = activePhoneModels.map((model) => ({
-        id: model,
-        label: model,
-    }));
 
     const toggleCategory = (id) => {
         onFilterChange({
             ...filters,
             category: filters.category === id ? '' : id,
+        });
+    };
+
+    const toggleMaterial = (id) => {
+        onFilterChange({
+            ...filters,
+            material: filters.material === id ? '' : id,
         });
     };
 
@@ -80,6 +80,7 @@ function ShopFilterSidebar({ filters, categories = [], phoneModels = [], loading
         Boolean(filters.search) ||
         Boolean(filters.category) ||
         Boolean(filters.phoneModel) ||
+        Boolean(filters.material) ||
         (filters.maxPrice && filters.maxPrice < 4999);
 
     const handleClearAll = () => {
@@ -122,10 +123,19 @@ function ShopFilterSidebar({ filters, categories = [], phoneModels = [], loading
 
                     <CheckboxFilterGroup
                         title="Device Model"
-                        options={phoneOptions}
+                        options={activePhoneOptions}
                         selectedIds={filters.phoneModel ? [filters.phoneModel] : []}
                         onToggle={togglePhoneModel}
                     />
+
+                    {materialOptions.length > 0 && (
+                        <CheckboxFilterGroup
+                            title="Material"
+                            options={materialOptions}
+                            selectedIds={filters.material ? [filters.material] : []}
+                            onToggle={toggleMaterial}
+                        />
+                    )}
 
                     <CheckboxFilterGroup
                         title="Collections"

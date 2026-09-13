@@ -17,7 +17,7 @@ export const featureFilterOptions = [
     { id: 'military-grade', label: 'Military Grade' },
 ];
 
-export const searchPriceRange = { min: 50, max: 500 };
+export const searchPriceRange = { min: 499, max: 4999 };
 
 export const searchProducts = [
     {

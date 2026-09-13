@@ -6,8 +6,8 @@ export async function fetchProductDetailsAsync(productId) {
         let apiItem = null;
 
         try {
-            const response = await publicApi.get(`/products/${productId}`);
-            logPublicApiResult("Product Details", `/api/products/${productId}`, response.data);
+            const response = await publicApi.get(`/storefront/catalog/products/${productId}`);
+            logPublicApiResult("Product Details", `/api/storefront/catalog/products/${productId}`, response.data);
             apiItem = response.data?.data || response.data?.item || response.data;
         } catch {
             const response = await publicApi.get("/products", {

@@ -13,13 +13,16 @@ function SearchResultsGrid({
     heading,
     products,
     totalCount,
+    loading,
+    error,
     sortBy,
     onSortChange,
     currentPage,
     totalPages,
     onPageChange,
+    pageSize = 8,
 }) {
-    const startIndex = totalCount === 0 ? 0 : (currentPage - 1) * products.length + 1;
+    const startIndex = totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1;
     const endIndex = startIndex === 0 ? 0 : startIndex + products.length - 1;
 
     return (
@@ -50,13 +53,17 @@ function SearchResultsGrid({
                 </div>
             </div>
 
-            {products.length === 0 ? (
+            {loading ? (
+                <p className={styles.emptyState}>Loading results...</p>
+            ) : error ? (
+                <p className={styles.emptyState}>Unable to load results. Please try again shortly.</p>
+            ) : products.length === 0 ? (
                 <p className={styles.emptyState}>No results found. Try adjusting your filters.</p>
             ) : (
                 <div className={styles.grid}>
                     {products.map((product, index) => (
                         <ProductCard
-                            key={product.id}
+                            key={product.id || product.slug}
                             product={product}
                             variant="iconOverlay"
                             badgePosition={index === 3 ? 'right' : 'left'}
@@ -65,7 +72,9 @@ function SearchResultsGrid({
                 </div>
             )}
 
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+            {!loading && !error && totalPages > 1 && (
+                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+            )}
         </div>
     );
 }

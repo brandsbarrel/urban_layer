@@ -1,5 +1,13 @@
 import publicApi, { logPublicApiResult } from "./publicApi";
 
+export const slugifyValue = (value = "") =>
+    String(value)
+        .trim()
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
 const getItems = (responseData) => {
     if (Array.isArray(responseData?.data?.items)) return responseData.data.items;
     if (Array.isArray(responseData?.items)) return responseData.items;
@@ -21,6 +29,22 @@ const getMeta = (responseData, fallback = {}) => {
     };
 };
 
+export const getProductMaterialValue = (product = {}) => {
+    const categories = Array.isArray(product.categories) ? product.categories : [];
+    const categoryFallback = categories
+        .map((category) => category?.slug || category?.name || category?.id)
+        .find(Boolean);
+    return slugifyValue(product.material || product.collection || product.materialSlug || categoryFallback || "");
+};
+
+const matchesFilterValue = (values, selectedValue) => {
+    if (!selectedValue) return true;
+    const selected = slugifyValue(selectedValue);
+    return values
+        .filter(Boolean)
+        .some((value) => value === selected || slugifyValue(value) === selected);
+};
+
 export const normalizeProduct = (product = {}) => {
     const id = product.id || product._id || product.slug || product.sku;
     const phoneModel = product.phoneModel || product.phoneModelId || null;
@@ -36,6 +60,8 @@ export const normalizeProduct = (product = {}) => {
     const basePrice = Number(product.basePrice ?? price);
     const salePrice = product.salePrice == null ? null : Number(product.salePrice);
     const originalPrice = salePrice != null && basePrice > salePrice ? basePrice : product.originalPrice;
+    const collection = product.collection || primaryCategory?.name || "";
+    const material = getProductMaterialValue({ ...product, categories, collection });
 
     return {
         ...product,
@@ -56,7 +82,9 @@ export const normalizeProduct = (product = {}) => {
         badge: product.badge || product.tags?.[0] || null,
         category: product.category || primaryCategory?.slug || primaryCategory?.id || "",
         categories,
-        collection: product.collection || primaryCategory?.name || "",
+        collection,
+        material,
+        brand: product.brand || (typeof phoneModel === "object" && phoneModel !== null ? phoneModel.brand : ""),
         compatibility: product.compatibility || phoneModelLabel || primaryCategory?.name || "",
         device: phoneModelLabel || product.device || product.compatibility || "",
         phoneModel,
@@ -120,7 +148,7 @@ export const getProducts = async ({
         const response = await publicApi.get("/products", {
             params: {
                 ...params,
-                tag: sortBy === "best-sellers" ? "best-seller" : undefined,
+                material: material || undefined,
             },
         });
 
@@ -130,12 +158,26 @@ export const getProducts = async ({
         if (Array.isArray(apiItems)) {
             let items = apiItems;
 
-            if (maxPrice != null) {
+            if (maxPrice != null && maxPrice < 4999) {
                 items = items.filter((item) => item.price <= maxPrice);
             }
 
             if (material) {
-                items = items.filter((item) => item.material === material || item.collection === material);
+                items = items.filter((item) =>
+                    matchesFilterValue(
+                        [
+                            item.material,
+                            item.collection,
+                            ...(item.categories || []).flatMap((category) => [
+                                category.slug,
+                                category.id,
+                                category.name,
+                            ]),
+                            ...(item.tags || []),
+                        ],
+                        material
+                    )
+                );
             }
 
             if (color) {
@@ -338,8 +380,7 @@ function sortProductList(products, sortBy) {
     if (sortBy === "newest") {
         return list.sort((a, b) => (b.badge === "NEW ARRIVAL" ? 1 : -1));
     }
-    // Default best-sellers
-    return list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    return list;
 }
 
 function getLocalProducts({
