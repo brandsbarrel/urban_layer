@@ -350,6 +350,51 @@ const deleteCustomerAddress = async (customerId, addressIndex) => {
   return updated.addresses;
 };
 
+const getCustomerAddresses = async (customerId) => {
+  const customer = await findCustomerById(customerId);
+
+  if (!customer) {
+    throw new NotFoundError("Customer not found.");
+  }
+
+  return customer.addresses;
+};
+
+const getCustomerAddressByIndex = async (customerId, addressIndex) => {
+  const customer = await findCustomerById(customerId);
+
+  if (!customer) {
+    throw new NotFoundError("Customer not found.");
+  }
+
+  if (!customer.addresses[addressIndex]) {
+    throw new NotFoundError("Address not found.");
+  }
+
+  return customer.addresses[addressIndex];
+};
+
+const setCustomerAddressDefault = async (customerId, addressIndex) => {
+  const customer = await findCustomerById(customerId);
+
+  if (!customer) {
+    throw new NotFoundError("Customer not found.");
+  }
+
+  if (!customer.addresses[addressIndex]) {
+    throw new NotFoundError("Address not found.");
+  }
+
+  const addresses = customer.addresses.map((address, index) => {
+    const nextAddress = address.toObject();
+    nextAddress.isDefault = index === addressIndex;
+    return nextAddress;
+  });
+
+  const updated = await updateCustomerById(customerId, { addresses });
+  return updated.addresses;
+};
+
 export {
   listAdminCustomers,
   getAdminCustomerDetails,
@@ -361,5 +406,8 @@ export {
   updateCustomerProfile,
   addCustomerAddress,
   updateCustomerAddress,
-  deleteCustomerAddress
+  deleteCustomerAddress,
+  getCustomerAddresses,
+  getCustomerAddressByIndex,
+  setCustomerAddressDefault
 };

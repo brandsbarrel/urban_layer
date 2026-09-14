@@ -5,6 +5,7 @@ import {
   deleteProductRecord,
   getProductDetails,
   listProducts,
+  toggleProductBestSeller,
   updateProductRecord
 } from "../services/product.service.js";
 
@@ -70,6 +71,22 @@ const updateProductHandler = async (req, res, next) => {
   }
 };
 
+const updateProductBestSellerHandler = async (req, res, next) => {
+  try {
+    const isBestSeller = req.body.bestSeller !== undefined
+      ? Boolean(req.body.bestSeller)
+      : Boolean(req.body.isBestSeller);
+    const product = await toggleProductBestSeller(req.params.id, isBestSeller);
+    return sendSuccess({
+      res,
+      message: `Product ${isBestSeller ? "marked as" : "removed from"} best seller successfully.`,
+      data: product
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 const archiveProductHandler = async (req, res, next) => {
   try {
     const product = await archiveProductRecord(req.params.id);
@@ -97,6 +114,7 @@ export {
   getProductById,
   createProductHandler,
   updateProductHandler,
+  updateProductBestSellerHandler,
   archiveProductHandler,
   deleteProductHandler
 };

@@ -110,6 +110,10 @@ const productSchema = new mongoose.Schema(
       type: [String],
       default: []
     },
+    bestSeller: {
+      type: Boolean,
+      default: false
+    },
     categories: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Category",

@@ -2,7 +2,10 @@ import { Router } from "express";
 import {
   addCustomerAddressHandler,
   deleteCustomerAddressHandler,
+  getCustomerAddressByIndexHandler,
+  getCustomerAddressesHandler,
   getCustomerProfileHandler,
+  setCustomerAddressDefaultHandler,
   updateCustomerAddressHandler,
   updateCustomerProfileHandler
 } from "../controllers/customer.controller.js";
@@ -22,8 +25,12 @@ customerProfileRouter.use(authorize("Customer"));
 
 customerProfileRouter.get("/profile", getCustomerProfileHandler);
 customerProfileRouter.patch("/profile", validate(customerProfileUpdateSchema), updateCustomerProfileHandler);
+customerProfileRouter.get("/addresses", getCustomerAddressesHandler);
 customerProfileRouter.post("/addresses", validate(customerAddressCreateSchema), addCustomerAddressHandler);
+customerProfileRouter.get("/addresses/:index", getCustomerAddressByIndexHandler);
+customerProfileRouter.patch("/addresses/:index/default", setCustomerAddressDefaultHandler);
 customerProfileRouter.patch("/addresses/:index", validate(customerAddressUpdateSchema), updateCustomerAddressHandler);
 customerProfileRouter.delete("/addresses/:index", deleteCustomerAddressHandler);
 
 export { customerProfileRouter };
+

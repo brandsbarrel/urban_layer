@@ -60,6 +60,8 @@ const mapProductToAdminListItem = (product) => {
     image: product.featuredImage || product.gallery?.[0]?.url || "",
     description: product.description,
     tags: product.tags || [],
+    bestSeller: (product.tags || []).includes("best-seller") || Boolean(product.bestSeller),
+    isBestSeller: (product.tags || []).includes("best-seller") || Boolean(product.bestSeller),
     variants: product.variants,
     pickupLocation: product.pickupLocation || "",
     activity: product.activity.map((entry) => ({
@@ -99,6 +101,7 @@ const mapProductToFormShape = (product) => {
     categories: (product.categories || []).map((cat) => cat.id || cat._id || cat),
     collection: product.collection,
     tags: product.tags || [],
+    bestSeller: (product.tags || []).includes("best-seller") || Boolean(product.bestSeller),
     weight: product.weight ?? "",
     length: product.length ?? "",
     width: product.width ?? "",
@@ -124,7 +127,20 @@ const listProducts = async ({ page = 1, perPage = 10, search = "", tag = "" }) =
   }
 
   if (tag) {
-    filter.tags = tag;
+    if (tag === "best-seller") {
+      const bestSellerClause = [
+        { tags: "best-seller" },
+        { bestSeller: true }
+      ];
+      if (filter.$or) {
+        filter.$and = [{ $or: filter.$or }, { $or: bestSellerClause }];
+        delete filter.$or;
+      } else {
+        filter.$or = bestSellerClause;
+      }
+    } else {
+      filter.tags = tag;
+    }
   }
 
   const skip = (page - 1) * perPage;
@@ -240,6 +256,34 @@ const updateProductRecord = async (id, payload) => {
   };
 };
 
+const toggleProductBestSeller = async (id, isBestSeller) => {
+  const product = await findProductById(id);
+
+  if (!product) {
+    throw new NotFoundError("Product not found.");
+  }
+
+  // Atomic MongoDB update on ONLY Best Seller fields (tags and bestSeller)
+  // Preserves EVERY unrelated product field (name, slug, SKU, description,
+  // categories, images, price, variants, phoneModelId, stock, status, SEO, etc.)
+  const updateOperation = isBestSeller
+    ? {
+        $addToSet: { tags: "best-seller" },
+        $set: { bestSeller: true }
+      }
+    : {
+        $pull: { tags: "best-seller" },
+        $set: { bestSeller: false }
+      };
+
+  const updated = await updateProductById(id, updateOperation);
+
+  return {
+    listItem: mapProductToAdminListItem(updated),
+    form: mapProductToFormShape(updated)
+  };
+};
+
 const archiveProductRecord = async (id) => {
   const product = await findProductById(id);
 
@@ -270,6 +314,7 @@ export {
   getProductDetails,
   createProductRecord,
   updateProductRecord,
+  toggleProductBestSeller,
   archiveProductRecord,
   deleteProductRecord
 };

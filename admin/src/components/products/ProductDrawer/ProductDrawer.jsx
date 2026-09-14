@@ -16,7 +16,7 @@ const ProductDrawer = () => {
   );
 
   const isOpen = Boolean(product);
-  const isBestSeller = Boolean(product && (product.tags || []).includes("best-seller"));
+  const isBestSeller = Boolean(product && (product.bestSeller || (product.tags || []).includes("best-seller")));
 
   return (
     <>

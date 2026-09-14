@@ -38,7 +38,7 @@ const ProductsTable = () => {
     : items;
 
   if (bestSellerOnly) {
-    filtered = filtered.filter((p) => (p.tags || []).includes("best-seller"));
+    filtered = filtered.filter((p) => p.bestSeller || (p.tags || []).includes("best-seller"));
   }
 
   const allIds = filtered.map((p) => p.id);
@@ -74,7 +74,7 @@ const ProductsTable = () => {
         </thead>
         <tbody>
           {filtered.map((product) => {
-            const isBestSeller = (product.tags || []).includes("best-seller");
+            const isBestSeller = Boolean(product.bestSeller || (product.tags || []).includes("best-seller"));
 
             return (
               <tr

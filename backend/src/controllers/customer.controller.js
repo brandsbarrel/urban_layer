@@ -6,8 +6,11 @@ import {
   deleteAdminCustomer,
   deleteCustomerAddress,
   getAdminCustomerDetails,
+  getCustomerAddressByIndex,
+  getCustomerAddresses,
   getCustomerProfile,
   listAdminCustomers,
+  setCustomerAddressDefault,
   updateAdminCustomer,
   updateCustomerAddress,
   updateCustomerProfile
@@ -163,6 +166,45 @@ const deleteCustomerAddressHandler = async (req, res, next) => {
   }
 };
 
+const getCustomerAddressesHandler = async (req, res, next) => {
+  try {
+    const addresses = await getCustomerAddresses(req.user.id);
+    return sendSuccess({
+      res,
+      message: "Addresses fetched successfully.",
+      data: { items: addresses }
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const getCustomerAddressByIndexHandler = async (req, res, next) => {
+  try {
+    const address = await getCustomerAddressByIndex(req.user.id, Number(req.params.index));
+    return sendSuccess({
+      res,
+      message: "Address fetched successfully.",
+      data: address
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const setCustomerAddressDefaultHandler = async (req, res, next) => {
+  try {
+    const addresses = await setCustomerAddressDefault(req.user.id, Number(req.params.index));
+    return sendSuccess({
+      res,
+      message: "Default address updated successfully.",
+      data: { items: addresses }
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 export {
   getAdminCustomers,
   getAdminCustomerById,
@@ -174,5 +216,8 @@ export {
   updateCustomerProfileHandler,
   addCustomerAddressHandler,
   updateCustomerAddressHandler,
-  deleteCustomerAddressHandler
+  deleteCustomerAddressHandler,
+  getCustomerAddressesHandler,
+  getCustomerAddressByIndexHandler,
+  setCustomerAddressDefaultHandler
 };

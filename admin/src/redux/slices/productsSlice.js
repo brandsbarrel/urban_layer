@@ -26,17 +26,23 @@ const fetchProducts = createAsyncThunk("products/fetchProducts", async (_, { get
 });
 
 const toggleBestSeller = createAsyncThunk("products/toggleBestSeller", async (product) => {
-  const isCurrentlyBestSeller = (product.tags || []).includes("best-seller");
-  const nextTags = isCurrentlyBestSeller
-    ? (product.tags || []).filter((t) => t !== "best-seller")
-    : [...(product.tags || []), "best-seller"];
+  const isCurrentlyBestSeller = Boolean(
+    product.bestSeller ||
+    product.isBestSeller ||
+    (product.tags || []).includes("best-seller")
+  );
+  const nextBestSeller = !isCurrentlyBestSeller;
 
-  const response = await apiRequest(`/admin/products/${product.id}`, {
+  const response = await apiRequest(`/admin/products/${product.id}/best-seller`, {
     method: "PATCH",
-    body: JSON.stringify({ tags: nextTags })
+    body: JSON.stringify({ bestSeller: nextBestSeller })
   });
 
-  return response.data.listItem;
+  return {
+    id: product.id,
+    bestSeller: nextBestSeller,
+    listItem: response.data?.listItem
+  };
 });
 
 const archiveProduct = createAsyncThunk("products/archiveProduct", async (id) => {
@@ -115,9 +121,24 @@ const productsSlice = createSlice({
         state.stats = buildStats(action.payload.items);
       })
       .addCase(toggleBestSeller.fulfilled, (state, action) => {
-        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        const { id, bestSeller, listItem } = action.payload;
+        const index = state.items.findIndex((item) => item.id === id);
         if (index >= 0) {
-          state.items[index] = action.payload;
+          if (listItem && listItem.name) {
+            state.items[index] = listItem;
+          } else {
+            const currentTags = state.items[index].tags || [];
+            const nextTags = bestSeller
+              ? (currentTags.includes("best-seller") ? currentTags : [...currentTags, "best-seller"])
+              : currentTags.filter((t) => t !== "best-seller");
+
+            state.items[index] = {
+              ...state.items[index],
+              bestSeller,
+              isBestSeller: bestSeller,
+              tags: nextTags
+            };
+          }
         }
       })
       .addCase(archiveProduct.fulfilled, (state, action) => {
