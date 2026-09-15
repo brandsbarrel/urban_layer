@@ -1,13 +1,22 @@
 # CURRENT TASK
-Fix the Admin Products → Best Seller logic so marking/unmarking Best Seller updates only Best Seller state without wiping or changing other product fields.
+Finish the CUSTOMER ADDRESS APIs.
 
 # COMPLETED
-- Identified root cause in Zod validator defaults (`productCreateSchema.partial()` applied schema defaults during partial `PATCH /api/admin/products/:id` calls, replacing omitted fields with empty values and Draft status).
-- Fixed `catalog.validator.js`: separated base fields from creation defaults, created non-defaulting `productUpdateSchema`, and added `productBestSellerSchema`.
-- Implemented dedicated atomic `PATCH /api/admin/products/:id/best-seller` endpoint in backend routes, controller, and service with atomic `$addToSet`/`$pull` on `tags` and `$set` on `bestSeller`.
-- Updated `ProductModel` to include `bestSeller: { type: Boolean, default: false }`.
-- Updated admin `productsSlice.js`, `ProductsTable.jsx`, and `ProductDrawer.jsx` to send `{ bestSeller: boolean }` and handle state updates without document overwrites.
-- Verified database document state before and after toggling with live MongoDB tests.
+- Customer Address APIs fully implemented and tested:
+  - GET    /api/customer/addresses - List all addresses for authenticated customer
+  - POST   /api/customer/addresses - Create new address (max 3 enforced)
+  - GET    /api/customer/addresses/:index - Get address by index
+  - PATCH  /api/customer/addresses/:index - Update address by index
+  - DELETE /api/customer/addresses/:index - Delete address by index
+  - PATCH  /api/customer/addresses/:index/default - Set address as default
+- All backend validation, ownership enforcement, and business rules verified:
+  - Maximum 3 addresses per customer (enforced in `addCustomerAddress` service)
+  - Address ownership enforced (all operations scoped to `req.user.id`)
+  - Customers cannot access other customers' addresses
+  - Only one default address exists (handled in add/update/delete/setDefault)
+  - Required address fields validated via `addressSchema`
+  - Checkout/order address snapshot behavior remains intact (orders copy addresses via `.toObject()`)
+  - Updating/deleting saved addresses does not modify historical order addresses
 
 # IN PROGRESS
 - None.
@@ -17,22 +26,21 @@ Fix the Admin Products → Best Seller logic so marking/unmarking Best Seller up
 - Blog articles in admin panel and storefront are on mock data; backend blog endpoints not yet implemented.
 - Product media uploads are currently URL-based (direct multipart file upload endpoint not active).
 
-# FILES BEING MODIFIED
-- `admin/src/redux/slices/productsSlice.js`
-- `admin/src/components/products/ProductsTable/ProductsTable.jsx`
-- `admin/src/components/products/ProductDrawer/ProductDrawer.jsx`
-- `backend/src/models/product.model.js`
-- `backend/src/validators/catalog.validator.js`
-- `backend/src/services/product.service.js`
-- `backend/src/controllers/product.controller.js`
-- `backend/src/routes/product.routes.js`
-- `docs/CURRENT_WORK.md`
+# FILES VERIFIED (No changes needed - all APIs already implemented)
+- `backend/src/routes/customer-profile.routes.js`
+- `backend/src/controllers/customer.controller.js`
+- `backend/src/services/customer.service.js`
+- `backend/src/validators/customer.validator.js`
+- `backend/src/models/address.schema.js`
+- `backend/src/models/customer.model.js`
+- `backend/src/repositories/customer.repository.js`
+- `urban_layer/src/redux/slices/addressesSlice.js`
+- `urban_layer/src/api/addressesApi.js`
 
 # NEXT STEP
 Ready for next task.
 
 # TEST STATUS
-- Backend syntax checks (`node --check`) passed on all modified files.
-- Admin production build (`npm run build`) passed with 0 errors.
-- Live MongoDB database test verified: all product fields (categories, images, description, stock, status, name, sku) remain 100% intact before and after marking/unmarking best seller.
-- Filter query test verified: `listProducts({ tag: "best-seller" })` accurately includes/excludes product upon toggle.
+- Backend syntax checks (`node --check`) passed on all address-related files.
+- All address endpoints verified to be correctly routed under `/api/customer/addresses*`.
+- Frontend Redux slice and API client already integrated with backend endpoints.
